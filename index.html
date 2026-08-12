@@ -3200,6 +3200,11 @@
         <span>Zero Output</span>
         <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#B87516;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ zero.count }}</span>
       </button>
+      <button sc-camel-on-click="{{ openLowEx }}" title="Surveyors with fewer than 16 exempted days across March – August" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #D6DAF0;border-radius:10px;background:#F4F5FC;color:#41498A;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;" style-hover="background:#EAECF8;">
+        <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#5F6CAD" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
+        <span>Low Exempted Days</span>
+        <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#5F6CAD;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ lowEx.count }}</span>
+      </button>
       <button sc-camel-on-click="{{ openSvy }}" title="Search a surveyor — month-wise output, day counts and field remarks" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #CBD9E6;border-radius:10px;background:#F2F7FB;color:#1E4A73;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none;" style-hover="background:#E5EFF7;">
         <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1E4A73" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M3 21v-2a5 5 0 0 1 5-5h3"></path><path d="M14.5 18l2 2 4-4"></path></svg>
         <span>Surveyor Performance</span>
@@ -5250,6 +5255,75 @@
 
           <div style="padding:8px 22px;border-top:1px solid #E7EDF3;background:#F7FAFD;font-size:11px;color:#5B7891;">
             Click any row to open that coordinator's full profile. KPI target = 20 DAG per active Re-Survey / Tea Garden surveyor, 10 per Naksha surveyor. Today's Location = live entry from the FC Performance Matrix sheet.
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- LOW EXEMPTED DAYS MODAL -->
+    <sc-if value="{{ lowExOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-secalways="1" sc-camel-on-click="{{ closeLowEx }}" style="position:fixed;inset:0;z-index:150;background:rgba(8,14,20,.82);display:flex;align-items:center;justify-content:center;padding:26px;">
+        <div sc-camel-on-click="{{ stopProp }}" style="width:min(1080px,96vw);max-height:90vh;display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #D8E0E8;border-radius:16px;box-shadow:0 30px 80px rgba(4,12,20,.5);overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 24px;background:linear-gradient(150deg,#5F6CAD 0%,#41498A 100%);color:#fff;">
+            <div style="width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg width="19" height="19" sc-camel-view-box="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
+            </div>
+            <div style="min-width:0;">
+              <div style="font-size:16px;font-weight:800;letter-spacing:.3px;">Low Exempted Days</div>
+              <div style="font-size:11.5px;color:#DDE1F6;margin-top:2px;">Below 16 exempted days · {{ lowEx.rangeLabel }}</div>
+            </div>
+            <div style="flex:1;"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:0 16px;flex:none;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:700;line-height:1;">{{ lowEx.count }}</div>
+              <div style="font-size:9px;font-weight:800;letter-spacing:1.2px;color:#DDE1F6;text-transform:uppercase;margin-top:3px;">Surveyors</div>
+            </div>
+            <button sc-camel-on-click="{{ exportLowEx }}" style="display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid rgba(255,255,255,.4);border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:12.5px;font-weight:800;cursor:pointer;white-space:nowrap;" style-hover="background:rgba(255,255,255,.26);">
+              <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M12 15V3"></path></svg>
+              Export to Excel
+            </button>
+            <button sc-camel-on-click="{{ closeLowEx }}" aria-label="Close" style="width:34px;height:34px;border:1px solid rgba(255,255,255,.4);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:15px;font-weight:700;cursor:pointer;flex:none;" style-hover="background:rgba(255,255,255,.26);">✕</button>
+          </div>
+
+          <div style="padding:16px 24px 6px;border-bottom:1px solid #E7EDF3;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:#5B7891;text-transform:uppercase;margin-bottom:10px;">Circle-wise count</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;padding-bottom:14px;">
+              <sc-for list="{{ lowEx.byCircle }}" as="lc" hint-placeholder-count="4">
+                <span style="display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid #D6DAF0;border-radius:20px;background:#F4F5FC;font-size:12px;font-weight:700;color:#41498A;">{{ lc.circle }}<span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:1px 7px;border-radius:11px;background:#5F6CAD;color:#fff;">{{ lc.count }}</span></span>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="flex:1;min-height:0;overflow:auto;">
+            <sc-raw-table style="width:100%;border-collapse:collapse;font-size:13px;">
+              <sc-raw-thead>
+                <sc-raw-tr>
+                  <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">#</sc-raw-th>
+                  <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">Surveyor Name</sc-raw-th>
+                  <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">Emp ID</sc-raw-th>
+                  <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">Circle</sc-raw-th>
+                  <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">FC Name</sc-raw-th>
+                  <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">AM Name</sc-raw-th>
+                  <sc-raw-th style="text-align:center;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">Exempted Days</sc-raw-th>
+                </sc-raw-tr>
+              </sc-raw-thead>
+              <sc-raw-tbody>
+                <sc-for list="{{ lowEx.rows }}" as="lr" hint-placeholder-count="6">
+                  <sc-raw-tr>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8A93A0;">{{ lr.sl }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;font-weight:700;color:#16202B;white-space:nowrap;">{{ lr.name }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#41607C;">{{ lr.code }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;color:#16202B;white-space:nowrap;">{{ lr.circle }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;color:#41607C;white-space:nowrap;">{{ lr.fc }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;color:#5B7891;white-space:nowrap;">{{ lr.am }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#41498A;white-space:nowrap;">{{ lr.exDays }}</sc-raw-td>
+                  </sc-raw-tr>
+                </sc-for>
+              </sc-raw-tbody>
+            </sc-raw-table>
+          </div>
+
+          <div style="padding:12px 24px;border-top:1px solid #E7EDF3;background:#F7FAFD;font-size:11.5px;color:#5B7891;">
+            Exempted days are read from the monthly attendance sheets and summed across March – August. Anyone below 16 is listed. Follows the circle / vendor / area filters above.
           </div>
         </div>
       </div>
@@ -8106,9 +8180,9 @@ class Component extends DCLogic {
   // Shared styled-report writer for the Zero Output / Idle Surveyors exports: navy banner,
   // amber header, banded rows, everything centred.
   writeRosterXlsx(opts){
-    const X=window.XLSX, cols=['Surveyor Name','Emp ID','Circle','FC Name','AM Name'], N=cols.length;
+    const X=window.XLSX, cols=['Surveyor Name','Emp ID','Circle','FC Name','AM Name'].concat(opts.extraHead?[opts.extraHead]:[]), N=cols.length;
     const aoa=[[opts.title],[opts.sub],[],cols];
-    opts.rows.forEach(r=>aoa.push([r.name, r.code, r.circle, r.fc, r.am]));
+    opts.rows.forEach(r=>aoa.push([r.name, r.code, r.circle, r.fc, r.am].concat(opts.extraKey?[r[opts.extraKey]]:[])));
     aoa.push([]);
     aoa.push(['Total surveyors: '+opts.rows.length]);
     const ws=X.utils.aoa_to_sheet(aoa);
@@ -8130,7 +8204,7 @@ class Component extends DCLogic {
     const tr=4+opts.rows.length+1;
     for(let c=0;c<N;c++) set(tr,c,{font:{name:'Calibri',sz:11,bold:true,color:{rgb:NAVY}},fill:{fgColor:{rgb:CREAM}},alignment:mid,border:border(LINE)});
     ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:N-1}},{s:{r:1,c:0},e:{r:1,c:N-1}},{s:{r:tr,c:0},e:{r:tr,c:N-1}}];
-    ws['!cols']=[{wch:32},{wch:15},{wch:24},{wch:26},{wch:26}];
+    ws['!cols']=[{wch:32},{wch:15},{wch:24},{wch:26},{wch:26}].concat(opts.extraHead?[{wch:18}]:[]);
     ws['!rows']=[{hpt:30},{hpt:20},{hpt:7},{hpt:24}];
     for(let i=0;i<opts.rows.length;i++) ws['!rows'].push({hpt:19});
     ws['!rows'].push({hpt:7},{hpt:22});
@@ -8147,6 +8221,55 @@ class Component extends DCLogic {
     this.writeRosterXlsx({rows:d.rows, accent:'B87516', sheet:'Zero Output',
       title:'ZERO OUTPUT SURVEYORS', sub:'Marked Present with zero DAG / RoR  ·  '+d.rangeLabel,
       file:'Zero_Output_'+String(d.rangeLabel).replace(/[^A-Za-z0-9]+/g,'_')+'.xlsx'});
+  };
+  // ── LOW EXEMPTED DAYS ────────────────────────────────────────────────────
+  // Exempted days are a per-month figure on each monthly attendance row. Sum them
+  // per surveyor across March – August; anyone under 16 is flagged.
+  lowExData(){
+    const {data}=this.state;
+    const MONS=['March','April','May','June','July','August'];
+    const rows=[];
+    if(data && data.dates && data.dates.length){
+      const monIdx={};
+      data.dates.forEach((d,i)=>{ const mk=this.monthKey(d); if(MONS.indexOf(mk)>=0) (monIdx[mk]=monIdx[mk]||[]).push(i); });
+      const grp=new Map();
+      this.filtered().forEach(r=>{
+        // which of the six months does this monthly row belong to? the one it has most days in
+        let bestM='', bestN=0;
+        MONS.forEach(m=>{ const l=monIdx[m]||[]; let n=0; l.forEach(i=>{ if(r.st[i] && r.st[i]!=='X') n++; }); if(n>bestN){ bestN=n; bestM=m; } });
+        if(!bestN) return;
+        const key=(String(r.c||'').trim().toUpperCase())||('N:'+String(r.n||'').trim().toUpperCase()+'|'+String(r.cir||'').trim().toUpperCase());
+        let g=grp.get(key);
+        if(!g){ g={rec:r, months:{}}; grp.set(key,g); }
+        g.rec=r;
+        const ev=Number(r.ex)||0;
+        g.months[bestM]=Math.max(g.months[bestM]||0, ev);
+      });
+      grp.forEach(g=>{
+        const tot=Object.keys(g.months).reduce((s,m)=>s+(g.months[m]||0),0);
+        if(tot>=16) return;
+        const r=g.rec;
+        rows.push({ name:this.titleCase(r.n)||'—', code:String(r.c||'').trim()||'—',
+          circle:this.titleCase(r.cir)||'—', fc:this.titleCase(r.fc)||'—', am:this.titleCase(r.am)||'—',
+          exN:tot, exDays:String(tot), monthsN:Object.keys(g.months).length });
+      });
+    }
+    rows.sort((a,b)=> a.exN-b.exN || a.circle.localeCompare(b.circle) || a.name.localeCompare(b.name));
+    rows.forEach((r,i)=>{ r.sl=i+1; });
+    const cm={}; rows.forEach(r=>{ cm[r.circle]=(cm[r.circle]||0)+1; });
+    const byCircle=Object.keys(cm).map(k=>({circle:k,count:cm[k]})).sort((a,b)=>b.count-a.count);
+    return {rows, count:rows.length, byCircle, rangeLabel:'March – August'};
+  }
+  openLowEx = () => this.setState({lowExOpen:true});
+  closeLowEx = () => this.setState({lowExOpen:false});
+  exportLowEx = () => {
+    const d=this.lowExData();
+    if(!d.rows.length){ window.alert('No surveyor is below 16 exempted days in the current view.'); return; }
+    if(!window.XLSX){ window.alert('Spreadsheet writer is still loading — try again in a moment.'); return; }
+    this.writeRosterXlsx({rows:d.rows, accent:'5F6CAD', sheet:'Low Exempted Days',
+      extraHead:'Exempted Days', extraKey:'exN',
+      title:'LOW EXEMPTED DAYS', sub:'Below 16 exempted days  ·  '+d.rangeLabel,
+      file:'Low_Exempted_Days_March_August.xlsx'});
   };
   openIdle = () => this.setState({idleOpen:true});
   closeIdle = () => this.setState({idleOpen:false});
@@ -11665,6 +11788,8 @@ if(c.chDailyDag){
         fcTblFilters:[], fcTblLowStyle:'', fcTblQ:'', onFcTblQ:this.onFcTblQ, toggleFcTblLow:this.toggleFcTblLow,
         closeFcTbl:this.closeFcTbl, exportFcTbl:this.exportFcTbl, fcRankH:'340px',
         zero:{rows:[],count:0,byCircle:[],rangeLabel:'—'}, zeroOpen:false, svyOpen:false,
+        lowEx:{rows:[],count:0,byCircle:[],rangeLabel:'March – August'}, lowExOpen:false,
+        openLowEx:this.openLowEx, closeLowEx:this.closeLowEx, exportLowEx:this.exportLowEx,
         openSvy:this.openSvy, closeSvy:this.closeSvy,
         openZero:this.openZero, closeZero:this.closeZero, exportZero:this.exportZero,
         ai:{scoreT:'—',scoreLbl:'',findings:[],risks:[],kpis:[]}, liveClock:this._clockCmp(),
@@ -12849,7 +12974,8 @@ if(c.chDailyDag){
         if(!wantLeave && !this.isProdRec(r)) return;
         idxs.forEach(i=>{
           const s=r.st[i]; const v=r.dg[i]||0;
-          const hit = wantLeave ? (s==='L') : (s!=='X' && v===0);
+          // Zero DAG = marked Present on the day but booked no output. Leave / absent must not count.
+          const hit = wantLeave ? (s==='L') : (s==='P' && v===0);
           if(!hit) return;
           const ck=this.titleCase(String(r.cir||'—').trim())||'—';
           (byC[ck]=byC[ck]||{count:0,names:[]});
@@ -13124,6 +13250,8 @@ if(c.chDailyDag){
       openFcTbl:this.openFcTblM,
       closeTable:this.closeTable,
       zero:this.zeroData(), zeroOpen:!!this.state.zeroOpen,
+      lowEx:this.lowExData(), lowExOpen:!!this.state.lowExOpen,
+      openLowEx:this.openLowEx, closeLowEx:this.closeLowEx, exportLowEx:this.exportLowEx,
       svyOpen:!!this.state.svyOpen, openSvy:this.openSvy, closeSvy:this.closeSvy,
       openZero:this.openZero, closeZero:this.closeZero, exportZero:this.exportZero,
       idle:this.idleData(), idleOpen:!!this.state.idleOpen,
