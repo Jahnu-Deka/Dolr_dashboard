@@ -3200,7 +3200,7 @@
         <span>Zero Output</span>
         <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#B87516;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ zero.count }}</span>
       </button>
-      <button sc-camel-on-click="{{ openLowEx }}" title="Surveyors with fewer than 16 exempted days across March – August" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #D6DAF0;border-radius:10px;background:#F4F5FC;color:#41498A;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;" style-hover="background:#EAECF8;">
+      <button sc-camel-on-click="{{ openLowEx }}" title="Surveyors currently on the roster whose exempted days total under 15 across the last three months" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #D6DAF0;border-radius:10px;background:#F4F5FC;color:#41498A;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;" style-hover="background:#EAECF8;">
         <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#5F6CAD" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
         <span>Low Exempted Days</span>
         <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#5F6CAD;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ lowEx.count }}</span>
@@ -5270,7 +5270,7 @@
             </div>
             <div style="min-width:0;">
               <div style="font-size:16px;font-weight:800;letter-spacing:.3px;">Low Exempted Days</div>
-              <div style="font-size:11.5px;color:#DDE1F6;margin-top:2px;">Below 16 exempted days · {{ lowEx.rangeLabel }}</div>
+              <div style="font-size:11.5px;color:#DDE1F6;margin-top:2px;">Below 15 exempted days · {{ lowEx.rangeLabel }} · on roster in {{ lowEx.curLabel }}</div>
             </div>
             <div style="flex:1;"></div>
             <div style="display:flex;flex-direction:column;align-items:center;padding:0 16px;flex:none;">
@@ -5303,7 +5303,10 @@
                   <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">Circle</sc-raw-th>
                   <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">FC Name</sc-raw-th>
                   <sc-raw-th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">AM Name</sc-raw-th>
-                  <sc-raw-th style="text-align:center;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">Exempted Days</sc-raw-th>
+                  <sc-raw-th style="text-align:center;padding:11px 10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#41498A;background:#EDEFF9;position:sticky;top:0;">{{ lowEx.m1Label }}</sc-raw-th>
+                  <sc-raw-th style="text-align:center;padding:11px 10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#41498A;background:#EDEFF9;position:sticky;top:0;">{{ lowEx.m2Label }}</sc-raw-th>
+                  <sc-raw-th style="text-align:center;padding:11px 10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#41498A;background:#EDEFF9;position:sticky;top:0;">{{ lowEx.m3Label }}</sc-raw-th>
+                  <sc-raw-th style="text-align:center;padding:11px 16px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0F2A43;background:#EDEFF9;position:sticky;top:0;">3-Month Total</sc-raw-th>
                 </sc-raw-tr>
               </sc-raw-thead>
               <sc-raw-tbody>
@@ -5315,6 +5318,9 @@
                     <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;color:#16202B;white-space:nowrap;">{{ lr.circle }}</sc-raw-td>
                     <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;color:#41607C;white-space:nowrap;">{{ lr.fc }}</sc-raw-td>
                     <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;color:#5B7891;white-space:nowrap;">{{ lr.am }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 10px;border-bottom:1px solid #EEF2F6;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7A85A8;">{{ lr.m1 }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 10px;border-bottom:1px solid #EEF2F6;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7A85A8;">{{ lr.m2 }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 10px;border-bottom:1px solid #EEF2F6;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7A85A8;">{{ lr.m3 }}</sc-raw-td>
                     <sc-raw-td style="padding:10px 16px;border-bottom:1px solid #EEF2F6;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#41498A;white-space:nowrap;">{{ lr.exDays }}</sc-raw-td>
                   </sc-raw-tr>
                 </sc-for>
@@ -8233,34 +8239,45 @@ class Component extends DCLogic {
       file:'Zero_Output_'+String(d.rangeLabel).replace(/[^A-Za-z0-9]+/g,'_')+'.xlsx'});
   };
   // ── LOW EXEMPTED DAYS ────────────────────────────────────────────────────
-  // Exempted days are a per-month figure on each monthly attendance row. Sum them
-  // per surveyor across March – August; anyone under 16 is flagged.
+  // Exempted days are a per-month figure on each monthly attendance row. Scope = the LAST THREE
+  // months present in the workbook, and only surveyors who appear in the most recent month (i.e.
+  // currently on the roster). Anyone whose three-month total is under 15 is flagged.
   lowExData(){
     const {data}=this.state;
-    const MONS=['March','April','May','June','July','August'];
+    const MORDER=['January','February','March','April','May','June','July','August','September','October','November','December'];
     const rows=[];
+    let MONS=[], curM='';
     if(data && data.dates && data.dates.length){
+      const seen={}; data.dates.forEach(d=>{ const mk=this.monthKey(d); if(mk) seen[mk]=1; });
+      const present=MORDER.filter(m=>seen[m]);
+      MONS=present.slice(-3); curM=MONS[MONS.length-1]||'';
       const monIdx={};
       data.dates.forEach((d,i)=>{ const mk=this.monthKey(d); if(MONS.indexOf(mk)>=0) (monIdx[mk]=monIdx[mk]||[]).push(i); });
       const grp=new Map();
       this.filtered().forEach(r=>{
-        // which of the six months does this monthly row belong to? the one it has most days in
+        // which of the three months does this monthly row belong to? the one it has most days in
         let bestM='', bestN=0;
         MONS.forEach(m=>{ const l=monIdx[m]||[]; let n=0; l.forEach(i=>{ if(r.st[i] && r.st[i]!=='X') n++; }); if(n>bestN){ bestN=n; bestM=m; } });
         if(!bestN) return;
         const key=(String(r.c||'').trim().toUpperCase())||('N:'+String(r.n||'').trim().toUpperCase()+'|'+String(r.cir||'').trim().toUpperCase());
         let g=grp.get(key);
         if(!g){ g={rec:r, months:{}}; grp.set(key,g); }
-        g.rec=r;
+        if(bestM===curM) g.rec=r;   // prefer the current month's record for circle / FC / AM
+        else if(!g.rec) g.rec=r;
         const ev=Number(r.ex)||0;
         g.months[bestM]=Math.max(g.months[bestM]||0, ev);
       });
       grp.forEach(g=>{
-        const tot=Object.keys(g.months).reduce((s,m)=>s+(g.months[m]||0),0);
-        if(tot>=16) return;
+        if(curM && !(curM in g.months)) return;   // not on the current month's roster
+        const tot=MONS.reduce((s,m)=>s+(g.months[m]||0),0);
+        if(tot>=15) return;
         const r=g.rec;
         rows.push({ name:this.titleCase(r.n)||'—', code:String(r.c||'').trim()||'—',
           circle:this.titleCase(r.cir)||'—', fc:this.titleCase(r.fc)||'—', am:this.titleCase(r.am)||'—',
+          m1:String(g.months[MONS[0]]==null?'—':g.months[MONS[0]]),
+          m2:String(g.months[MONS[1]]==null?'—':g.months[MONS[1]]),
+          m3:String(g.months[MONS[2]]==null?'—':g.months[MONS[2]]),
+          m1N:g.months[MONS[0]]||0, m2N:g.months[MONS[1]]||0, m3N:g.months[MONS[2]]||0,
           exN:tot, exDays:String(tot), monthsN:Object.keys(g.months).length });
       });
     }
@@ -8268,18 +8285,22 @@ class Component extends DCLogic {
     rows.forEach((r,i)=>{ r.sl=i+1; });
     const cm={}; rows.forEach(r=>{ cm[r.circle]=(cm[r.circle]||0)+1; });
     const byCircle=Object.keys(cm).map(k=>({circle:k,count:cm[k]})).sort((a,b)=>b.count-a.count);
-    return {rows, count:rows.length, byCircle, rangeLabel:'March – August'};
+    const sh=m=>String(m||'').slice(0,3);
+    return {rows, count:rows.length, byCircle,
+      rangeLabel:MONS.length?(MONS[0]+' – '+MONS[MONS.length-1]):'—',
+      m1Label:sh(MONS[0])||'M1', m2Label:sh(MONS[1])||'M2', m3Label:sh(MONS[2])||'M3',
+      curLabel:curM||''};
   }
   openLowEx = () => this.setState({lowExOpen:true});
   closeLowEx = () => this.setState({lowExOpen:false});
   exportLowEx = () => {
     const d=this.lowExData();
-    if(!d.rows.length){ window.alert('No surveyor is below 16 exempted days in the current view.'); return; }
+    if(!d.rows.length){ window.alert('No surveyor is below 15 exempted days in the current view.'); return; }
     if(!window.XLSX){ window.alert('Spreadsheet writer is still loading — try again in a moment.'); return; }
     this.writeRosterXlsx({rows:d.rows, accent:'5F6CAD', sheet:'Low Exempted Days',
       extraHead:'Exempted Days', extraKey:'exN',
-      title:'LOW EXEMPTED DAYS', sub:'Below 16 exempted days  ·  '+d.rangeLabel,
-      file:'Low_Exempted_Days_March_August.xlsx'});
+      title:'LOW EXEMPTED DAYS', sub:'Below 15 exempted days  ·  '+d.rangeLabel+'  ·  on roster in '+d.curLabel,
+      file:'Low_Exempted_Days_'+String(d.rangeLabel).replace(/[^A-Za-z0-9]+/g,'_')+'.xlsx'});
   };
   openIdle = () => this.setState({idleOpen:true});
   closeIdle = () => this.setState({idleOpen:false});
@@ -11249,6 +11270,24 @@ if(c.chDailyDag){
     const L=v=>S(v).toLowerCase();
     const num=v=>{const n=Number(S(v).replace(/[^0-9.\-]/g,''));return isNaN(n)?0:n;};
     const pct=v=>{const s=S(v);if(!s)return '';const n=Number(s.replace(/[^0-9.\-]/g,''));if(isNaN(n))return s;return s.indexOf('%')>=0?s:(n+'%');};
+    // Normalise any date shape the sheet can hand back to yyyy-mm-dd: a real Date, gviz's
+    // "Date(2026,7,10)" string, a long "Monday, August 10, 2026", ISO, or d/m/yyyy.
+    const toISO=v=>{
+      if(v instanceof Date && !isNaN(v)) return new Date(v.getTime()+43200000).toISOString().slice(0,10);
+      const s=S(v); if(!s) return '';
+      const p2=n=>(n<10?'0':'')+n;
+      let m=/^Date\((\d{4}),(\d{1,2}),(\d{1,2})/.exec(s);
+      if(m) return m[1]+'-'+p2(+m[2]+1)+'-'+p2(+m[3]);
+      m=/^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s);
+      if(m) return m[1]+'-'+p2(+m[2])+'-'+p2(+m[3]);
+      m=/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/.exec(s);
+      if(m) return m[3]+'-'+p2(+m[2])+'-'+p2(+m[1]);
+      if(/[a-z]{3}/i.test(s)){
+        const t=Date.parse(s.replace(/^[A-Za-z]+,\s*/,''));
+        if(!isNaN(t)){ const d=new Date(t); return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); }
+      }
+      return '';
+    };
     if(!nrows||!nrows.length) return {circles:[],detail:[]};
     // Header detection is SCORED, not first-match: pick whichever of the first 12 rows carries the
     // most recognisable Naksha column names. A first-match scan kept latching onto a partial or
@@ -11277,10 +11316,20 @@ if(c.chDailyDag){
     // column's header from the detected row plus the non-numeric rows immediately above/below.
     const rowTxt=(i)=>{ const r=nrows[i]||[]; return r.map(c=>L(c).replace(/\r?\n/g,' ')); };
     const isTextRow=(i)=>{ const r=nrows[i]||[]; let t=0,n=0; r.forEach(c=>{ const s=S(c); if(!s) return; if(/^[-+]?[\d.,%]+$/.test(s)) n++; else t++; }); return t>n; };
-    const hdr=(()=>{ const base=rowTxt(hdrIdx);
-      [hdrIdx-1, hdrIdx+1].forEach(i=>{ if(i<0||i>=nrows.length||!isTextRow(i)) return;
-        rowTxt(i).forEach((t,j)=>{ if(t) base[j]=(base[j]?base[j]+' ':'')+t; }); });
-      return base.map(h=>h.replace(/\s+/g,' ').trim()); })();
+    // A row counts as DATA once it carries 3+ numeric cells; anything else in the first rows is
+    // header material. Merged / two-line header cells scatter their text across those rows, so the
+    // header for each column is the UNION of the text found in all of them. Without this the whole
+    // measure block resolved to -1 and the parser fell back to positional guessing.
+    const isDataRow=(i)=>{ const r=nrows[i]||[]; let n=0; r.forEach(c=>{ const s=S(c); if(s&&/^[-+]?[\d.,%]+$/.test(s)) n++; }); return n>=3; };
+    let hdrEnd=hdrIdx;
+    for(let i=hdrIdx+1;i<Math.min(hdrIdx+3,nrows.length);i++){ if(isDataRow(i)) break; if((nrows[i]||[]).some(c=>S(c))) hdrEnd=i; }
+    const hdr=(()=>{ const base=[];
+      for(let i=0;i<=hdrEnd;i++){ if(isDataRow(i)) continue;
+        rowTxt(i).forEach((t,j)=>{ if(!t) return; const cur=base[j]||''; if(cur.indexOf(t)<0) base[j]=(cur?cur+' ':'')+t; }); }
+      const len=Math.max(base.length,(nrows[hdrEnd]||[]).length,(nrows[hdrEnd+1]||[]).length);
+      const out=[]; for(let j=0;j<len;j++) out[j]=String(base[j]||'').replace(/\s+/g,' ').trim();
+      return out; })();
+    const bodyStart=hdrEnd+1;
     const findC=(...ks)=>{for(const k of ks){const i=hdr.findIndex(h=>h.replace(/\s+/g,' ')===k);if(i>=0)return i;}for(const k of ks){const i=hdr.findIndex(h=>h.includes(k));if(i>=0)return i;}return -1;};
     const iD=findC('district'), iC=findC('circle','ulb'), iFc=findC('co-ordinator','coordinator','fc'),
           iDagR=findC('dag as per ror','no. of dag as per ror','dag/ror','dag ror','total dag','dag'),
@@ -11324,7 +11373,7 @@ if(c.chDailyDag){
     // shifts of the whole block and keep whichever alignment balances best.
     let wardShift=0;
     {
-      const body=nrows.slice(hdrIdx+1).filter(row=>{
+      const body=nrows.slice(bodyStart).filter(row=>{
         if(!row) return false;
         const d=iD>=0?S(row[iD]):'', c=iC>=0?S(row[iC]):'';
         return (d||c) && !/^(total|grand|sub)/i.test(d+c);
@@ -11379,21 +11428,27 @@ if(c.chDailyDag){
           extra:(row.slice(7)||[]).map(S).filter(Boolean).join(' · ')});
       }
     }
-    // Expected date of completion sits just right of the ward block (column P). If the header
-    // didn't resolve, or resolved to an empty column, take the first populated column after it.
+    // Expected date of completion. Prefer a header that mentions expected/deadline/completion
+    // (never the remarks column); otherwise find the column whose cells actually parse as dates.
     let dlFix='';
-    if(iYs>=0){
-      const body=nrows.slice(hdrIdx+1);
+    {
+      const body=nrows.slice(bodyStart);
       const filled=j=>{ let n=0; for(const row of body){ if(row&&S(row[j])) n++; } return n; };
-      if(iDl<0 || iDl<=iYs || !filled(iDl)){
-        for(let j=iYs+1;j<Math.max(normH.length,iYs+5);j++){
+      const dateish=j=>{ let n=0; for(const row of body){ if(!row) continue; if(toISO(row[j])) n++; } return n; };
+      const byName=hdr.findIndex((h,j)=>j!==iRem && /expect|deadline|completion|target/.test(h));
+      if(byName>=0 && (dateish(byName)>=1 || filled(byName)>=2)){ iDl=byName; dlFix=' · dlByName '+byName; }
+      if(iDl<0 || iDl===iRem || !filled(iDl) || !dateish(iDl)){
+        let bestJ=-1, bestN=0;
+        for(let j=0;j<Math.max(hdr.length, (nrows[hdrIdx+1]||[]).length);j++){
           if(j===iRem) continue;
-          if(filled(j)>=2){ iDl=j; dlFix=' · dlFallback '+j; break; }
+          const n=dateish(j);
+          if(n>bestN){ bestN=n; bestJ=j; }
         }
+        if(bestJ>=0 && bestN>=1){ iDl=bestJ; dlFix=' · dlByDates '+bestJ; }
       }
     }
     const detail=[];
-    for(let i=hdrIdx+1;i<nrows.length;i++){
+    for(let i=bodyStart;i<nrows.length;i++){
       const row=nrows[i]; if(!row) continue;
       const district=iD>=0?S(row[iD]):'';
       const circle=iC>=0?S(row[iC]):'';
@@ -11407,14 +11462,14 @@ if(c.chDailyDag){
         achieved:num(row[iAch]), pct:pct(row[iPct]),
         totalWards:num(row[iTw]), wardCompleted:num(row[iCw]), runningWards:num(row[iRw]), yetToStart:num(row[iYs]),
         remarks:iRem>=0?S(row[iRem]):'',
-        deadline: dl instanceof Date ? new Date(dl.getTime()+43200000).toISOString().slice(0,10) : S(dl)
+        deadline: toISO(dl)
       });
     }
     // RoR columns unresolved (or pointing at an empty column) while wards parsed fine: recover them
     // positionally as the first two numeric columns left of the ward block.
     let rorFix='';
     if(detail.length && !detail.some(r=>r.dagRor) && iTw>0){
-      const body=nrows.slice(hdrIdx+1);
+      const body=nrows.slice(bodyStart);
       const numericCols=[];
       for(let j=0;j<iTw;j++){
         if(j===iD||j===iC||j===iFc) continue;
@@ -11424,7 +11479,7 @@ if(c.chDailyDag){
       if(numericCols.length>=2){
         const [a,b]=numericCols;
         let di=0;
-        for(let i=hdrIdx+1;i<nrows.length&&di<detail.length;i++){
+        for(let i=bodyStart;i<nrows.length&&di<detail.length;i++){
           const row=nrows[i]; if(!row) continue;
           const district=iD>=0?S(row[iD]):'', circle=iC>=0?S(row[iC]):'';
           if(!district&&!circle) continue;
@@ -11440,7 +11495,7 @@ if(c.chDailyDag){
     if(detail.length && !anyVal){
       const anchor=Math.max(iC,iD,iFc);
       detail.length=0;
-      for(let i=hdrIdx+1;i<nrows.length;i++){
+      for(let i=bodyStart;i<nrows.length;i++){
         const row=nrows[i]; if(!row) continue;
         const district=iD>=0?S(row[iD]):'';
         const circle=iC>=0?S(row[iC]):'';
@@ -11448,10 +11503,12 @@ if(c.chDailyDag){
         if(/^(total|grand|sub|s\.?\s*no|sl\.?\s*no)/i.test(district+circle)) continue;
         const nums=[];
         for(let c=anchor+1;c<row.length;c++){ const s=S(row[c]); if(s!==''&&/^-?[\d,.]+$/.test(s)) nums.push(num(s)); }
+        // Text columns still resolve by name even when the numbers had to be recovered
+        // positionally — never blank out remarks / expected date here.
         detail.push({district, circle, fc:iFc>=0?S(row[iFc]):'',
           dagRor:nums[0]||0, entered:nums[1]||0, actual:0, active:0, kpi:0, achieved:0, pct:'',
           totalWards:nums[2]||0, wardCompleted:nums[3]||0, runningWards:nums[4]||0, yetToStart:nums[5]||0,
-          remarks:'', deadline:''});
+          remarks:iRem>=0?S(row[iRem]):'', deadline:iDl>=0?toISO(row[iDl]):''});
       }
     }
     const cols='hdrRow '+hdrIdx+' · district '+iD+' · circle '+iC+' · dagRor '+iDagR+' · entered '+iEnt
@@ -11836,7 +11893,7 @@ if(c.chDailyDag){
         showUpload:!window.__SHEET_ONLY, emptyUpload:!window.__SHEET_ONLY, emptySheet:!!window.__SHEET_ONLY,
         onAddDay:this.onAddDay, onDeleteDay:this.onDeleteDay,
         valleyBody:null, circleBody:null, prodBody:null, fcBody:null, villageMini:null, hasMonths:false, monthCards:[], monthScope:null, monthScopeName:'', monthScopeBy:'', onClearMonthScope:()=>{},
-        hasNakshaSheet:false,
+        hasNakshaSheet:false, nakSrcNote:'',
         fcMatrixFilters:[], fcLeaders:[], fcCards:[], fcOpsCards:[], fcHeatRows:[], fcInsights:[], hasFcLive:false,
         fcKpis:[], fcKpiPanel:null, closeFcKpi:this.closeFcKpi, fcTblOpen:false, fcTblRows:[], fcTblTotal:{}, fcTblCount:'0',
         fcTblFilters:[], fcTblLowStyle:'', fcTblQ:'', onFcTblQ:this.onFcTblQ, toggleFcTblLow:this.toggleFcTblLow,
@@ -13205,6 +13262,10 @@ if(c.chDailyDag){
       nakQ:this.state.nakQ||'', onNakQ:this.onNakQ,
       valleyBody:bodies.valleyBody, circleBody:bodies.circleBody, prodBody:bodies.prodBody, fcBody:bodies.fcBody, villageMini:bodies.villageMini,
       hasNakshaSheet: !!(data.naksha && data.naksha.detail && data.naksha.detail.length),
+      nakSrcNote: (data.naksha && data.naksha.detail && data.naksha.detail.length)
+        ? ((data.naksha.detail.length)+' rows · '+(data.naksha.cols||'cols ?')
+           +' · dates '+data.naksha.detail.filter(r=>r.deadline).length)
+        : 'no Naksha sheet read',
       fcMatrixFilters,
       fcLeaders, fcCards, fcOpsCards, fcHeatRows, fcInsights, fcSummary, hasFcLive, ai, liveClock:this._clockCmp(),
       fcKpis, fcKpiPanel, closeFcKpi:this.closeFcKpi,
