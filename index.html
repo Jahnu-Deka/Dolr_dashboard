@@ -7536,6 +7536,16 @@ class Component extends DCLogic {
       const insAt=Math.min(comp.length, (comp.findIndex(c=>/forest/i.test(c.name))+1)||comp.length);
       comp.splice(insAt, 0, {name:'1st Phase Tea Garden', unit:'estates', parts:[{label:'',v:106}], value:106, total:106});
     }
+    // NAKSHA (RoR) must always agree with the Naksha sheet the Naksha tab reads, so derive it from
+    // the same live sums rather than from a separately-maintained Project Overview row.
+    const nkS=(this.nakshaOverview()||{}).sum;
+    if(nkS && nkS.totalWards){
+      const setNak=(arr,v)=>{ const it=(arr||[]).find(x=>/naksha/i.test(x.name)&&/ror/i.test(x.name));
+        if(it){ it.parts=[{label:'Wards',v:v}]; it.value=v; it.total=Math.max(nkS.totalWards, v); }
+        else arr.push({name:'NAKSHA (RoR)', unit:'wards', parts:[{label:'Wards',v:v}], value:v, total:nkS.totalWards});
+      };
+      setNak(comp, nkS.wardCompleted); setNak(run, nkS.runningWards); setNak(hold, nkS.yetToStart);
+    }
     const tot=(a)=>a.reduce((s,i)=>s+i.value,0);
     const cTot=tot(comp), rTot=tot(run), hTot=tot(hold), grand=(cTot+rTot+hTot)||1;
     const pctPill=(pc)=> pc>=100?{bg:'#D6E4F0',color:'#113C61'}:(pc>=60?{bg:'#E3EDF7',color:'#1F5480'}:(pc>=30?{bg:'#FBF2E1',color:'#8A5A12'}:{bg:'#F8E3E1',color:'#8F332D'}));
@@ -10975,12 +10985,22 @@ if(c.chDailyDag){
       const nakshaSecUrl=(this.state.gsNakshaUrl||'').trim()||(()=>{try{return localStorage.getItem('gsNakshaUrl')||'';}catch(e){return '';}})();
       const gidOf=u=>{const m=/[#&?]gid=([0-9]+)/.exec(String(u||''));return m?m[1]:null;};
       const nakTabs=['Naksha','Naksha (RoR)','Naksha RoR','NAKSHA','RoR','ROR','ROR Data','Naksha Data','Ward Details','Naksha Sheet','RoR Entry','Naksha Monitor'];
+      // Known gid of the Naksha tab in the standing workbook. gviz will not serve that tab by
+      // name, so pin it by id — without this the panel silently keeps the previous numbers.
+      const _nakPinned=(this._extraUrls||[]).slice();
+      if(/1OnrT4VTMLtOv-cKkNx8ShCDg9Q3fkFFkzCnXO55aFtU/.test(String(url))) _nakPinned.push('#gid=685746696');
       const tryNakAoa=a=>{ if(!a||!a.length) return false;
         const o=this.parseNakshaAoa(a);
         if(o&&o.detail&&o.detail.length){ this._nakshaRaw=a; return true; }
         return false; };
       if(!(this._nakshaRaw&&this._nakshaRaw.length) || nakshaSecUrl){
-        for(const srcUrl of [nakshaSecUrl, url]){
+        // Pinned gids first — they always beat name guessing.
+        for(const pu of _nakPinned){
+          const pid=this.gsheetId(pu)||id; const m=/[#&?]gid=(\d+)/.exec(pu); if(!m) continue;
+          const a=this.gvizToAoa(await this.gvizJsonp(pid,'',20000,false,m[1]));
+          if(tryNakAoa(a)){ diag.push('naksha-via-pinned-gid:'+m[1]); break; }
+        }
+        for(const srcUrl of (this._nakshaRaw&&this._nakshaRaw.length)?[]:[nakshaSecUrl, url]){
           if(!srcUrl) continue;
           const nid2=this.gsheetId(srcUrl); if(!nid2) continue;
           const g=gidOf(srcUrl);
@@ -11253,7 +11273,14 @@ if(c.chDailyDag){
       }
     }
     if(hdrIdx<0) return {circles:[],detail:[]};
-    const hdr=(nrows[hdrIdx]||[]).map(c=>L(c).replace(/\r?\n/g,' '));
+    // Header text can be split across two rows (or live in a merged two-line cell), so build each
+    // column's header from the detected row plus the non-numeric rows immediately above/below.
+    const rowTxt=(i)=>{ const r=nrows[i]||[]; return r.map(c=>L(c).replace(/\r?\n/g,' ')); };
+    const isTextRow=(i)=>{ const r=nrows[i]||[]; let t=0,n=0; r.forEach(c=>{ const s=S(c); if(!s) return; if(/^[-+]?[\d.,%]+$/.test(s)) n++; else t++; }); return t>n; };
+    const hdr=(()=>{ const base=rowTxt(hdrIdx);
+      [hdrIdx-1, hdrIdx+1].forEach(i=>{ if(i<0||i>=nrows.length||!isTextRow(i)) return;
+        rowTxt(i).forEach((t,j)=>{ if(t) base[j]=(base[j]?base[j]+' ':'')+t; }); });
+      return base.map(h=>h.replace(/\s+/g,' ').trim()); })();
     const findC=(...ks)=>{for(const k of ks){const i=hdr.findIndex(h=>h.replace(/\s+/g,' ')===k);if(i>=0)return i;}for(const k of ks){const i=hdr.findIndex(h=>h.includes(k));if(i>=0)return i;}return -1;};
     const iD=findC('district'), iC=findC('circle','ulb'), iFc=findC('co-ordinator','coordinator','fc'),
           iDagR=findC('dag as per ror','no. of dag as per ror','dag/ror','dag ror','total dag','dag'),
@@ -11268,13 +11295,25 @@ if(c.chDailyDag){
           iCw=findC('ward completed','wards completed','completed ward','completed'),
           iRw=findC('running wards','running nwards','running ward','running'),
           iYs=findC('yet to start','yetto start','untouch','pending');
+    // Deterministic ward mapping: match each of the four ward headers on its own distinctive
+    // words. When all four resolve to four ascending columns, that IS the answer — no anchoring
+    // and no arithmetic guessing may override it (those heuristics were shifting the block).
+    let wardLocked=false;
+    {
+      const hasW=h=>/ward/.test(h);
+      const jTw=hdr.findIndex(h=>/total/.test(h)&&hasW(h)&&!/complet|running|yet|untouch/.test(h));
+      const jCw=hdr.findIndex(h=>/complet/.test(h));
+      const jRw=hdr.findIndex(h=>/running/.test(h));
+      const jYs=hdr.findIndex(h=>/yet\s*to\s*start|untouch/.test(h));
+      if(jTw>=0&&jCw>jTw&&jRw>jCw&&jYs>jRw){ iTw=jTw; iCw=jCw; iRw=jRw; iYs=jYs; wardLocked=true; }
+    }
     // The ward block is always four adjacent columns. Anchor on "Total Wards" and take the next
     // three, which is far more reliable than matching each header name independently (a nearby
     // "Achieved ROR" column was being picked up as the total).
     const normH=hdr.map(h=>h.replace(/\s+/g,' ').trim());
     let iAnchor=normH.findIndex(h=>/^total\s*(no\.?\s*of\s*)?wards?$/.test(h));
     if(iAnchor<0) iAnchor=normH.findIndex(h=>/total/.test(h)&&/ward/.test(h));
-    if(iAnchor>=0){
+    if(iAnchor>=0 && !wardLocked){
       const nxt=[normH[iAnchor+1]||'',normH[iAnchor+2]||'',normH[iAnchor+3]||''];
       const ok=(/complet/.test(nxt[0])?1:0)+(/running|ongoing/.test(nxt[1])?1:0)+(/yet\s*to|untouch|pending|not\s*start/.test(nxt[2])?1:0);
       if(ok>=2){ iTw=iAnchor; iCw=iAnchor+1; iRw=iAnchor+2; iYs=iAnchor+3; }
@@ -11301,16 +11340,31 @@ if(c.chDailyDag){
         return seen>=2 ? {cost:bad/seen, seen} : null;
       };
       const wardish=j=>/ward|complet|running|yet\s*to|untouch/.test((normH[j]||'')+(normH[j+1]||'')+(normH[j+2]||'')+(normH[j+3]||''));
-      let best=null;
-      for(let j=0;j<normH.length-3;j++){
-        const s=score(j); if(!s) continue;
-        // Perfect balance wins; ward-named headers break ties.
-        const rank=[s.cost, wardish(j)?0:1];
-        if(!best || rank[0]<best.rank[0]-0.001 || (Math.abs(rank[0]-best.rank[0])<=0.001 && rank[1]<best.rank[1])) best={j,rank};
-      }
-      if(best && best.rank[0]<0.001){
-        wardShift = iTw>=0 ? best.j-iTw : 0;
-        iTw=best.j; iCw=best.j+1; iRw=best.j+2; iYs=best.j+3;
+      // Only ever nudge the block when the named headers did NOT resolve confidently, and only
+      // within +/-2 columns of them over ward-named headers. The old global scan could hijack any
+      // unrelated 4-column block that happened to balance, which silently showed wrong ward
+      // figures even though the sheet's own "Total Wards / Completed / Running / Yet to start"
+      // headers were correct.
+      // Validate the resolved block against the sheet's own arithmetic: total must equal
+      // completed + running + yet-to-start. If it doesn't, the headers landed a column off
+      // (merged / two-line header cells do this), so try small shifts and keep the one that
+      // balances. Search stays near the named columns so unrelated blocks can never win.
+      const cur = iTw>=0 ? score(iTw) : null;
+      if(!wardLocked && (!cur || cur.cost>0.001)){
+        const lo=iTw>=0?Math.max(0,iTw-3):0, hi=iTw>=0?Math.min(normH.length-4,iTw+3):normH.length-4;
+        let best=null;
+        for(let j=lo;j<=hi;j++){
+          const s=score(j); if(!s) continue;
+          const rank=[s.cost, wardish(j)?0:1, Math.abs(j-(iTw>=0?iTw:j))];
+          if(!best || rank[0]<best.rank[0]-0.001 ||
+             (Math.abs(rank[0]-best.rank[0])<=0.001 && (rank[1]<best.rank[1] || (rank[1]===best.rank[1] && rank[2]<best.rank[2])))) best={j,rank};
+        }
+        // Perfect balance wins outright; otherwise accept a clearly better-balancing ward-named
+        // block (real sheets have a few partial rows, so demand a big improvement).
+        if(best && (best.rank[0]<0.001 || (cur && best.rank[1]===0 && best.rank[0] < cur.cost*0.5))){
+          wardShift = iTw>=0 ? best.j-iTw : 0;
+          iTw=best.j; iCw=best.j+1; iRw=best.j+2; iYs=best.j+3;
+        }
       }
     }
     // Circle-summary block above the detail header (only meaningful in the two-block layout)
@@ -11401,7 +11455,7 @@ if(c.chDailyDag){
       }
     }
     const cols='hdrRow '+hdrIdx+' · district '+iD+' · circle '+iC+' · dagRor '+iDagR+' · entered '+iEnt
-      +' · totalWards '+iTw+' · wardDone '+iCw+' · running '+iRw+' · yetToStart '+iYs+' · wardShift '+wardShift+rorFix+dlFix+(anyVal?'':' · POSITIONAL FALLBACK');
+      +' · totalWards '+iTw+' · wardDone '+iCw+' · running '+iRw+' · yetToStart '+iYs+' · wardShift '+wardShift+(wardLocked?' · wardLocked':'')+rorFix+dlFix+(anyVal?'':' · POSITIONAL FALLBACK');
     return {circles, detail, cols};
   }
 
