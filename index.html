@@ -7558,6 +7558,25 @@ class Component extends DCLogic {
       };
       setNak(comp, nkS.wardCompleted); setNak(run, nkS.runningWards); setNak(hold, nkS.yetToStart);
     }
+    // RE-SURVEY villages must agree with the Villages sheet the Re-Survey tab reads, so derive
+    // completed / running / (hold + untouched) from the same live circle data, split by valley.
+    const rvRows=this.circleVillageData()||[];
+    if(rvRows.length){
+      const vlab=(v)=>{ const s=String(v||'').trim(); if(!s) return 'Other';
+        return /B[AO]RAK/i.test(s) ? 'Barak Valley' : (/valley/i.test(s) ? this.titleCase(s) : this.titleCase(s)+' Valley'); };
+      const totalV=rvRows.reduce((s,r)=>s+(Number(r.total)||0),0);
+      const partsFor=(pick)=>{ const m={};
+        rvRows.forEach(r=>{ const k=vlab(r.valley); m[k]=(m[k]||0)+(Number(pick(r))||0); });
+        return Object.keys(m).sort().map(k=>({label:k, v:m[k]})); };
+      const setRes=(arr,parts)=>{ const it=(arr||[]).find(x=>/re-?\s*survey/i.test(x.name));
+        const v=parts.reduce((s,p)=>s+p.v,0);
+        if(it){ it.parts=parts; it.value=v; it.total=Math.max(totalV, v); }
+        else arr.push({name:'Re-Survey', unit:'villages', parts, value:v, total:totalV});
+      };
+      setRes(comp, partsFor(r=>r.completed));
+      setRes(run,  partsFor(r=>r.running));
+      setRes(hold, partsFor(r=>(Number(r.hold)||0)+(Number(r.untouch)||0)));
+    }
     const tot=(a)=>a.reduce((s,i)=>s+i.value,0);
     const cTot=tot(comp), rTot=tot(run), hTot=tot(hold), grand=(cTot+rTot+hTot)||1;
     const pctPill=(pc)=> pc>=100?{bg:'#D6E4F0',color:'#113C61'}:(pc>=60?{bg:'#E3EDF7',color:'#1F5480'}:(pc>=30?{bg:'#FBF2E1',color:'#8A5A12'}:{bg:'#F8E3E1',color:'#8F332D'}));
