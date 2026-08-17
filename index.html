@@ -3417,9 +3417,8 @@
         <sc-for list="{{ dash.lbBtns }}" as="lb" hint-placeholder-count="4">
           <button sc-camel-on-click="{{ lb.onClick }}" style="{{ lb.style }}">{{ lb.label }}</button>
         </sc-for>
+        <button sc-camel-on-click="{{ openLb }}" title="Open full screen" style="display:flex;align-items:center;gap:5px;padding:4px 11px;border:1px solid #0F2A43;border-radius:5px;background:#FFFFFF;color:#0F2A43;font-size:10.5px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:inherit;">⤢ Full screen</button>
         <span style="font-size:10.5px;color:#98A2AC;">{{ dash.lbLabel }} · zero-output entries hidden</span>
-        <div style="flex:1;"></div>
-        <button sc-camel-on-click="{{ openLb }}" title="Open full screen" style="padding:4px 10px;border:1px solid #D7DDE4;border-radius:5px;background:#F9FAFB;color:#374151;font-size:11.5px;font-weight:700;cursor:pointer;">⤢</button>
       </div>
       <div class="grid-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:9px;">
         <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
