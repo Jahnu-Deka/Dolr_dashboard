@@ -3631,8 +3631,13 @@
         </div>
 
         <div style="background:#FFFFFF;border:1px solid #E3E7EC;border-radius:6px;box-shadow:0 1px 2px rgba(15,42,67,.04);padding:14px 16px 12px;">
-          <div style="font-size:13px;font-weight:700;color:#111827;">Attendance by Vertical</div>
-          <div style="font-size:11px;color:#6B7280;margin-top:2px;">present share within each survey vertical</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#111827;">Attendance by Vertical</div>
+              <div style="font-size:11px;color:#6B7280;margin-top:2px;">present share within each survey vertical</div>
+            </div>
+            <button sc-camel-on-click="{{ openAttVert }}" title="Open full screen" style="padding:5px 10px;border:1px solid #D7DDE4;border-radius:5px;background:#F9FAFB;color:#374151;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none;">⤢</button>
+          </div>
           <div style="display:grid;gap:10px;margin-top:12px;">
             <sc-for list="{{ attBI.verticals }}" as="v" hint-placeholder-count="5">
               <div>
@@ -5523,6 +5528,45 @@
 
           <div style="padding:12px 24px;border-top:1px solid #E7EDF3;background:#F7FAFD;font-size:11.5px;color:#5B7891;">
             Present on the selected day (or every day in the selected range) with no DAG / RoR booked. Follows the filters and day picker above. E-JORIP is excluded — that project records no productivity.
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ATTENDANCE BY VERTICAL · FULL SCREEN -->
+    <sc-if value="{{ attVertOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-secalways="1" sc-camel-on-click="{{ closeAttVert }}" style="position:fixed;inset:0;z-index:150;background:rgba(8,14,20,.86);display:flex;flex-direction:column;">
+        <div sc-camel-on-click="{{ stopProp }}" style="flex:1;min-height:0;display:flex;flex-direction:column;background:#F6F8FA;">
+          <div style="display:flex;align-items:center;gap:16px;padding:20px 30px;background:linear-gradient(100deg,#0F2A43,#1E4A73);color:#fff;flex:none;">
+            <div style="min-width:0;">
+              <div style="font-size:20px;font-weight:800;letter-spacing:.4px;">Attendance by Vertical</div>
+              <div style="font-size:12.5px;color:#C6D9EA;margin-top:3px;">present share within each survey vertical · {{ kpi.dateLabel }}</div>
+            </div>
+            <div style="flex:1;"></div>
+            <button sc-camel-on-click="{{ closeAttVert }}" aria-label="Close" style="width:38px;height:38px;border:1px solid rgba(255,255,255,.4);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:19px;font-weight:700;cursor:pointer;flex:none;">×</button>
+          </div>
+          <div style="flex:1;min-height:0;overflow:auto;padding:26px 30px 34px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px;">
+              <sc-for list="{{ attBI.verticals }}" as="fv" hint-placeholder-count="5">
+                <div style="background:#fff;border:1px solid #E1E7EE;border-radius:14px;padding:22px 26px;box-shadow:0 2px 10px rgba(15,42,67,.06);">
+                  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:14px;">
+                    <div style="font-size:17px;font-weight:800;color:#111827;line-height:1.25;">{{ fv.name }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:46px;font-weight:700;line-height:1;letter-spacing:-1.5px;color:{{ fv.color }};flex:none;">{{ fv.pctT }}</div>
+                  </div>
+                  <div style="height:16px;background:#EFF2F5;border-radius:8px;overflow:hidden;margin-top:16px;"><div style="width:{{ fv.barW }};height:100%;background:{{ fv.color }};border-radius:8px;"></div></div>
+                  <div style="display:flex;gap:34px;margin-top:18px;">
+                    <div>
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:700;color:#16202B;line-height:1;">{{ fv.present }}</div>
+                      <div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#7A8794;margin-top:5px;">Present Surveyor</div>
+                    </div>
+                    <div>
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:700;color:#5B7891;line-height:1;">{{ fv.total }}</div>
+                      <div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#7A8794;margin-top:5px;">Total Surveyor</div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
           </div>
         </div>
       </div>
@@ -8528,6 +8572,8 @@ class Component extends DCLogic {
       file:'Low_Exempted_Days_'+String(d.rangeLabel).replace(/[^A-Za-z0-9]+/g,'_')+'.xlsx'});
   };
   openIdle = () => this.setState({idleOpen:true});
+  openAttVert = () => this.setState({attVertOpen:true});
+  closeAttVert = () => this.setState({attVertOpen:false});
   closeIdle = () => this.setState({idleOpen:false});
   exportIdle = () => {
     const d=this.idleData();
@@ -12294,6 +12340,7 @@ if(c.chDailyDag){
         lowEx:{rows:[],count:0,byCircle:[],rangeLabel:'March – August'}, lowExOpen:false,
         idle:{rows:[],count:0,byCircle:[],byType:[],rangeLabel:'',fromSheet:false,showTotalBadge:true,badgeLabel:'0',resCount:0,teaCount:0,note:''}, idleOpen:false,
         openIdle:this.openIdle, closeIdle:this.closeIdle, exportIdle:this.exportIdle,
+        attVertOpen:false, openAttVert:this.openAttVert, closeAttVert:this.closeAttVert,
         fcSrcLabel:'',
         openLowEx:this.openLowEx, closeLowEx:this.closeLowEx, exportLowEx:this.exportLowEx,
         openSvy:this.openSvy, closeSvy:this.closeSvy,
@@ -13774,6 +13821,7 @@ if(c.chDailyDag){
       svyOpen:!!this.state.svyOpen, openSvy:this.openSvy, closeSvy:this.closeSvy,
       openZero:this.openZero, closeZero:this.closeZero, exportZero:this.exportZero,
       idle:this.idleData(), idleOpen:!!this.state.idleOpen,
+      attVertOpen:!!this.state.attVertOpen, openAttVert:this.openAttVert, closeAttVert:this.closeAttVert,
       openIdle:this.openIdle, closeIdle:this.closeIdle, exportIdle:this.exportIdle,
       fullTableTitle:this.state.fullTableTitle,
       fullTableBody: this.state.fullTableKey ? ({valley:bodies.valleyBody, circle:bodies.circleBody, prod:bodies.prodBody, fc:bodies.fcBody, nak:bodies.nakBody, tea:bodies.teaBody}[this.state.fullTableKey]) : null
