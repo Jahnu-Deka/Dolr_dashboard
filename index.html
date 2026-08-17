@@ -3412,6 +3412,15 @@
       </div>
 
       <!-- 3 · LEADERBOARDS -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#5B7891;">Leaderboards</span>
+        <sc-for list="{{ dash.lbBtns }}" as="lb" hint-placeholder-count="4">
+          <button sc-camel-on-click="{{ lb.onClick }}" style="{{ lb.style }}">{{ lb.label }}</button>
+        </sc-for>
+        <span style="font-size:10.5px;color:#98A2AC;">{{ dash.lbLabel }} · zero-output entries hidden</span>
+        <div style="flex:1;"></div>
+        <button sc-camel-on-click="{{ openLb }}" title="Open full screen" style="padding:4px 10px;border:1px solid #D7DDE4;border-radius:5px;background:#F9FAFB;color:#374151;font-size:11.5px;font-weight:700;cursor:pointer;">⤢</button>
+      </div>
       <div class="grid-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:9px;">
         <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
           <div style="font-size:12px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Top Circles by Output</div>
@@ -5528,6 +5537,46 @@
 
           <div style="padding:12px 24px;border-top:1px solid #E7EDF3;background:#F7FAFD;font-size:11.5px;color:#5B7891;">
             Present on the selected day (or every day in the selected range) with no DAG / RoR booked. Follows the filters and day picker above. E-JORIP is excluded — that project records no productivity.
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- LEADERBOARDS · FULL SCREEN -->
+    <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-secalways="1" sc-camel-on-click="{{ closeLb }}" style="position:fixed;inset:0;z-index:150;background:rgba(8,14,20,.86);display:flex;flex-direction:column;">
+        <div sc-camel-on-click="{{ stopProp }}" style="flex:1;min-height:0;display:flex;flex-direction:column;background:#F6F8FA;">
+          <div style="display:flex;align-items:center;gap:16px;padding:20px 30px;background:linear-gradient(100deg,#0F2A43,#1E4A73);color:#fff;flex:none;">
+            <div style="min-width:0;">
+              <div style="font-size:20px;font-weight:800;letter-spacing:.4px;">Leaderboards</div>
+              <div style="font-size:12.5px;color:#C6D9EA;margin-top:3px;">{{ dash.lbLabel }} · {{ dash.dateLabel }} · zero-output entries hidden</div>
+            </div>
+            <div style="flex:1;"></div>
+            <div style="display:flex;gap:7px;">
+              <sc-for list="{{ dash.lbBtns }}" as="fb" hint-placeholder-count="4">
+                <button sc-camel-on-click="{{ fb.onClick }}" style="{{ fb.style }}">{{ fb.label }}</button>
+              </sc-for>
+            </div>
+            <button sc-camel-on-click="{{ closeLb }}" aria-label="Close" style="width:38px;height:38px;border:1px solid rgba(255,255,255,.4);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:19px;font-weight:700;cursor:pointer;flex:none;">×</button>
+          </div>
+          <div style="flex:1;min-height:0;overflow:auto;padding:24px 30px 34px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px;">
+              <sc-for list="{{ dash.lbPanels }}" as="lp" hint-placeholder-count="4">
+                <div style="background:#fff;border:1px solid #E1E7EE;border-radius:14px;padding:20px 24px;box-shadow:0 2px 10px rgba(15,42,67,.06);">
+                  <div style="font-size:16px;font-weight:800;color:#0F2A43;">{{ lp.title }}</div>
+                  <div style="font-size:11.5px;color:#7A8794;margin-top:2px;margin-bottom:16px;">{{ lp.sub }}</div>
+                  <div style="display:flex;flex-direction:column;gap:14px;">
+                    <sc-for list="{{ lp.rows }}" as="lr" hint-placeholder-count="5">
+                      <div style="display:grid;grid-template-columns:150px 1fr 82px;align-items:center;gap:12px;">
+                        <div style="font-size:14px;font-weight:700;color:#26313C;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;">{{ lr.name }}</div>
+                        <div style="height:22px;background:#EEF2F6;border-radius:5px;overflow:hidden;"><div style="{{ lr.barStyle }}"></div></div>
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:800;text-align:right;color:{{ lp.color }};">{{ lr.value }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
           </div>
         </div>
       </div>
@@ -8059,20 +8108,35 @@ class Component extends DCLogic {
       return items.map(i=>({name:i.name, value:fmtV(i.v), barStyle:bar(col)(Math.abs(i.v)/mx*100),
         valStyle:'font-size:11px;font-weight:800;font-family:IBM Plex Mono,monospace;color:'+col+';text-align:right;'})); };
 
+    // Leaderboards get their own vertical filter (All / Re-Survey / Naksha / Tea Garden) and never
+    // list a circle or surveyor with zero output — an empty bar says nothing in a review.
+    const lbSel=this.state.lbVert||'ALL';
+    const areaKey=r=>{ const a=String(r.area||'').toUpperCase();
+      if(/NAKSHA|ROR/.test(a)) return 'NAKSHA';
+      if(/TEA/.test(a)) return 'TEA';
+      if(/RE-?\s*SURVEY|RESURVEY/.test(a)) return 'RES';
+      return 'OTHER'; };
+    const lbScoped = lbSel==='ALL' ? scoped : scoped.filter(r=>areaKey(r)===lbSel);
+    const lbBtns=[['ALL','All'],['RES','Re-Survey'],['NAKSHA','Naksha'],['TEA','Tea Garden']].map(([k,lb])=>({
+      key:k, label:lb, onClick:()=>this.setState({lbVert:k}),
+      style:'padding:4px 10px;border-radius:5px;font-size:10.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
+        +(lbSel===k?'#0F2A43':'#D8E0E8')+';background:'+(lbSel===k?'#0F2A43':'#FFFFFF')+';color:'+(lbSel===k?'#FFFFFF':'#4A5A68')+';'}));
+    const lbLabel={ALL:'all verticals',RES:'Re-Survey only',NAKSHA:'Naksha (RoR) only',TEA:'Tea Garden only'}[lbSel];
+
     // circles
-    const cirs=[...new Set(scoped.map(r=>this.titleCase(String(r.cir||'').trim())).filter(Boolean))];
-    const cRows=cirs.map(ci=>{ const sub=scoped.filter(r=>this.titleCase(String(r.cir||'').trim())===ci);
+    const cirs=[...new Set(lbScoped.map(r=>this.titleCase(String(r.cir||'').trim())).filter(Boolean))];
+    const cRows=cirs.map(ci=>{ const sub=lbScoped.filter(r=>this.titleCase(String(r.cir||'').trim())===ci);
       const kk=this.computeKpi(sub,idxs); const t=tgtOf(sub,idxs); const o=kk.dagDay+kk.ror;
-      return {name:ci, out:o, dep:kk.deployed, tgt:t, pct:t>0?Math.round(o/t*100):0}; }).filter(r=>r.dep>0);
+      return {name:ci, out:o, dep:kk.deployed, tgt:t, pct:t>0?Math.round(o/t*100):0}; }).filter(r=>r.dep>0 && r.out>0);
     const topCircles=mkList(cRows.slice().sort((x,y)=>y.out-x.out).slice(0,5).map(r=>({name:r.name,v:r.out})),'#1E7A50',v=>this.fmt(v));
     const lowCircles=mkList(cRows.filter(r=>r.tgt>0).sort((x,y)=>x.pct-y.pct).slice(0,5).map(r=>({name:r.name,v:r.pct})),'#C0504D',v=>v+'%');
 
     // surveyors
-    const sRows=scoped.filter(r=>this.isProdRec(r)).map(r=>{ let v=0,pres=0;
+    const sRows=lbScoped.filter(r=>this.isProdRec(r)).map(r=>{ let v=0,pres=0;
       idxs.forEach(i=>{ v+=r.dg[i]||0; if(r.st[i]==='P')pres++; });
       return {name:this.titleCase(String(r.n||'').replace(/\s+/g,' ').trim())||'—', v, pres}; });
     const topSvy=mkList(sRows.filter(x=>x.v>0).sort((x,y)=>y.v-x.v).slice(0,5),'#1F5480',v=>this.fmt(v));
-    const botSvy=mkList(sRows.filter(x=>x.pres>0).sort((x,y)=>x.v-y.v).slice(0,5),'#C8862A',v=>this.fmt(v));
+    const botSvy=mkList(sRows.filter(x=>x.pres>0&&x.v>0).sort((x,y)=>x.v-y.v).slice(0,5),'#C8862A',v=>this.fmt(v));
 
     // FC performance for the selected day
     const fcMap={};
@@ -8102,7 +8166,13 @@ class Component extends DCLogic {
     const mk=this.state.data&&this.state.data.dates?this.monthKey(this.state.data.dates[idxs[idxs.length-1]]):'';
     return {dash:{
       dateLabel:dl, scopeLabel:(kpiObj&&kpiObj.scopeLabel)||'', monthLabel:mk||dl,
-      kpis, pRes, pNak, pTea, topCircles, lowCircles, topSvy, botSvy,
+      kpis, pRes, pNak, pTea, topCircles, lowCircles, topSvy, botSvy, lbBtns, lbLabel,
+      lbPanels:[
+        {title:'Top Circles by Output', sub:'units booked in scope', color:'#1E7A50', rows:topCircles},
+        {title:'Top Surveyors by Output', sub:'units booked in scope', color:'#1F5480', rows:topSvy},
+        {title:'Low-Performing Circles', sub:'achievement vs daily KPI target', color:'#C0504D', rows:lowCircles},
+        {title:'Bottom Surveyors', sub:'present on field · lowest output', color:'#C8862A', rows:botSvy}
+      ],
       fcRows:fcAll, fcCount:String(fcAll.length),
       goAtt:go('secAtt'), goProd:go('secProd'), goFc:go('secFC'), goProj:go('secProj')
     }};
@@ -8573,6 +8643,8 @@ class Component extends DCLogic {
   };
   openIdle = () => this.setState({idleOpen:true});
   openAttVert = () => this.setState({attVertOpen:true});
+  openLb = () => this.setState({lbOpen:true});
+  closeLb = () => this.setState({lbOpen:false});
   closeAttVert = () => this.setState({attVertOpen:false});
   closeIdle = () => this.setState({idleOpen:false});
   exportIdle = () => {
@@ -12341,12 +12413,13 @@ if(c.chDailyDag){
         idle:{rows:[],count:0,byCircle:[],byType:[],rangeLabel:'',fromSheet:false,showTotalBadge:true,badgeLabel:'0',resCount:0,teaCount:0,note:''}, idleOpen:false,
         openIdle:this.openIdle, closeIdle:this.closeIdle, exportIdle:this.exportIdle,
         attVertOpen:false, openAttVert:this.openAttVert, closeAttVert:this.closeAttVert,
+        lbOpen:false, openLb:this.openLb, closeLb:this.closeLb,
         fcSrcLabel:'',
         openLowEx:this.openLowEx, closeLowEx:this.closeLowEx, exportLowEx:this.exportLowEx,
         openSvy:this.openSvy, closeSvy:this.closeSvy,
         openZero:this.openZero, closeZero:this.closeZero, exportZero:this.exportZero,
         ai:{scoreT:'—',scoreLbl:'',findings:[],risks:[],kpis:[]}, liveClock:this._clockCmp(),
-        dash:{dateLabel:'',scopeLabel:'',monthLabel:'',kpis:[],topCircles:[],lowCircles:[],topSvy:[],botSvy:[],fcRows:[],fcCount:'0',
+        dash:{dateLabel:'',scopeLabel:'',monthLabel:'',kpis:[],topCircles:[],lowCircles:[],topSvy:[],botSvy:[],lbBtns:[],lbLabel:'',lbPanels:[],fcRows:[],fcCount:'0',
           pRes:{pct:'',out:'',target:'',pctStyle:''}, pNak:{pct:'',out:'',target:'',pctStyle:''}, pTea:{pct:'',out:'',target:'',pctStyle:''},
           goAtt:()=>{},goProd:()=>{},goFc:()=>{},goProj:()=>{}},
         fcMxRows:[], fcMxTotal:{}, fcSummary:{metrics:[], fcCount:'0', score:'0', scoreC:'#5F98C9', scoreDash:'0 326.7', goldCount:'0', riskCount:'0'}, fcOpsSub:'', ...this.navSbVals(), fcProfile:null, closeFcProfile:()=>{}, fcpZeroOpen:false, toggleFcpZero:()=>{}, fcpZeroCaret:'▼', fcpLeaveOpen:false, toggleFcpLeave:()=>{}, fcpLeaveCaret:'▼', downloadFcAction:()=>{}, fcMxFull:false, toggleFcMx:()=>{}, fcMxBtn:'⤢ Fullscreen', fcMxStyle:'', toggleDtv:()=>{}, dtvBtn:'⤢ Full Screen View', dtvStyle:'',
@@ -13822,6 +13895,7 @@ if(c.chDailyDag){
       openZero:this.openZero, closeZero:this.closeZero, exportZero:this.exportZero,
       idle:this.idleData(), idleOpen:!!this.state.idleOpen,
       attVertOpen:!!this.state.attVertOpen, openAttVert:this.openAttVert, closeAttVert:this.closeAttVert,
+      lbOpen:!!this.state.lbOpen, openLb:this.openLb, closeLb:this.closeLb,
       openIdle:this.openIdle, closeIdle:this.closeIdle, exportIdle:this.exportIdle,
       fullTableTitle:this.state.fullTableTitle,
       fullTableBody: this.state.fullTableKey ? ({valley:bodies.valleyBody, circle:bodies.circleBody, prod:bodies.prodBody, fc:bodies.fcBody, nak:bodies.nakBody, tea:bodies.teaBody}[this.state.fullTableKey]) : null
