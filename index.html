@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build" content="2026-08-18f">
+<meta name="build" content="2026-08-18g">
 <script>window.__SHEET_ONLY=true;</script>
 <script>// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
 "use strict";
@@ -6766,7 +6766,7 @@
     <div style="flex:1;"></div>
     <div style="color:#C7D8E8;">Source · Attendance &amp; Project Overview workbook</div>
     <div style="width:1px;height:20px;background:rgba(255,255,255,.18);"></div>
-    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18f</div>
+    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18g</div>
   </div>
 </div>
 </x-dc>
@@ -12907,8 +12907,8 @@ if(c.chDailyDag){
         const qName=wb.SheetNames.find(n=>/query/i.test(n));
         // direct rows from the dedicated probe are the fallback when no tab landed in the workbook
         const qLooks=(a)=>{ if(!Array.isArray(a)||a.length<2) return false;
-          const h=(a[0]||[]).map(x=>String(x==null?'':x).trim().toLowerCase());
-          return h.some(x=>/obstac|highlight|query|issue/.test(x)); };
+          const flat=a.slice(0,10).reduce((s,r)=>s.concat(r||[]),[]).map(x=>String(x==null?'':x).trim().toLowerCase());
+          return flat.some(x=>/obstac|highlight|query|issue/.test(x)); };
         let qrowsSrc = qName ? window.XLSX.utils.sheet_to_json(wb.Sheets[qName], {header:1, blankrows:false, defval:''}) : null;
         if(!qLooks(qrowsSrc) && qLooks(this._queryRaw)) qrowsSrc=this._queryRaw;
         if(qrowsSrc && qrowsSrc.length){
@@ -12924,19 +12924,39 @@ if(c.chDailyDag){
             m=s.match(/^(\d{1,2})(?:st|nd|rd|th)?[-\/\s]*([A-Za-z]{3})/i); if(m) return (+m[1])+'-'+(m[2][0].toUpperCase()+m[2].slice(1,3).toLowerCase());
             m=s.match(/^(\d{1,2})[-\/](\d{1,2})/); if(m) return (+m[1])+'-'+MON3q[+m[2]-1];
             return ''; };
-          // gviz can prepend auto-label rows — locate the real header row before mapping columns
-          let qHdrI=0;
-          for(let hi=0; hi<Math.min(4,qrows.length); hi++){
+          // locate the real header row (title / merged rows are common above it)
+          let qHdrI=-1;
+          for(let hi=0; hi<Math.min(12,qrows.length); hi++){
             const hrow=(qrows[hi]||[]).map(x=>String(x==null?'':x).trim().toLowerCase());
-            if(hrow.some(x=>/obstac|highlight|query|issue/.test(x))){ qHdrI=hi; break; }
+            if(hrow.some(x=>/obstac|highlight|query|issue|remark/.test(x))){ qHdrI=hi; break; }
           }
-          const qh=(qrows[qHdrI]||[]).map(x=>String(x==null?'':x).trim().toLowerCase());          const qf=(...ks)=>{ for(const k2 of ks){ const i=qh.findIndex(h=>h.includes(k2)); if(i>=0) return i; } return -1; };
-          const iQd=qf('date'), iQt=qf('obstacale','obstacle','highlight','key point','query','issue','description'),
-                iQdist=qf('district'), iQcir=qf('circle'), iQown=qf('owner'), iQst=qf('remarks','status');
+          if(qHdrI<0){ for(let hi=0; hi<Math.min(12,qrows.length); hi++){
+            const hrow=(qrows[hi]||[]).map(x=>String(x==null?'':x).trim().toLowerCase());
+            if(hrow.some(x=>/date/.test(x)) && hrow.filter(Boolean).length>=3){ qHdrI=hi; break; } } }
+          if(qHdrI<0) qHdrI=0;
+          const qh=(qrows[qHdrI]||[]).map(x=>String(x==null?'':x).trim().toLowerCase());
+          const qf=(...ks)=>{ for(const k2 of ks){ const i=qh.findIndex(h=>h.includes(k2)); if(i>=0) return i; } return -1; };
+          const iQd=qf('date'),
+                iQdist=qf('district'), iQcir=qf('circle'), iQown=qf('owner','coordinator'), iQst=qf('remarks','status');
+          let iQt=qf('obstacale','obstacle','highlight','key point','query','issue','description','problem','point');
+          if(iQt<0){
+            // no recognisable header for the text column — take the column carrying the most prose
+            const score=[]; const skip={};
+            [iQd,iQdist,iQcir,iQown,iQst].forEach(i=>{ if(i>=0) skip[i]=1; });
+            for(let i=qHdrI+1;i<Math.min(qrows.length,qHdrI+60);i++){
+              (qrows[i]||[]).forEach((c,ci)=>{ if(skip[ci]) return;
+                const s=String(c==null?'':c).trim();
+                if(s.length>=12 && /[A-Za-z]{4}/.test(s)) score[ci]=(score[ci]||0)+s.length; });
+            }
+            let bi=-1, bv=0; score.forEach((v,i)=>{ if(v>bv){ bv=v; bi=i; } });
+            iQt=bi;
+          }
+          try{ this._qHdrDiag='hdrRow '+qHdrI+' · textCol '+iQt+' · hdr ['+qh.slice(0,10).join(' | ')+'] · row1 ['
+            +((qrows[qHdrI+1]||[]).slice(0,8).map(c=>String(c==null?'':c).slice(0,20)).join(' | '))+']'; }catch(e){}
           for(let i=qHdrI+1;i<qrows.length;i++){
             const row=qrows[i]; if(!row) continue;
             const text=iQt>=0?String(row[iQt]==null?'':row[iQt]).trim():'';
-            if(!text) continue;
+            if(!text || /^(sl|s\.?\s?no\.?|total)$/i.test(text)) continue;
             const stRaw=iQst>=0?String(row[iQst]||'').trim():'';
             const open=/open|pending|progress/i.test(stRaw);
             queries.push({ d:qk(iQd>=0?row[iQd]:''), text,
