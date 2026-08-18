@@ -3200,6 +3200,11 @@
           </sc-if>
         </div>
       </sc-for>
+      <button sc-camel-on-click="{{ openCircleProd }}" title="Circle-wise productivity — active circles with DAG / RoR output" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #CBD9E6;border-radius:10px;background:#F2F7FB;color:#1E4A73;font-size:12.5px;font-weight:800;letter-spacing:.2px;cursor:pointer;white-space:nowrap;flex:none;transition:transform .15s ease,box-shadow .15s ease;" style-hover="background:#E5EFF7;transform:translateY(-1px);box-shadow:0 6px 16px rgba(30,74,115,.14);">
+        <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1E4A73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9h4v11"></path><path d="M10 20V4h4v16"></path><path d="M16 20v-7h4v7"></path><path d="M3 20h18"></path></svg>
+        <span>Circle Wise Productivity</span>
+        <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#1E4A73;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ cpCount }}</span>
+      </button>
       <div style="display:flex;align-items:center;height:36px;border:1px solid #E5E7EB;border-radius:10px;background:#fff;overflow:hidden;box-shadow:0 1px 2px rgba(17,24,39,.05);">
         <span style="display:flex;align-items:center;padding:0 8px 0 11px;"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
         <button sc-camel-on-click="{{ onDayPrev }}" title="Previous day" aria-label="Previous day" style="width:26px;height:34px;border:none;background:transparent;color:#6B7280;font-size:15px;font-weight:700;cursor:pointer;" style-hover="background:#F3F4F6;color:#111827;">‹</button>
@@ -3215,14 +3220,14 @@
         <span>Zero Output</span>
         <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#B87516;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ zero.count }}</span>
       </button>
-      <button sc-camel-on-click="{{ openLowEx }}" title="Surveyors currently on the roster whose exempted days total under 15 across the last three months" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #D6DAF0;border-radius:10px;background:#F4F5FC;color:#41498A;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;" style-hover="background:#EAECF8;">
-        <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#5F6CAD" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
-        <span>Low Exempted Days</span>
-        <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#5F6CAD;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ lowEx.count }}</span>
-      </button>
       <button sc-camel-on-click="{{ openSvy }}" title="Search a surveyor — month-wise output, day counts and field remarks" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #CBD9E6;border-radius:10px;background:#F2F7FB;color:#1E4A73;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none;" style-hover="background:#E5EFF7;">
         <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1E4A73" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M3 21v-2a5 5 0 0 1 5-5h3"></path><path d="M14.5 18l2 2 4-4"></path></svg>
         <span>Surveyor Performance</span>
+      </button>
+      <button sc-camel-on-click="{{ openFcPerf }}" title="Field Coordinator performance — pick an FC and read their last three months" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 13px;border:1px solid #C6B392;border-radius:10px;background:#FBF6EC;color:#8A5A12;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none;" style-hover="background:#F5EBD9;">
+        <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#8A5A12" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path><path d="M2 20v-1.5A4.5 4.5 0 0 1 6.5 14h5"></path><path d="M17 20v-6"></path><path d="M20.5 20v-9"></path><path d="M13.5 20v-3"></path></svg>
+        <span>FC Performance</span>
+        <span style="min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#8A5A12;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ fcpCount }}</span>
       </button>
       <div style="flex:1;"></div>
       <div style="display:flex;align-items:center;gap:6px;">
@@ -5397,6 +5402,60 @@
       </div>
     </sc-if>
 
+    <!-- CIRCLE WISE PRODUCTIVITY PICKER -->
+    <sc-if value="{{ cpOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-secalways="1" sc-camel-on-click="{{ closeCircleProd }}" style="position:fixed;inset:0;z-index:150;background:rgba(8,14,20,.84);display:flex;align-items:center;justify-content:center;padding:26px;font-family:'IBM Plex Sans',sans-serif;">
+        <div sc-camel-on-click="{{ stopProp }}" style="width:min(1220px,96vw);max-height:90vh;display:flex;flex-direction:column;background:#F4F6F8;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(6,16,26,.5);">
+          <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;background:linear-gradient(100deg,#0F2A43 0%,#1E4A73 80%);color:#fff;flex:none;">
+            <div style="width:6px;height:34px;background:#7FA8CC;border-radius:1px;flex:none;"></div>
+            <div style="min-width:0;">
+              <div style="font-size:16px;font-weight:800;letter-spacing:.3px;">Circle Wise Productivity</div>
+              <div style="font-size:11.5px;color:#C7D8E8;margin-top:2px;">{{ cpCount }} active circles · {{ cpLabel }} · click a circle to open its full report</div>
+            </div>
+            <div style="flex:1;"></div>
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end;">
+              <sc-for list="{{ cpProgBtns }}" as="pb" hint-placeholder-count="4">
+                <button sc-camel-on-click="{{ pb.onClick }}" style="{{ pb.style }}">{{ pb.label }}</button>
+              </sc-for>
+            </div>
+            <button sc-camel-on-click="{{ closeCircleProd }}" style="padding:8px 16px;border:1px solid rgba(255,255,255,.35);border-radius:7px;background:rgba(255,255,255,.12);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;">Close</button>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:20px 22px 24px;">
+            <sc-if value="{{ cpNone }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:40px;text-align:center;font-size:13px;color:#6B7684;">No circle booked DAG / RoR output in this period.</div>
+            </sc-if>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px;">
+              <sc-for list="{{ cpCards }}" as="c" hint-placeholder-count="8">
+                <button sc-camel-on-click="{{ c.onOpen }}" style="{{ c.cardStyle }}" style-hover="transform:translateY(-2px);box-shadow:0 12px 26px rgba(15,42,67,.16);">
+                  <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <div style="min-width:0;flex:1;text-align:left;">
+                      <div style="font-size:15.5px;font-weight:800;color:#12212F;line-height:1.2;word-break:break-word;">{{ c.name }}</div>
+                      <div style="font-size:10.5px;font-weight:700;letter-spacing:.8px;color:#7B8794;text-transform:uppercase;margin-top:3px;">{{ c.unit }} · {{ c.hr }} HR · {{ c.active }} active</div>
+                    </div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:{{ c.color }};line-height:1;flex:none;">{{ c.pct }}</div>
+                  </div>
+                  <div style="height:6px;border-radius:4px;background:rgba(15,42,67,.10);margin:12px 0 11px;overflow:hidden;">
+                    <div style="{{ c.barStyle }}"></div>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px;">
+                    <div style="text-align:left;">
+                      <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#8A93A0;text-transform:uppercase;">Achieved</div>
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#12212F;margin-top:2px;">{{ c.out }}</div>
+                    </div>
+                    <div style="text-align:left;">
+                      <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#8A93A0;text-transform:uppercase;">Target</div>
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#5C6975;margin-top:2px;">{{ c.tgt }}</div>
+                    </div>
+                    <div style="font-size:11px;font-weight:800;color:{{ c.color }};white-space:nowrap;">Open report ⤢</div>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
     <!-- LOW EXEMPTED DAYS MODAL -->
     <sc-if value="{{ lowExOpen }}" hint-placeholder-val="{{ false }}">
       <div data-secalways="1" sc-camel-on-click="{{ closeLowEx }}" style="position:fixed;inset:0;z-index:150;background:rgba(8,14,20,.82);display:flex;align-items:center;justify-content:center;padding:26px;">
@@ -5874,6 +5933,145 @@
 
 
 
+    <!-- ═══════════ FIELD COORDINATOR PERFORMANCE (full-screen window) ═══════════ -->
+    <sc-if value="{{ fcpOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-secalways="1" style="position:fixed;inset:0;z-index:152;background:rgba(8,14,20,.84);backdrop-filter:blur(5px);padding:14px;font-family:'IBM Plex Sans',sans-serif;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.5);background:#0F2A43;">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 24px;background:#0B2136;color:#fff;border-bottom:1px solid rgba(255,255,255,.14);flex:none;">
+          <div style="width:9px;height:9px;background:#C8862A;transform:rotate(45deg);flex:none;"></div>
+          <div style="min-width:0;">
+            <div style="font-size:16px;font-weight:800;letter-spacing:.4px;">FIELD COORDINATOR PERFORMANCE</div>
+            <div style="font-size:11.5px;color:#9FB4C7;margin-top:2px;">{{ fcpCount }} coordinators · last three months · {{ fcpRangeLabel }}</div>
+          </div>
+          <div style="flex:1;"></div>
+          <button sc-camel-on-click="{{ closeFcPerf }}" style="height:32px;padding:0 14px;border:1px solid rgba(255,255,255,.25);border-radius:9px;background:rgba(255,255,255,.1);color:#fff;font-size:12px;font-weight:700;cursor:pointer;flex:none;">✕ Close</button>
+        </div>
+        <div style="flex:1;min-height:0;overflow:auto;background:#F4F6F9;padding:20px 22px 26px;color:#16202B;">
+          <sc-if value="{{ fcpNone }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:40px;text-align:center;font-size:13.5px;color:#5B7891;">No Field Coordinator data in the last three months.</div>
+          </sc-if>
+          <sc-if value="{{ fcpHas }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:268px 1fr;gap:18px;align-items:start;">
+
+              <div style="background:#fff;border:1px solid #E1E7EE;border-radius:12px;padding:12px;box-shadow:0 1px 3px rgba(16,24,40,.05);">
+                <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:#8A93A0;text-transform:uppercase;padding:2px 4px 9px;">Select coordinator</div>
+                <div style="display:flex;flex-direction:column;gap:7px;max-height:70vh;overflow:auto;">
+                  <sc-for list="{{ fcpList }}" as="f" hint-placeholder-count="10">
+                    <button sc-camel-on-click="{{ f.onSel }}" style="{{ f.style }}">
+                      <div style="font-size:13.5px;font-weight:700;line-height:1.2;">{{ f.name }}</div>
+                      <div style="{{ f.subStyle }}">{{ f.hr }} surveyors · {{ f.out }} output</div>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="min-width:0;display:flex;flex-direction:column;gap:16px;">
+                <div style="background:#fff;border:1px solid #E1E7EE;border-radius:12px;padding:16px 20px;box-shadow:0 1px 3px rgba(16,24,40,.05);">
+                  <div style="font-size:23px;font-weight:700;letter-spacing:.2px;line-height:1.15;">{{ fcpName }}</div>
+                  <div style="font-size:12.5px;color:#67747F;margin-top:4px;">{{ fcpMeta }}</div>
+                  <div style="font-size:11px;color:#98A2AC;margin-top:6px;">Circles as assigned this month · history shows those circles across the last three months, whoever coordinated them at the time.</div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;">
+                  <sc-for list="{{ fcpMonths }}" as="m" hint-placeholder-count="3">
+                    <div style="{{ m.cardStyle }}">
+                      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+                        <div>
+                          <div style="font-size:15.5px;font-weight:800;color:#12212F;">{{ m.name }}</div>
+                          <div style="font-size:10.5px;font-weight:700;letter-spacing:.9px;color:#7B8794;text-transform:uppercase;margin-top:3px;">{{ m.unit }} · {{ m.hr }} HR · {{ m.active }} active</div>
+                          <sc-if value="{{ m.hasNote }}" hint-placeholder-val="{{ false }}">
+                            <div style="font-size:10.5px;font-weight:700;color:#A44A45;margin-top:4px;">{{ m.note }}</div>
+                          </sc-if>
+                        </div>
+                        <div style="{{ m.pctStyle }}">{{ m.pct }}</div>
+                      </div>
+                      <div style="height:6px;border-radius:4px;background:rgba(15,42,67,.10);margin:13px 0 12px;overflow:hidden;"><div style="{{ m.barStyle }}"></div></div>
+                      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px 14px;">
+                        <div>
+                          <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#8A93A0;text-transform:uppercase;">Achieved</div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:700;color:#12212F;margin-top:2px;">{{ m.out }}</div>
+                        </div>
+                        <div>
+                          <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#8A93A0;text-transform:uppercase;">Target</div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:700;color:#5C6975;margin-top:2px;">{{ m.tgt }}</div>
+                        </div>
+                        <div>
+                          <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#8A93A0;text-transform:uppercase;">Present / Leave</div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:#274A6B;margin-top:2px;">{{ m.present }} / {{ m.leave }}</div>
+                        </div>
+                        <div>
+                          <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#8A93A0;text-transform:uppercase;">Avg / day · Zero</div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:#1E2A38;margin-top:2px;">{{ m.avg }} · {{ m.zero }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+
+                <div style="background:#fff;border:1px solid #E1E5EA;border-radius:8px;padding:18px 20px;box-shadow:0 1px 2px rgba(16,24,40,.04);">
+                  <div style="margin-bottom:12px;">
+                    <div style="font-size:16.5px;font-weight:700;color:#1E2A38;">Circle-wise Productivity — last 3 months</div>
+                    <div style="font-size:12px;color:#8A93A0;">{{ fcpCircleCount }} circles under {{ fcpName }} · achieved {{ fcpUnit }} · % against active-day norm</div>
+                  </div>
+                  <div style="overflow-x:auto;">
+                    <div style="min-width:760px;">
+                      <div style="{{ fcpCHeadStyle }}">
+                        <span>Circle</span><span style="text-align:right;">HR</span>
+                        <sc-for list="{{ fcpMonthHeads }}" as="mh" hint-placeholder-count="3"><span style="text-align:center;">{{ mh }}</span></sc-for>
+                        <span style="text-align:right;">Total</span><span style="text-align:right;">%</span>
+                      </div>
+                      <sc-for list="{{ fcpCircles }}" as="c" hint-placeholder-count="4">
+                        <div style="{{ c.rowStyle }}">
+                          <span style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ c.name }}</span>
+                          <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#56606B;">{{ c.hr }}</span>
+                          <sc-for list="{{ c.cells }}" as="cc" hint-placeholder-count="3">
+                            <span style="{{ cc.style }}">{{ cc.out }} · {{ cc.pct }}</span>
+                          </sc-for>
+                          <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#2F516F;">{{ c.tot }}</span>
+                          <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:{{ c.pctC }};">{{ c.pct }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background:#fff;border:1px solid #E1E5EA;border-radius:8px;padding:18px 20px;box-shadow:0 1px 2px rgba(16,24,40,.04);">
+                  <div style="margin-bottom:12px;">
+                    <div style="font-size:16.5px;font-weight:700;color:#1E2A38;">Surveyors under {{ fcpName }}</div>
+                    <div style="font-size:12px;color:#8A93A0;">{{ fcpRowCount }} surveyors on the team this month · month-wise {{ fcpUnit }} output · % against active-day norm</div>
+                  </div>
+                  <div style="overflow-x:auto;">
+                    <div style="min-width:880px;">
+                      <div style="{{ fcpHeadStyle }}">
+                        <span>#</span><span>Surveyor</span><span>Emp ID</span><span>Circle</span>
+                        <sc-for list="{{ fcpMonthHeads }}" as="mh" hint-placeholder-count="3"><span style="text-align:center;">{{ mh }}</span></sc-for>
+                        <span style="text-align:right;">Total</span><span style="text-align:right;">Active</span><span style="text-align:right;">%</span>
+                      </div>
+                      <sc-for list="{{ fcpRows }}" as="r" hint-placeholder-count="8">
+                        <div style="{{ r.rowStyle }}">
+                          <span style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:#8A93A0;">{{ r.rank }}</span>
+                          <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</span>
+                          <span style="font-family:'IBM Plex Mono',monospace;color:#8A93A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.code }}</span>
+                          <span style="color:#56606B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.cir }}</span>
+                          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3">
+                            <span style="{{ c.style }}">{{ c.out }} · {{ c.pct }}</span>
+                          </sc-for>
+                          <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#2F516F;">{{ r.tot }}</span>
+                          <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#56606B;">{{ r.act }}</span>
+                          <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:{{ r.pctC }};">{{ r.pct }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
     <!-- ═══════════ SURVEYOR PERFORMANCE (full-screen window) ═══════════ -->
     <sc-if value="{{ svyOpen }}" hint-placeholder-val="{{ false }}">
     <div data-secalways="1" style="position:fixed;inset:0;z-index:150;background:rgba(8,14,20,.82);backdrop-filter:blur(5px);padding:14px;">
@@ -6334,6 +6532,50 @@
               </sc-for>
             </div>
 
+            <!-- surveyor search + roster -->
+            <div style="margin-bottom:18px;background:#fff;border:1px solid #E1E5EA;border-radius:8px;padding:18px 20px;box-shadow:0 1px 2px rgba(16,24,40,.04);">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
+                <div>
+                  <div style="font-size:16.5px;font-weight:700;color:#1E2A38;">Surveyors Assigned — {{ crMeta.title }}</div>
+                  <div style="font-size:12px;color:#8A93A0;">{{ crSurveyorCount }} surveyors · ranked by {{ crMeta.scopeUnit }} output for {{ crSvyRangeLabel }}</div>
+                  <div style="font-size:11px;color:#98A2AC;margin-top:2px;">{{ crSvyDayNote }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+                  <sc-for list="{{ crSvyRangeBtns }}" as="rb" hint-placeholder-count="3">
+                    <button sc-camel-on-click="{{ rb.onClick }}" style="{{ rb.style }}">{{ rb.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="overflow-x:auto;">
+                <div style="min-width:{{ crSvyMinW }};">
+                  <div style="{{ crSvyHeadStyle }}">
+                    <span>#</span><span>Surveyor</span><span>Emp ID</span><span>Field Coordinator</span>
+                    <sc-for list="{{ crSvyDayHeads }}" as="dh" hint-placeholder-count="7"><span style="text-align:center;">{{ dh }}</span></sc-for>
+                    <span style="text-align:right;">Output</span><span style="text-align:right;">Avg</span><span style="text-align:right;">Present</span><span style="text-align:right;">Leave</span><span style="text-align:right;">Active</span><span style="text-align:right;">Zero</span><span style="text-align:right;">Best</span>
+                  </div>
+                  <sc-for list="{{ crSurveyors }}" as="s" hint-placeholder-count="6">
+                    <div style="{{ s.rowStyle }}">
+                      <span style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:{{ s.medal }};">{{ s.rank }}</span>
+                      <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ s.name }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace;color:#8A93A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ s.code }}</span>
+                      <span style="color:#56606B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ s.fc }}</span>
+                      <sc-for list="{{ s.cells }}" as="cc" hint-placeholder-count="7">
+                        <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:700;color:{{ cc.color }};background:{{ cc.bg }};border-radius:5px;padding:5px 0;">{{ cc.label }}</span>
+                      </sc-for>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#2F516F;">{{ s.out }}</span>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#2F516F;">{{ s.avg }}</span>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#274A6B;">{{ s.present }}</span>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#9C6B2E;">{{ s.leave }}</span>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;">{{ s.active }}</span>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#A44A45;">{{ s.zero }}</span>
+                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:#1E2A38;">{{ s.best }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+            </div>
+
             <!-- daily performance curve -->
             <div style="background:#fff;border:1px solid #DEE3E9;border-radius:12px;box-shadow:0 6px 20px rgba(16,24,40,.07);margin-bottom:22px;overflow:hidden;">
               <div style="display:flex;align-items:center;gap:16px;padding:15px 22px;background:linear-gradient(100deg,#0F2A43 0%,#1E4A73 78%,#245A8A 100%);color:#fff;">
@@ -6376,6 +6618,14 @@
                   </div>
                 </div>
               </div>
+              <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:11px 22px;background:#132F49;border-bottom:1px solid #EDF0F3;">
+                <span style="font-size:9.5px;font-weight:700;letter-spacing:1.4px;color:#9FB4C7;text-transform:uppercase;margin-right:4px;">Weekly view</span>
+                <sc-for list="{{ crWeekChips }}" as="w" hint-placeholder-count="5">
+                  <button sc-camel-on-click="{{ w.onSel }}" style="{{ w.style }}">{{ w.label }}</button>
+                </sc-for>
+                <div style="flex:1;"></div>
+                <span style="font-size:11px;font-weight:600;color:#C7D8E8;font-family:'IBM Plex Mono',monospace;">{{ crWeekLabel }}</span>
+              </div>
               <sc-if value="{{ crShowDaily }}" hint-placeholder-val="{{ true }}">
                 <div style="padding:6px 14px 14px;">
                   <div id="chCircDaily" class="chart-box" style="width:100%;height:460px;"></div>
@@ -6405,49 +6655,6 @@
               <div style="padding:0 14px 14px;"><div id="chCircLastWeek" class="chart-box" style="width:100%;height:300px;"></div></div>
             </div>
 
-            <!-- surveyor search + roster -->
-            <div style="background:#fff;border:1px solid #E1E5EA;border-radius:8px;padding:18px 20px;box-shadow:0 1px 2px rgba(16,24,40,.04);">
-              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
-                <div>
-                  <div style="font-size:15px;font-weight:700;color:#1E2A38;">Surveyors Assigned — {{ crMeta.title }}</div>
-                  <div style="font-size:11.5px;color:#8A93A0;">{{ crSurveyorCount }} surveyors · ranked by {{ crMeta.scopeUnit }} output for {{ crSvyRangeLabel }}</div>
-                  <div style="font-size:10.5px;color:#98A2AC;margin-top:2px;">{{ crSvyDayNote }}</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
-                  <sc-for list="{{ crSvyRangeBtns }}" as="rb" hint-placeholder-count="3">
-                    <button sc-camel-on-click="{{ rb.onClick }}" style="{{ rb.style }}">{{ rb.label }}</button>
-                  </sc-for>
-                </div>
-              </div>
-              <div style="overflow-x:auto;">
-                <div style="min-width:860px;">
-                  <div style="{{ crSvyGrid }}padding:10px 14px;background:#33475B;color:#fff;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;border-radius:5px 5px 0 0;">
-                    <span>#</span><span>Surveyor</span><span>Emp ID</span><span>Field Coordinator</span>
-                    <sc-for list="{{ crSvyDayHeads }}" as="dh" hint-placeholder-count="7"><span style="text-align:center;">{{ dh }}</span></sc-for>
-                    <span style="text-align:right;">Output</span><span style="text-align:right;">Avg</span><span style="text-align:right;">Present</span><span style="text-align:right;">Leave</span><span style="text-align:right;">Active</span><span style="text-align:right;">Zero</span><span style="text-align:right;">Best</span>
-                  </div>
-                  <sc-for list="{{ crSurveyors }}" as="s" hint-placeholder-count="6">
-                    <div style="{{ crSvyGrid }}padding:9px 14px;font-size:12.5px;color:#1F2933;align-items:center;{{ s.rowStyle }}">
-                      <span style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:{{ s.medal }};">{{ s.rank }}</span>
-                      <span style="font-weight:600;">{{ s.name }}</span>
-                      <span style="font-family:'IBM Plex Mono',monospace;color:#8A93A0;">{{ s.code }}</span>
-                      <span style="color:#56606B;">{{ s.fc }}</span>
-                      <sc-for list="{{ s.cells }}" as="cc" hint-placeholder-count="7">
-                        <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;color:{{ cc.color }};background:{{ cc.bg }};border-radius:5px;padding:3px 0;">{{ cc.label }}</span>
-                      </sc-for>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#2F516F;">{{ s.out }}</span>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#2F516F;">{{ s.avg }}</span>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#274A6B;">{{ s.present }}</span>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#9C6B2E;">{{ s.leave }}</span>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;">{{ s.active }}</span>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#A44A45;">{{ s.zero }}</span>
-                      <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:#1E2A38;">{{ s.best }}</span>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-
-            </div>
 
           </div>
 
@@ -6803,6 +7010,236 @@ class Component extends DCLogic {
   openTable=(key,title)=>{ this.setState({fullTableKey:key, fullTableTitle:title, fullZoom:1}); };
   closeTable=()=>{ this.setState({fullTableKey:null, fullTableTitle:'', fullZoom:1}); };
 
+  // ── CIRCLE WISE PRODUCTIVITY picker ───────────────────────────────────────
+  // Colour-coded KPI card per active circle (any DAG / RoR output in the selected period);
+  // clicking a card hands straight over to the full-screen circle report.
+  openCircleProd = () => this.setState({cpOpen:true});
+  closeCircleProd = () => this.setState({cpOpen:false});
+  setCpProg = (k) => this.setState({cpProg:k});
+  // programme matcher for the Circle Wise Productivity filter (Re-Survey / Naksha / Tea Garden)
+  progMatch(area, sel){ if(!sel||sel==='ALL') return true;
+    const a=String(area||'').toUpperCase();
+    if(sel==='NAK') return a.indexOf('NAKSHA')>=0;
+    if(sel==='TEA') return a.indexOf('TEA')>=0;
+    return a.indexOf('NAKSHA')<0 && a.indexOf('TEA')<0; }
+  setCrWeek = (k) => { this.setState({crWeek:k}); setTimeout(()=>{ if(this._resize) this._resize(); }, 60); };
+  weekBuckets(idxs){
+    const d=this.state.data; const b=[[],[],[],[],[]];
+    if(!d||!d.dates) return b;
+    (idxs||[]).forEach(i=>{ const s=String(d.dates[i]||'');
+      let dm=/^\d{4}-\d{2}-\d{2}$/.test(s)?+s.split('-')[2]:0;
+      if(!dm){ const m=s.match(/(\d{1,2})/); dm=m?+m[1]:1; }
+      b[Math.min(4,Math.max(0,Math.floor((dm-1)/7)))].push(i); });
+    return b;
+  }
+  // ── FIELD COORDINATOR PERFORMANCE ───────────────────────────────────
+  // Pick any FC and read their last three months side by side — output vs target,
+  // attendance and the surveyor-level split for the same window.
+  openFcPerf = () => { this.setState({fcPfOpen:true}); setTimeout(()=>{ if(this._resize) this._resize(); }, 80); };
+  closeFcPerf = () => this.setState({fcPfOpen:false});
+  setFcpSel = (k) => { this.setState({fcPfSel:k}); setTimeout(()=>{ if(this._resize) this._resize(); }, 60); };
+  // FC names are typed differently across months ("Ram Kumar Doley" / "Ram Kr. Doley"),
+  // so group on a normalised key: first + last token with abbreviations expanded.
+  fcKey(name){
+    let s=String(name||'').toUpperCase().replace(/[^A-Z ]/g,' ').replace(/\s+/g,' ').trim();
+    if(!s) return '';
+    const toks=s.split(' ').filter(t=>t && !/^(MR|MRS|MS|DR|SRI|SMT|SHRI)$/.test(t))
+      .map(t=>({KR:'KUMAR',KUM:'KUMAR',CH:'CHANDRA',CHD:'CHANDRA',PD:'PRASAD',PR:'PRASAD',DR:'',MD:'MOHAMMAD'})[t]||t)
+      .filter(Boolean);
+    if(!toks.length) return '';
+    return toks.length===1 ? toks[0] : (toks[0]+' '+toks[toks.length-1]);
+  }
+  fcPerfData(){
+    const d=this.state.data, open=!!this.state.fcPfOpen;
+    const base={fcpOpen:open, fcpList:[], fcpCount:0, fcpHas:false, fcpNone:true, fcpName:'—', fcpMeta:'',
+      fcpMonths:[], fcpRows:[], fcpRowCount:0, fcpUnit:'DAG', fcpRangeLabel:'—', fcpGrid:'', fcpHeadStyle:'', fcpMonthHeads:[],
+      fcpCircles:[], fcpCircleCount:0, fcpCGrid:'', fcpCHeadStyle:'',
+      openFcPerf:this.openFcPerf, closeFcPerf:this.closeFcPerf};
+    if(!d || !d.records || !d.dates) return base;
+    // closed panel: only the header badge is needed — count coordinators active in the
+    // last three months (cheap single pass, cached per dataset)
+    if(this._fcpCntFor!==d){ this._fcpCntFor=d;
+      const ord=[], sn={};
+      d.dates.forEach(dt=>{ const mk=this.monthKey(dt); if(mk && !sn[mk]){ sn[mk]=1; ord.push(mk); } });
+      const wMonths=ord.filter(mk=>{ const ix=this.monthDayIdxs(mk);
+        return ix.length>0 && d.records.some(r=>ix.some(i=>r.st[i]&&r.st[i]!=='X')); }).slice(-3);
+      const wIdxs=wMonths.reduce((a,mk)=>a.concat(this.monthDayIdxs(mk)),[]);
+      // "current" coordinators = deployed in the latest month with data (former FCs drop out)
+      const cIdxs=wMonths.length?this.monthDayIdxs(wMonths[wMonths.length-1]):wIdxs;
+      const act=new Set();
+      d.records.forEach(r=>{ const f=this.fcKey(r.fc); if(!f) return;
+        if(act.has(f)) return;
+        if(cIdxs.some(i=>r.st[i]&&r.st[i]!=='X')) act.add(f); });
+      this._fcpCnt=act.size; }
+    base.fcpCount=this._fcpCnt||0;
+    if(!open) return base;
+    // heavy month/surveyor aggregation — memoised on dataset + selected FC
+    const memoKey=String(this.state.fcPfSel||'');
+    if(this._fcpMemoFor===d && this._fcpMemoKey===memoKey && this._fcpMemo) return {...this._fcpMemo, fcpOpen:true};
+    const out=this.fcPerfCompute(d, base);
+    this._fcpMemoFor=d; this._fcpMemoKey=memoKey; this._fcpMemo=out;
+    return out;
+  }
+  fcPerfCompute(d, base){
+    const fcOf=r=>this.fcKey(r.fc);
+    const fcLabel=r=>this.titleCase(String(r.fc||'').replace(/\s+/g,' ').trim());
+    const order=[], seen={};
+    d.dates.forEach(dt=>{ const mk=this.monthKey(dt); if(mk && !seen[mk]){ seen[mk]=1; order.push(mk); } });
+    // only months that actually carry attendance data — empty sheet columns showed up as a 0% month
+    const monthsAll=order.filter(mk=>{ const ix=this.monthDayIdxs(mk);
+      return ix.length>0 && d.records.some(r=>ix.some(i=>r.st[i]&&r.st[i]!=='X')); });
+    const months=monthsAll.slice(-3);
+    const mIdxs=months.map(mk=>this.monthDayIdxs(mk));
+    const allIdxs=mIdxs.reduce((a,b)=>a.concat(b),[]);
+    if(!months.length) return base;
+
+    // FC ↔ circle mapping is taken from the CURRENT month: an FC reports on the circles they
+    // hold today, and the three-month history of those circles (whoever ran them then).
+    const cirOf=r=>this.titleCase(String(r.cir||'').trim());
+    const agg={};
+    const curIdxs=mIdxs[mIdxs.length-1]||[];
+    d.records.forEach(r=>{ const f=fcOf(r); if(!f) return;
+      if(!curIdxs.some(i=>r.st[i]&&r.st[i]!=='X')) return;
+      const e=agg[f]=agg[f]||{key:f, name:fcLabel(r), out:0, hr:{}, cir:{}, cur:true};
+      const lb=fcLabel(r); if(lb.length>e.name.length) e.name=lb;   // keep the fullest spelling
+      const ck=cirOf(r); if(ck) e.cir[ck]=1; });
+    // three-month totals per circle — computed once, then rolled up per coordinator
+    const cirAgg={};
+    d.records.forEach(r=>{ const ck=cirOf(r); if(!ck) return;
+      const c=cirAgg[ck]=cirAgg[ck]||{out:0, hr:{}};
+      allIdxs.forEach(i=>{ const s=r.st[i]; if(!s||s==='X') return;
+        c.hr[String(r.c||r.n).toUpperCase()]=1;
+        const sv=this.splitVal(r,i); c.out+=sv.dag+sv.ror; }); });
+    Object.values(agg).forEach(e=>{ Object.keys(e.cir).forEach(ck=>{ const c=cirAgg[ck]; if(!c) return;
+      e.out+=c.out; Object.keys(c.hr).forEach(k=>{ e.hr[k]=1; }); }); });
+    const listAll=Object.values(agg).filter(e=>Object.keys(e.cir).length>0).sort((a,b)=>b.out-a.out);
+    if(!listAll.length) return base;
+    const sel = (this.state.fcPfSel && agg[this.state.fcPfSel]) ? this.state.fcPfSel : listAll[0].key;
+    const fcpList=listAll.map(e=>{ const on=e.key===sel;
+      return {name:e.name, hr:this.fmt(Object.keys(e.hr).length), out:this.fmt(e.out),
+        circles:Object.keys(e.cir).filter(Boolean).join(', ')||'—', sel:on, onSel:()=>this.setFcpSel(e.key),
+        style:'display:block;width:100%;text-align:left;padding:10px 13px;border-radius:9px;cursor:pointer;font-family:inherit;border:1px solid '
+          +(on?'#1E4A73':'#E1E7EE')+';background:'+(on?'#1E4A73':'#FFFFFF')+';color:'+(on?'#FFFFFF':'#1E2A38')+';',
+        subStyle:'font-size:10.5px;font-weight:600;margin-top:3px;color:'+(on?'#C7D8E8':'#8A93A0')+';'};
+    });
+
+    // scope = every record of the coordinator's current circles, across the three months
+    const selCir=agg[sel].cir;
+    const recs=d.records.filter(r=>selCir[cirOf(r)]);
+    const totRor=recs.reduce((s,r)=>s+allIdxs.reduce((t,i)=>t+this.splitVal(r,i).ror,0),0);
+    const totDag=recs.reduce((s,r)=>s+allIdxs.reduce((t,i)=>t+this.splitVal(r,i).dag,0),0);
+    const unit=totRor>totDag?'RoR':'DAG';
+    const perHead=unit==='RoR'?10:20;
+
+    const fcpMonths=months.map((mk,mi)=>{
+      const idxs=mIdxs[mi];
+      const K=this.computeKpi(recs, idxs);
+      const out=K.dagDay+K.ror;
+      const tgt=K.active*perHead;
+      const pct=tgt>0?Math.round(out/tgt*100):0;
+      const hr=new Set(recs.filter(r=>idxs.some(i=>r.st[i]&&r.st[i]!=='X')).map(r=>String(r.c||r.n).toUpperCase())).size;
+      const color=pct>=90?'#1E5C42':(pct>=75?'#1E4A73':(pct>=50?'#9C6B2E':'#A44A45'));
+      const bg=pct>=90?'#EAF4EE':(pct>=75?'#EDF3F9':(pct>=50?'#FCF5EA':'#FBEDEC'));
+      return {name:mk, unit, hr:this.fmt(hr), out:this.fmt(out), tgt:this.fmt(tgt), pct:(hr>0?pct+'%':'—'), pctN:pct,
+        note:(hr>0?'':'no deployment this month'), hasNote:hr===0,
+        present:this.fmt(K.present), leave:this.fmt(K.leave), active:this.fmt(K.active), zero:this.fmt(K.zero),
+        avg:(K.active>0?(out/K.active).toFixed(1):'0.0'), att:K.att.toFixed(1)+'%',
+        cardStyle:'background:'+bg+';border:1px solid rgba(15,42,67,.12);border-top:4px solid '+color+';border-radius:12px;padding:16px 18px;',
+        pctStyle:"font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:700;color:"+color+';line-height:1;',
+        barStyle:'height:100%;border-radius:4px;background:'+color+';width:'+Math.min(100,pct)+'%;'};
+    });
+
+    const byP={};
+    recs.forEach(r=>{ const key=String(r.c||r.n).toUpperCase();
+      const p=byP[key]=byP[key]||{key, name:this.titleCase(String(r.n).replace(/\s+/g,' ').trim()), code:r.c||'—',
+        cir:cirOf(r)||'—', months:months.map(()=>({out:0,act:0})), tot:0, act:0, dep:false, cur:false};
+      // roster follows the CURRENT month — surveyors on the team today, with their history
+      if(curIdxs.some(i=>r.st[i]&&r.st[i]!=='X')){ p.cur=true; const ck=cirOf(r); if(ck) p.cir=ck; }
+      mIdxs.forEach((idxs,mi)=>{ idxs.forEach(i=>{ const s=r.st[i]; if(!s||s==='X') return; p.dep=true;
+        const sv=this.splitVal(r,i), v=sv.dag+sv.ror;
+        p.months[mi].out+=v; p.tot+=v;
+        if((r.dg[i]||0)>0){ p.months[mi].act++; p.act++; } }); });
+    });
+    const fcpRows=Object.values(byP).filter(p=>p.cur).sort((a,b)=>(a.cir===b.cir?b.tot-a.tot:a.cir.localeCompare(b.cir))).map((p,i)=>{
+      const cells=p.months.map(m=>{ const tgt=m.act*perHead, pc=tgt>0?Math.round(m.out/tgt*100):0;
+        const col=pc>=90?'#12503A':(pc>=60?'#8A5A12':'#A44A45'), bgc=pc>=90?'#DCEEE7':(pc>=60?'#FBF3E6':'#FBEBEA');
+        return {out:this.fmt(m.out), pct:(tgt>0?pc+'%':'—'),
+          style:'text-align:center;border-radius:6px;padding:5px 4px;background:'+(m.act?bgc:'#F3F5F7')+';color:'+(m.act?col:'#98A2AC')+";font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:700;"}; });
+      const tgt=p.act*perHead, pc=tgt>0?Math.round(p.tot/tgt*100):0;
+      return {rank:i+1, name:p.name, code:p.code, cir:p.cir, cells, tot:this.fmt(p.tot), act:this.fmt(p.act),
+        pct:pc+'%', pctC:pc>=90?'#12503A':(pc>=60?'#8A5A12':'#A44A45'),
+        rowStyle:'display:grid;grid-template-columns:38px minmax(190px,1.4fr) 92px minmax(130px,1fr) repeat('+months.length+',minmax(88px,.7fr)) 74px 58px 64px;gap:8px;padding:11px 14px;font-size:14px;color:#1F2933;align-items:center;border-bottom:1px solid #ECEEF1;background:'+(i%2?'#F7F8FA':'#fff')+';'};
+    });
+    const grid='display:grid;grid-template-columns:38px minmax(190px,1.4fr) 92px minmax(130px,1fr) repeat('+months.length+',minmax(88px,.7fr)) 74px 58px 64px;gap:8px;';
+    // circle-wise productivity of the same three months for this coordinator
+    const cGrid='display:grid;grid-template-columns:minmax(170px,1.3fr) 74px repeat('+months.length+',minmax(120px,1fr)) 84px 70px;gap:8px;';
+    const byC={};
+    recs.forEach(r=>{ const ck=this.titleCase(String(r.cir||'').trim())||'—';
+      const c=byC[ck]=byC[ck]||{name:ck, hr:{}, months:months.map(()=>({out:0,act:0})), tot:0, act:0};
+      mIdxs.forEach((idxs,mi)=>{ idxs.forEach(i=>{ const s=r.st[i]; if(!s||s==='X') return;
+        c.hr[String(r.c||r.n).toUpperCase()]=1;
+        const sv=this.splitVal(r,i), v=sv.dag+sv.ror;
+        c.months[mi].out+=v; c.tot+=v;
+        if((r.dg[i]||0)>0){ c.months[mi].act++; c.act++; } }); });
+    });
+    const fcpCircles=Object.values(byC).filter(c=>Object.keys(c.hr).length>0).sort((a,b)=>b.tot-a.tot).map((c,i)=>{
+      const cells=c.months.map(m=>{ const tg=m.act*perHead, pc=tg>0?Math.round(m.out/tg*100):0;
+        const col=pc>=90?'#12503A':(pc>=60?'#8A5A12':'#A44A45'), bgc=pc>=90?'#DCEEE7':(pc>=60?'#FBF3E6':'#FBEBEA');
+        return {out:this.fmt(m.out), tgt:this.fmt(tg), pct:(tg>0?pc+'%':'—'),
+          style:'text-align:center;border-radius:6px;padding:6px 4px;background:'+(m.act?bgc:'#F3F5F7')+';color:'+(m.act?col:'#98A2AC')+";font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:700;"}; });
+      const tg=c.act*perHead, pc=tg>0?Math.round(c.tot/tg*100):0;
+      return {name:c.name, hr:this.fmt(Object.keys(c.hr).length), cells, tot:this.fmt(c.tot),
+        pct:pc+'%', pctC:pc>=90?'#12503A':(pc>=60?'#8A5A12':'#A44A45'),
+        rowStyle:cGrid+'padding:11px 14px;font-size:14px;color:#1F2933;align-items:center;border-bottom:1px solid #ECEEF1;background:'+(i%2?'#F7F8FA':'#fff')+';'};
+    });
+    const selAgg=agg[sel];
+    return {...base, fcpList, fcpCount:listAll.length, fcpHas:true, fcpNone:false, fcpName:selAgg.name,      fcpMeta:this.fmt(Object.keys(selAgg.hr).length)+' surveyors · '+(Object.keys(selAgg.cir).filter(Boolean).join(', ')||'—'),
+      fcpCircles, fcpCircleCount:fcpCircles.length, fcpCGrid:cGrid,
+      fcpCHeadStyle:cGrid+"padding:11px 14px;background:#33475B;color:#fff;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:5px 5px 0 0;",
+      fcpMonths, fcpRows, fcpRowCount:fcpRows.length, fcpUnit:unit, fcpMonthHeads:months,
+      fcpRangeLabel:months.join(' · ')+' · daily norm '+perHead+' '+unit,
+      fcpGrid:grid,
+      fcpHeadStyle:grid+"padding:11px 14px;background:#33475B;color:#fff;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:5px 5px 0 0;"};
+  }
+
+  circleProdData(){
+    const open=!!this.state.cpOpen, d=this.state.data;
+    const base={cpOpen:open, cpCards:[], cpCount:0, cpLabel:'—', cpNone:true, cpProgBtns:[],
+      openCircleProd:this.openCircleProd, closeCircleProd:this.closeCircleProd};
+    if(!d || !d.records) return base;
+    const cpProg=this.state.cpProg||'ALL';
+    const cpProgBtns=[['ALL','All Programmes'],['RES','Re-Survey'],['NAK','Naksha'],['TEA','Tea Garden']].map(([k,lb])=>({
+      key:k, label:lb, onClick:()=>this.setCpProg(k),
+      style:'padding:6px 14px;border-radius:20px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
+        +(cpProg===k?'#FFFFFF':'rgba(255,255,255,.32)')+';background:'+(cpProg===k?'#FFFFFF':'rgba(255,255,255,.08)')
+        +';color:'+(cpProg===k?'#0F2A43':'#DCE7F0')+';'}));
+    base.cpProgBtns=cpProgBtns;
+    const idxs=this.activeIdxs(); const last=idxs[idxs.length-1];
+    const label=(this.state.monthMode&&this.state.mMonth)?(this.state.mMonth+' · Full Month'):this.dateLabel(d.dates[last]);
+    const m={};
+    d.records.forEach(r=>{ const cir=String(r.cir||'').trim(); if(!cir) return;
+      if(!this.progMatch(r.area, cpProg)) return;
+      const e=m[cir]=m[cir]||{cir, out:0, dag:0, ror:0, active:0, present:0, hr:{}};
+      idxs.forEach(i=>{ const s=r.st[i]; if(!s||s==='X') return;
+        e.hr[String(r.c||r.n).toUpperCase()]=1;
+        const sv=this.splitVal(r,i); e.dag+=sv.dag; e.ror+=sv.ror; e.out+=sv.dag+sv.ror;
+        if(s==='P') e.present++;
+        if((r.dg[i]||0)>0) e.active++; });
+    });
+    const cards=Object.values(m).filter(e=>e.out>0).map(e=>{
+      const unit=e.ror>e.dag?'RoR':'DAG', per=unit==='RoR'?10:20, tgt=e.active*per;
+      const pct=tgt>0?Math.round(e.out/tgt*100):0;
+      const color=pct>=90?'#1E5C42':(pct>=75?'#1E4A73':(pct>=50?'#9C6B2E':'#A44A45'));
+      const bg=pct>=90?'#EAF4EE':(pct>=75?'#EDF3F9':(pct>=50?'#FCF5EA':'#FBEDEC'));
+      return {cir:e.cir, name:this.titleCase(e.cir), unit, pctN:pct, pct:pct+'%', color,
+        out:this.fmt(e.out), tgt:this.fmt(tgt), active:this.fmt(e.active), hr:this.fmt(Object.keys(e.hr).length),
+        cardStyle:'display:block;width:100%;text-align:left;padding:15px 16px 14px;border:1px solid rgba(15,42,67,.12);border-left:5px solid '+color+';border-radius:12px;background:'+bg+';cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(15,42,67,.06);transition:transform .15s ease,box-shadow .15s ease;',
+        barStyle:'height:100%;border-radius:4px;background:'+color+';width:'+Math.min(100,pct)+'%;',
+        onOpen:()=>{ this.setState({cpOpen:false, crWeek:'ALL'}); this.openCircleReport(e.cir); }};
+    }).sort((a,b)=>b.pctN-a.pctN);
+    return {...base, cpCards:cards, cpCount:cards.length, cpLabel:label, cpNone:cards.length===0};
+  }
+
   // ── Full-screen CIRCLE REPORT ──────────────────────────────────────────────
   openCircleReport = (cir) => { this.setState({circleReport:cir, crQuery:'', crScope:((this.state.monthMode&&this.state.mMonth)?this.state.mMonth:'ALL'), crDrill:'', crSvySel:'ALL', crDay:'ALL', openFilter:null}); try{ window.scrollTo(0,0); }catch(e){} setTimeout(()=>{ if(this._resize) this._resize(); }, 90); };
   closeCircleReport = () => { this.setState({circleReport:null, crDrill:'', crSvy:''}); try{ window.scrollTo(0,0); }catch(e){} setTimeout(()=>{ if(this._resize) this._resize(); }, 80); };
@@ -6826,7 +7263,7 @@ class Component extends DCLogic {
 
   circleReportData(){
     const cir=this.state.circleReport;
-    const closed={ circleReport:null, crScore:{grade:'—',gradeC:'#8A93A0',rank:'—',rankOf:'',pct:'0%',stateAvg:'0%',vsState:'0 pts',vsStateC:'#8A93A0',delta:'0 pts',deltaC:'#8A93A0',deltaSub:'',streak:'0',streakSub:''}, crRoll:{date:'—',rows:[],total:'0',met:'0',below:'0',zero:'0',leave:'0',absent:'0',metPct:'0%',unit:'DAG',perHead:'20',has:false}, crWatch:{window:'',needs:[],stars:[],unit:'DAG',hasNeeds:false,hasStars:false}, crActions:[], crMeta:null, crMetaCards:[], crCal:[], crCalMonths:[], crCalMonth:'', onCrCalMonth:()=>{}, crSvyRangeBtns:[], crSvyRangeLabel:'', crSvyDayHeads:[], crSvyGrid:'', crSvyDayNote:'', crMonths:[], crSurveyors:[], crSurveyorCount:0, crKpis:[], crScope:'ALL', crScopeChips:[], crVillage:null, crBest:null, crQuery:'', crUnit:'DAG', crDrill:null, crSvy:'', crSvySel:'ALL', crSvyOptions:[], crDay:'ALL', crDayOptions:[], onCrSvySel:this.onCrSvySel, onCrDay:this.onCrDay, crPerHead:20, crSvyDetail:null, crLastWeek:null, crLwMatrix:null, crShowDaily:true, crDailyToggleLabel:'Hide chart', toggleCrDaily:this.toggleCrDaily, expCircMonthly:()=>{}, expCircDaily:()=>{}, expCircLastWeek:()=>{}, closeCrSvy:this.closeCrSvy, closeCrDrill:this.closeCrDrill,
+    const closed={ circleReport:null, crScore:{grade:'—',gradeC:'#8A93A0',rank:'—',rankOf:'',pct:'0%',stateAvg:'0%',vsState:'0 pts',vsStateC:'#8A93A0',delta:'0 pts',deltaC:'#8A93A0',deltaSub:'',streak:'0',streakSub:''}, crRoll:{date:'—',rows:[],total:'0',met:'0',below:'0',zero:'0',leave:'0',absent:'0',metPct:'0%',unit:'DAG',perHead:'20',has:false}, crWatch:{window:'',needs:[],stars:[],unit:'DAG',hasNeeds:false,hasStars:false}, crActions:[], crMeta:null, crMetaCards:[], crCal:[], crCalMonths:[], crCalMonth:'', onCrCalMonth:()=>{}, crSvyRangeBtns:[], crSvyRangeLabel:'', crSvyDayHeads:[], crSvyGrid:'', crSvyHeadStyle:'', crSvyDayNote:'', crSvyMinW:'860px', crMonths:[], crSurveyors:[], crSurveyorCount:0, crKpis:[], crScope:'ALL', crScopeChips:[], crVillage:null, crBest:null, crQuery:'', crUnit:'DAG', crDrill:null, crSvy:'', crSvySel:'ALL', crSvyOptions:[], crDay:'ALL', crDayOptions:[], onCrSvySel:this.onCrSvySel, onCrDay:this.onCrDay, crPerHead:20, crSvyDetail:null, crLastWeek:null, crLwMatrix:null, crShowDaily:true, crDailyToggleLabel:'Hide chart', toggleCrDaily:this.toggleCrDaily, expCircMonthly:()=>{}, expCircDaily:()=>{}, expCircLastWeek:()=>{}, closeCrSvy:this.closeCrSvy, closeCrDrill:this.closeCrDrill,
       closeCircleReport:this.closeCircleReport, onCrQuery:this.onCrQuery, crOnly:'0', crSvyPicked:false, crSvyNotPicked:true, crSvyLineName:'—', crDaily:{who:'All Surveyors',days:0,tgt:'0',ach:'0',pct:'0%',pctW:'0%',pctC:'#274A6B',bestVal:'0',bestLabel:'—'} };
     if(!cir) return closed;
     const {data,crScope,crQuery}=this.state;
@@ -6882,6 +7319,21 @@ class Component extends DCLogic {
     const gMonthIdxs = gMonth ? this.monthDayIdxs(gMonth) : [];
     const gLabel = (this.state.monthMode && this.state.mMonth) ? (this.state.mMonth+' · Full Month') : this.dateLabel(data.dates[gLast]);
     const monthScopeIdxs = gMonthIdxs.length ? gMonthIdxs : data.dates.map((_,i)=>i);
+    // weekly slicing of the month in scope — a 31-day report is hard to read in one go
+    const crWeek=this.state.crWeek||'ALL';
+    const wkBuckets=this.weekBuckets(monthScopeIdxs);
+    const wkNames=['1st','2nd','3rd','4th','5th'];
+    const crWeekChips=[{key:'ALL',label:'Whole Month'}]
+      .concat(wkBuckets.map((b,wi)=>b.length?{key:String(wi+1),label:wkNames[wi]+' Week'}:null).filter(Boolean))
+      .map(o=>({...o, sel:crWeek===o.key, onSel:()=>this.setCrWeek(o.key),
+        style:'padding:6px 13px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
+          +(crWeek===o.key?'#FFFFFF':'rgba(255,255,255,.32)')+';background:'+(crWeek===o.key?'#FFFFFF':'rgba(255,255,255,.08)')
+          +';color:'+(crWeek===o.key?'#0F2A43':'#DCE7F0')+';'}));
+    const weekIdxs = crWeek==='ALL' ? null : ((wkBuckets[+crWeek-1]||[]).length?wkBuckets[+crWeek-1]:null);
+    const curveIdxs = weekIdxs || monthScopeIdxs;
+    const crWeekLabel = weekIdxs
+      ? (this.dateLabel(data.dates[weekIdxs[0]])+' – '+this.dateLabel(data.dates[weekIdxs[weekIdxs.length-1]])+' · '+weekIdxs.length+' days')
+      : 'whole month';
     const crDay = 'ALL';
     const scopeIdxs = gIdxs;
     // scope-aware headcount: surveyors active within the selected month band (not the whole timeline)
@@ -6971,10 +7423,19 @@ class Component extends DCLogic {
     const q=crQuery.trim().toLowerCase();
     // Surveyors Assigned table has its own period filter (selected day / last 7 / last 14 days),
     // independent of the report scope so a coordinator can widen just this list in the meeting.
-    const svyRange=this.state.crSvyRange||'day';
-    const lastI=scopeIdxs[scopeIdxs.length-1];
+    const svyRange=this.state.crSvyRange||'auto';
+    // days on which this circle actually has records — empty columns made the table look broken
+    const hasData=i=>recs.some(r=>(r.st[i]&&r.st[i]!=='X')||(r.dg[i]||0)>0);
+    const svyWkBuckets=this.weekBuckets(monthScopeIdxs.filter(hasData));
+    const svyMonthIdxs=monthScopeIdxs.filter(hasData);
+    // never the whole month — a 31-column grid squeezes the figures unreadably small.
+    // 'auto' resolves to the week holding the dashboard's selected day (or the last week with data).
+    const gLastDom=(()=>{ const s=String(data.dates[gLast]||''); if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return +s.split('-')[2]; const m=s.match(/(\d{1,2})/); return m?+m[1]:1; })();
+    let svyWkI = /^w[1-5]$/.test(svyRange) ? (+svyRange.slice(1)-1) : Math.min(4,Math.max(0,Math.floor((gLastDom-1)/7)));
+    if(!(svyWkBuckets[svyWkI]||[]).length){ for(let wi=4;wi>=0;wi--){ if((svyWkBuckets[wi]||[]).length){ svyWkI=wi; break; } } }
+    const svyWk = svyWkBuckets[svyWkI]||[];
     const tblIdxs = svyRange==='day' ? scopeIdxs
-      : data.dates.map((_,i)=>i).filter(i=>i<=lastI).slice(svyRange==='7'?-7:-14);
+      : (svyWk.length ? svyWk : svyMonthIdxs);
     const tblRoster=(()=>{
       if(svyRange==='day') return roster;
       const m={};
@@ -6991,12 +7452,17 @@ class Component extends DCLogic {
       });
       return Object.values(m).filter(p=>p.inScope).sort((a,b)=>b.out-a.out);
     })();
-    const crSvyRangeBtns=[['day','Selected day'],['7','Last 7 days'],['14','Last 14 days']].map(([k,lb])=>({
-      key:k, label:lb, onClick:()=>this.setState({crSvyRange:k}),
-      style:'padding:6px 12px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
-        +(svyRange===k?'#1E4A73':'#D3D9E0')+';background:'+(svyRange===k?'#1E4A73':'#FFFFFF')+';color:'+(svyRange===k?'#FFFFFF':'#56606B')+';'}));
+    const svyWkNames=['1st Week','2nd Week','3rd Week','4th Week','5th Week'];
+    const crSvyRangeBtns=svyWkBuckets.map((b,wi)=>b.length?['w'+(wi+1),svyWkNames[wi]]:null).filter(Boolean)
+      .concat([['day','Selected day']])
+      .map(([k,lb])=>({
+      key:k, label:lb, sel:(svyRange==='day'?k==='day':k==='w'+(svyWkI+1)),
+      onClick:()=>{ this.setState({crSvyRange:k}); setTimeout(()=>{ if(this._resize) this._resize(); }, 60); },
+      style:'padding:7px 14px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
+        +((svyRange==='day'?k==='day':k==='w'+(svyWkI+1))?'#1E4A73':'#D3D9E0')+';background:'+((svyRange==='day'?k==='day':k==='w'+(svyWkI+1))?'#1E4A73':'#FFFFFF')+';color:'+((svyRange==='day'?k==='day':k==='w'+(svyWkI+1))?'#FFFFFF':'#56606B')+';'}));
     const crSvyRangeLabel = svyRange==='day' ? gLabel
-      : (this.dateLabel(data.dates[tblIdxs[0]])+' – '+this.dateLabel(data.dates[tblIdxs[tblIdxs.length-1]]));
+      : tblIdxs.length ? (this.dateLabel(data.dates[tblIdxs[0]])+' – '+this.dateLabel(data.dates[tblIdxs[tblIdxs.length-1]])+' · '+tblIdxs.length+' days')
+      : '—';
     // Daily productivity matrix for the Surveyors Assigned table — one column per day in the
     // table's own range, so the meeting can see each surveyor's day-by-day output.
     const dayCell=(v,st)=>{
@@ -7015,7 +7481,9 @@ class Component extends DCLogic {
     });
     const crSvyDayHeads=tblIdxs.map(i=>{ const s=String(data.dates[i]); const mm=s.match(/(\d{1,2})/);
       return /^\d{4}-\d{2}-\d{2}$/.test(s)?String(+s.split('-')[2]):(mm?mm[1]:String(i+1)); });
-    const crSvyGrid='display:grid;grid-template-columns:.42fr 1.8fr .85fr 1.2fr repeat('+tblIdxs.length+',minmax(40px,.55fr)) .8fr .6fr .7fr .6fr .6fr .6fr .6fr;gap:5px;';
+    const crSvyGrid='display:grid;grid-template-columns:38px minmax(200px,1.4fr) 92px minmax(150px,1fr) repeat('+tblIdxs.length+',minmax(54px,.6fr)) 74px 58px 66px 56px 58px 56px 56px;gap:6px;';
+    const crSvyHeadStyle=crSvyGrid+"padding:11px 14px;background:#33475B;color:#fff;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:5px 5px 0 0;";
+    const crSvyMinW=(700+tblIdxs.length*60)+'px';
     const crSvyDayNote='daily '+scopeUnit+' per surveyor · daily norm '+perHead+' · green ≥ norm · amber below · red zero · L = leave · A = absent';
     const crSurveyors=tblRoster
       .filter(p=>svySel==='ALL' || p.key===svySel)
@@ -7031,7 +7499,7 @@ class Component extends DCLogic {
         avg:(p.active>0?(p.out/p.active).toFixed(1):'0.0'), present:p.present, leave:p.leave, active:p.active, zero:p.zero, best:this.fmt(p.best),
         onSel:()=>this.openCrSvy(p.key),
         medal: i===0?'#C8862A':(i===1?'#97A2AC':(i===2?'#B87333':'transparent')),
-        rowStyle:'border-bottom:1px solid #ECEEF1;background:'+(i%2?'#F7F8FA':'#fff')+';' }; });
+        rowStyle:crSvyGrid+'padding:11px 14px;font-size:14px;color:#1F2933;align-items:center;border-bottom:1px solid #ECEEF1;background:'+(i%2?'#F7F8FA':'#fff')+';' }; });
 
     const crScopeChips=[{name:'All Months', mk:'ALL', sel:crScope==='ALL', onSel:()=>this.setCrScope('ALL')}]
       .concat(crMonths.map(m=>({name:m.name, mk:m.name, sel:crScope===m.name, onSel:()=>this.setCrScope(m.name)})));
@@ -7131,7 +7599,7 @@ class Component extends DCLogic {
 
     // daily-curve summary for the month band (follows the surveyor picker)
     let dTgt=0, dAch=0, dDays=0, dBestV=0, dBestI=-1;
-    monthScopeIdxs.forEach(i=>{ let any=false,ach=0,tgt=0;
+    curveIdxs.forEach(i=>{ let any=false,ach=0,tgt=0;
       fRecs.forEach(r=>{ const s=r.st[i]; if(!s||s==='X') return; any=true; const sv=this.splitVal(r,i); ach+=sv.dag+sv.ror; if((r.dg[i]||0)>0) tgt+=perHead; });
       if(any){ dDays++; dTgt+=tgt; dAch+=ach; if(ach>dBestV){ dBestV=ach; dBestI=i; } }
     });
@@ -7241,8 +7709,8 @@ class Component extends DCLogic {
     const crActions=pts;
 
     return {circleReport:cir, crScore, crRoll, crWatch, crActions, crMeta, crMetaCards, crMonths, crSurveyors, crSurveyorCount:crSurveyors.length, crKpis, crScope, crScopeChips, crVillage, crBest,
-      crCal, crCalMonths, crCalMonth, onCrCalMonth, crSvyRangeBtns, crSvyRangeLabel,
-      crSvyDayHeads, crSvyGrid, crSvyDayNote,
+      crCal, crCalMonths, crCalMonth, onCrCalMonth, crSvyRangeBtns, crSvyRangeLabel, crWeekChips, crWeekLabel, crWeek,
+      crSvyDayHeads, crSvyGrid, crSvyHeadStyle, crSvyDayNote, crSvyMinW,
       crSvyPicked:svySel!=='ALL', crSvyNotPicked:svySel==='ALL', crSvyLineName, crDaily,
       crDrill, closeCrDrill:this.closeCrDrill, crSvy:this.state.crSvy, crSvyDetail, closeCrSvy:this.closeCrSvy,
       crSvySel:svySel, crSvyOptions, crDay, crDayOptions, onCrSvySel:this.onCrSvySel, onCrDay:this.onCrDay, crPerHead:perHead, crLastWeek, crLwMatrix, crShowDaily:!this.state.crHideDaily, crDailyToggleLabel:this.state.crHideDaily?'Show chart':'Hide chart', toggleCrDaily:this.toggleCrDaily,
@@ -7265,7 +7733,6 @@ class Component extends DCLogic {
       {id:'secProj', label:'Project Overview',d:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z'},
       {id:'secAtt',  label:'Attendance',      d:'M4 6h16v14H4z M4 11h16 M9 4v4 M15 4v4'},
       {id:'secProd', label:'Productivity',    d:'M3 17l6-6 4 4 7-7 M17 8h4v4'},
-      {id:'secScore',label:'Circle Scorecard',d:'M4 20V9h4v11 M10 20V4h4v16 M16 20v-7h4v7 M3 20h18'},
       {id:'monthlyOverview', label:'Monthly Overview', d:'M4 6h16v14H4z M4 11h16 M8 15h3 M8 18h8'},
     ]},
     {label:'Programmes', items:[
@@ -7291,7 +7758,7 @@ class Component extends DCLogic {
     const act=this.state.activeSec||'ALL';
     const base='height:32px;padding:0 11px;border:none;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:.2px;cursor:pointer;white-space:nowrap;flex:none;font-family:inherit;transition:background .15s ease,color .15s ease;';
     const SHORT={ALL:'All', secDash:'Dashboard', secProj:'Project', secAtt:'Attendance', secProd:'Productivity',
-      monthlyOverview:'Monthly', secRes:'Re-Survey', secNak:'Naksha', secTea:'Tea Garden', secFC:'FC Center', secScore:'Scorecard'};
+      monthlyOverview:'Monthly', secRes:'Re-Survey', secNak:'Naksha', secTea:'Tea Garden', secFC:'FC Center'};
     const tabs=[];
     this._navDefs.forEach(g=>g.items.forEach(it=>{
       const on=(act===it.id);
@@ -8854,8 +9321,10 @@ class Component extends DCLogic {
         const gI=this.activeIdxs(); const gL=gI[gI.length-1];
         const gMk=this.monthKey(data.dates[gL])||''; const mI=gMk?this.monthDayIdxs(gMk):[];
         const scopeIdxs = mI.length?mI:data.dates.map((_,i)=>i);
+        const _wk=this.state.crWeek||'ALL', _wb=this.weekBuckets(scopeIdxs);
+        const _use = _wk==='ALL' ? scopeIdxs : (((_wb[+_wk-1]||[]).length)?_wb[+_wk-1]:scopeIdxs);
         const days=[];
-        scopeIdxs.forEach(i=>{ let t=0,act=0,any=false; fcrecs.forEach(r=>{ const s=r.st[i]; const raw=r.dg[i]||0; if(s!=='X')any=true; const sv=this.splitVal(r,i); t+=sv.dag+sv.ror; if(raw>0)act++; }); if(any) days.push({label:this.dateLabel(data.dates[i]), ach:t, tgt:act*perHead}); });
+        _use.forEach(i=>{ let t=0,act=0,any=false; fcrecs.forEach(r=>{ const s=r.st[i]; const raw=r.dg[i]||0; if(s!=='X')any=true; const sv=this.splitVal(r,i); t+=sv.dag+sv.ror; if(raw>0)act++; }); if(any) days.push({label:this.dateLabel(data.dates[i]), ach:t, tgt:act*perHead}); });
         const many=days.length>26;
         c.chCircDaily.setOption({
           tooltip:{...tip, axisPointer:{type:'line',lineStyle:{color:'#B7C3CE',type:'dashed'}}, padding:[9,13],
@@ -12432,6 +12901,8 @@ if(c.chDailyDag){
         topAllStyle:this.segStyle(true), topBrahStyle:this.segStyle(false), topBorakStyle:this.segStyle(false),
         vilAllStyle:this.segStyle(true), vilBrahStyle:this.segStyle(false), vilBorakStyle:this.segStyle(false),
         ...this.circleReportData(),
+        ...this.circleProdData(),
+        ...this.fcPerfData(),
         ...this.projectOverview(),
         fullChart:null, fullTitle:'', closeFull:this.closeFull, fullZoomReset: 1/(this.state.zoom||1), fullZoom:1, fullZoomPct:'100%', fullZoomIn:this.fullZoomIn, fullZoomOut:this.fullZoomOut, onFullWheel:this.onFullWheel, stopProp:(e)=>{ e.stopPropagation(); },
         expDaily:()=>{}, expAtt:()=>{}, expArea:()=>{}, expResDonut:()=>{}, expTrend:()=>{}, expCircle:()=>{}, expFC:()=>{}, expTop:()=>{}, expVillage:()=>{},
@@ -12494,7 +12965,6 @@ if(c.chDailyDag){
     });
     const vendorOpts=Array.from(new Set(data.records.map(r=>r.ven).filter(Boolean))).sort();
     const multiFilters=[
-      mkFilter('fCircle','Circle',circleOpts,true),
       mkFilter('fVen','Vendor',vendorOpts)
     ];
     const hasActiveChips=multiFilters.some(f=>f.items.some(i=>i.checked));
@@ -13831,6 +14301,8 @@ if(c.chDailyDag){
       fullZoom:this.state.fullZoom||1, fullZoomPct:Math.round((this.state.fullZoom||1)*100)+'%', fullZoomIn:this.fullZoomIn, fullZoomOut:this.fullZoomOut, onFullWheel:this.onFullWheel,
       stopProp:(e)=>{ e.stopPropagation(); },
       ...this.circleReportData(),
+      ...this.circleProdData(),
+        ...this.fcPerfData(),
       ...this.projectOverview(),
       vis:this.visVals(),
       showResSec:!fArea.length||fArea.some(a=>/RESURVEY|RE-SURVEY/i.test(String(a))),
