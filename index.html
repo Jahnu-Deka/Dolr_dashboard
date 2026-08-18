@@ -6995,6 +6995,23 @@ class Component extends DCLogic {
     });
   }
 
+  // ── Render memo ────────────────────────────────────────────────────────────
+  // Every heavy data function used to re-run on EVERY render (opening a modal, a tick of the
+  // clock, a hover). They are pure with respect to the loaded data + the active filters, so
+  // cache them against a signature of exactly those inputs and reuse until one changes.
+  _memoSig(){
+    const s=this.state;
+    return [s.dayIndex, s.monthMode, s.mMonth, (s.fAm||[]).join(','), (s.fArea||[]).join(','),
+      (s.fValley||[]).join(','), (s.fCircle||[]).join(','), (s.fVen||[]).join(','),
+      s.resValley, s.teaRegion, s.scPeriod, s.scMonth, s.topScope, s.vilValley, s.navSel,
+      s.lbScope, s.mapBy, s.mapArea, s.theme, s.selDate].join('|');
+  }
+  _memo(key, fn){
+    const sig=this._memoSig(), d=this.state.data;
+    if(this._memoSigV!==sig || this._memoData!==d){ this._memoSigV=sig; this._memoData=d; this._memoC={}; }
+    if(this._memoC && Object.prototype.hasOwnProperty.call(this._memoC, key)) return this._memoC[key];
+    const v=fn(); (this._memoC=this._memoC||{})[key]=v; return v;
+  }
   hideAllTips(){
     try{ if(this._charts) Object.values(this._charts).forEach(c=>{ try{ if(c && (!c.isDisposed || !c.isDisposed())) c.dispatchAction({type:'hideTip'}); }catch(e){} }); }catch(e){}
     try{ document.querySelectorAll('.ectip').forEach(t=>{ t.innerHTML=''; t.style.display='none'; }); }catch(e){}
@@ -7732,7 +7749,6 @@ class Component extends DCLogic {
   // ── v2 sidebar navigation ────────────────────────────────────────────────
   _navDefs=[
     {label:'Overview', items:[
-      {id:'ALL',     label:'All Sections',     d:'M4 5h16 M4 12h16 M4 19h16'},
       {id:'secDash', label:'Dashboard',        d:'M4 4h7v6H4z M13 4h7v10h-7z M4 13h7v7H4z M13 17h7v3h-7z'},
       {id:'secProj', label:'Project Overview',d:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z'},
       {id:'secAtt',  label:'Attendance',      d:'M4 6h16v14H4z M4 11h16 M9 4v4 M15 4v4'},
@@ -7759,7 +7775,7 @@ class Component extends DCLogic {
   };
   // Section tabs rendered in the header band (they replaced the sidebar).
   hdrTabsVals(){
-    const act=this.state.activeSec||'ALL';
+    const act=this.state.activeSec||'secDash';
     const base='height:32px;padding:0 11px;border:none;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:.2px;cursor:pointer;white-space:nowrap;flex:none;font-family:inherit;transition:background .15s ease,color .15s ease;';
     const SHORT={ALL:'All', secDash:'Dashboard', secProj:'Project', secAtt:'Attendance', secProd:'Productivity',
       monthlyOverview:'Monthly', secRes:'Re-Survey', secNak:'Naksha', secTea:'Tea Garden', secFC:'FC Center'};
@@ -7780,7 +7796,7 @@ class Component extends DCLogic {
     // every section stays visible.
     const tabs=document.querySelector('[data-hdrtabs]');
     const noNav=!tabs || getComputedStyle(tabs).display==='none';
-    const act=noNav ? 'ALL' : (this.state.activeSec||'ALL');
+    const act=noNav ? 'secDash' : (this.state.activeSec||'secDash');
     const ids=this._secIds();
     const idsIn=(el)=>ids.filter(id=> el.id===id || el.querySelector('#'+id));
     // Quick-view Dashboard: its own tab only — never part of the ownership chain.
