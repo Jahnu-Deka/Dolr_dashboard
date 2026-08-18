@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build" content="2026-08-18e">
+<meta name="build" content="2026-08-18f">
 <script>window.__SHEET_ONLY=true;</script>
 <script>// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
 "use strict";
@@ -6766,7 +6766,7 @@
     <div style="flex:1;"></div>
     <div style="color:#C7D8E8;">Source · Attendance &amp; Project Overview workbook</div>
     <div style="width:1px;height:20px;background:rgba(255,255,255,.18);"></div>
-    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18e</div>
+    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18f</div>
   </div>
 </div>
 </x-dc>
@@ -11810,6 +11810,30 @@ if(c.chDailyDag){
         seen[key]=1; sigs[sigOf(aoa)]=key; wb.Sheets[key]=ws; wb.SheetNames.push(key); return true;
       }catch(e){ return false; }
     };
+
+    // ── Route −1 (https only): the workbook's own XLSX export. One request returns EVERY tab with
+    // its real name, so small side tabs that gviz refuses to serve by name (Query Tracker) can be
+    // recovered. Kept deliberately narrow — it only stashes raw rows for the side-tab parsers, so
+    // the established attendance/villages/naksha routes below are untouched.
+    // Blocked from a local file:// copy, where the gviz routes take over.
+    if(!/^file:/i.test(String(location.protocol)) && id){
+      try{
+        const xu='https://docs.google.com/spreadsheets/d/'+id+'/export?format=xlsx&_cb='+Date.now();
+        const xr=await fetch(xu, {cache:'no-store', redirect:'follow'});
+        diag.push('xlsx-export → HTTP '+xr.status);
+        if(xr.ok){
+          const buf=await xr.arrayBuffer();
+          if(buf && buf.byteLength>2000){
+            const xwb=window.XLSX.read(new Uint8Array(buf), {type:'array', cellDates:true});
+            (xwb.SheetNames||[]).forEach(n=>{
+              try{ const aoa=window.XLSX.utils.sheet_to_json(xwb.Sheets[n],{header:1,blankrows:false,defval:''});
+                (this._rawAoa=this._rawAoa||{})[String(n).trim()]=aoa; }catch(e){}
+            });
+            diag.push('xlsx-export tabs: '+(xwb.SheetNames||[]).join(', '));
+          }
+        }
+      }catch(e){ diag.push('xlsx-export → blocked ('+(e&&e.message||'cors')+')'); }
+    }
 
     // ── Route 0 (primary): gviz JSONP on the ordinary /d/<id>/ share link. No CORS involved,
     // so this is the route that works from a downloaded local copy of the dashboard.
