@@ -8194,6 +8194,22 @@ class Component extends DCLogic {
       setRes(run,  partsFor(r=>r.running));
       setRes(hold, partsFor(r=>(Number(r.hold)||0)+(Number(r.untouch)||0)));
     }
+    // 2ND PHASE TEA GARDEN must agree with the live "Tea Garden" sheet the Tea Garden tab reads,
+    // so derive completed / ongoing / (yet-to-start + hold) from the same rows, split by region.
+    const tgOv=this.teaOverview()||{};
+    const tgRows=(tgOv.regions||[]).filter(r=>Number(r.total)>0);
+    if(tgRows.length){
+      const tgTotal=tgRows.reduce((s,r)=>s+(Number(r.total)||0),0);
+      const tgParts=(pick)=>tgRows.map(r=>({label:this.titleCase(String(r.area||'').trim())||'Other', v:Number(pick(r))||0})).filter(p=>p.v>0);
+      const setTea=(arr,parts)=>{ const it=(arr||[]).find(x=>/tea garden/i.test(x.name) && !/1st phase/i.test(x.name));
+        const v=parts.reduce((s,p)=>s+p.v,0);
+        if(it){ it.parts=parts; it.value=v; it.total=Math.max(tgTotal, v); }
+        else arr.push({name:'2nd Phase Tea Garden', unit:'estates', parts, value:v, total:tgTotal});
+      };
+      setTea(comp, tgParts(r=>r.completed));
+      setTea(run,  tgParts(r=>r.ongoing));
+      setTea(hold, tgParts(r=>(Number(r.yts)||0)+(Number(r.hold)||0)));
+    }
     const tot=(a)=>a.reduce((s,i)=>s+i.value,0);
     const cTot=tot(comp), rTot=tot(run), hTot=tot(hold), grand=(cTot+rTot+hTot)||1;
     const pctPill=(pc)=> pc>=100?{bg:'#D6E4F0',color:'#113C61'}:(pc>=60?{bg:'#E3EDF7',color:'#1F5480'}:(pc>=30?{bg:'#FBF2E1',color:'#8A5A12'}:{bg:'#F8E3E1',color:'#8F332D'}));
