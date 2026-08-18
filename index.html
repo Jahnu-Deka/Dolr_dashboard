@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build" content="2026-08-18g">
+<meta name="build" content="2026-08-18h">
 <script>window.__SHEET_ONLY=true;</script>
 <script>// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
 "use strict";
@@ -6766,7 +6766,7 @@
     <div style="flex:1;"></div>
     <div style="color:#C7D8E8;">Source · Attendance &amp; Project Overview workbook</div>
     <div style="width:1px;height:20px;background:rgba(255,255,255,.18);"></div>
-    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18g</div>
+    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18h</div>
   </div>
 </div>
 </x-dc>
@@ -12119,6 +12119,8 @@ if(c.chDailyDag){
             const flat=a.slice(0,6).reduce((s,r)=>s.concat(r||[]),[]).map(c=>String(c==null?'':c).trim().toLowerCase());
             return flat.some(x=>/obstac|highlight|query|issue/.test(x)); };
           const qPinned=(this._extraUrls||[]).slice();
+          // Query Tracker tab of the standing workbook — gviz will not serve it by name, so pin the id.
+          if(/1OnrT4VTMLtOv-cKkNx8ShCDg9Q3fkFFkzCnXO55aFtU/.test(String(url))) qPinned.push('#gid=2123319391');
           if(!qOk(this._queryRaw)){
             for(const qu of qPinned){
               const qid=this.gsheetId(qu)||id; const m=/[#&?]gid=(\d+)/.exec(qu); if(!m) continue;
