@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build" content="2026-08-18h">
+<meta name="build" content="2026-08-19a">
 <script>window.__SHEET_ONLY=true;</script>
 <script>// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
 "use strict";
@@ -6766,7 +6766,7 @@
     <div style="flex:1;"></div>
     <div style="color:#C7D8E8;">Source · Attendance &amp; Project Overview workbook</div>
     <div style="width:1px;height:20px;background:rgba(255,255,255,.18);"></div>
-    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-18h</div>
+    <div style="font-family:'IBM Plex Mono',monospace;color:#C7D8E8;">NeoGeo Info Limited · Productivity Portal v3.0 · build 2026-08-19a</div>
   </div>
 </div>
 </x-dc>
@@ -12121,6 +12121,32 @@ if(c.chDailyDag){
           const qPinned=(this._extraUrls||[]).slice();
           // Query Tracker tab of the standing workbook — gviz will not serve it by name, so pin the id.
           if(/1OnrT4VTMLtOv-cKkNx8ShCDg9Q3fkFFkzCnXO55aFtU/.test(String(url))) qPinned.push('#gid=2123319391');
+          // ── Route Q0 (http/https only): plain CSV export of the pinned gid. This is the route that
+          // works from a hosted copy — gviz JSONP inside an iframe is what a GitHub Pages page cannot
+          // rely on, which is why the query tab was empty online but present locally (local kept the
+          // last Excel upload in storage). CSV keeps every row, so a gid hit is accepted as-is.
+          if(!/^file:/i.test(String(location.protocol))){
+            const qGids=[];
+            qPinned.forEach(qu=>{ const m=/[#&?]gid=(\d+)/.exec(qu); if(m) qGids.push([this.gsheetId(qu)||id, m[1]]); });
+            for(const [qid,qg] of qGids){
+              if(qOk(this._queryRaw)) break;
+              for(const cu of [
+                'https://docs.google.com/spreadsheets/d/'+qid+'/gviz/tq?tqx=out:csv&gid='+qg+'&_cb='+Date.now(),
+                'https://docs.google.com/spreadsheets/d/'+qid+'/export?format=csv&gid='+qg+'&_cb='+Date.now()
+              ]){
+                try{
+                  const r=await fetch(cu,{cache:'no-store',redirect:'follow'});
+                  if(!r.ok){ diag.push('query-csv:'+qg+' → HTTP '+r.status); continue; }
+                  const txt=await r.text();
+                  if(!txt || /^\s*(<|\{"?error)/i.test(txt)){ diag.push('query-csv:'+qg+' → not csv'); continue; }
+                  const sub=window.XLSX.read(txt,{type:'string',cellDates:true,raw:false});
+                  const a=window.XLSX.utils.sheet_to_json(sub.Sheets[sub.SheetNames[0]],{header:1,blankrows:false,defval:''});
+                  if(a && a.length>1){ this._queryRaw=a; diag.push('query-via-csv:'+qg+' ('+a.length+' rows)'); break; }
+                  diag.push('query-csv:'+qg+' → 0 rows');
+                }catch(e){ diag.push('query-csv:'+qg+' → blocked ('+(e&&e.message||'cors')+')'); }
+              }
+            }
+          }
           if(!qOk(this._queryRaw)){
             for(const qu of qPinned){
               const qid=this.gsheetId(qu)||id; const m=/[#&?]gid=(\d+)/.exec(qu); if(!m) continue;
@@ -12971,7 +12997,8 @@ if(c.chDailyDag){
 
         if(fcRoster.length>40) fcRoster=[];
         try{ this._qDiag=((this._gsDiag&&this._gsDiag.length)?(this._gsDiag.filter(x=>/query|read:/i.test(String(x))).join(' | ')+' \u00b7 '):'')+'tabs read: '+(wb.SheetNames||[]).join(', ')+' · query rows: '+queries.length
-          +(qName?(' · from tab "'+qName+'"'):(this._queryRaw?' · from direct probe':' · no query tab found')); }catch(e){}
+          +(qName?(' · from tab "'+qName+'"'):(this._queryRaw?' · from direct probe':' · no query tab found'))
+          +(this._qHdrDiag?(' · '+this._qHdrDiag):''); }catch(e){}
         const data={ dates:allDates, records, villages, naksha:nakshaData, projectSheet, fcLive, fcLiveByDate, fcRoster, teaSheet, queries };
         return {data, monthsCount:months.length, totalDays};
   }
