@@ -8842,11 +8842,13 @@ class Component extends DCLogic {
         const s=r.st[di]; const raw=r.dg[di]||0;
         const sv=this.splitVal(r,di);
         if(s==='P')present++; else if(s==='L')leave++; else if(s==='A')absent++;
+        // Zero DAG counts EVERY surveyor marked Present with nothing booked — E-JORIP included —
+        // so the KPI card matches the Zero Output list and the raw sheet count.
+        if(s==='P'&&raw===0){ zero++; zeroAll++; }
         if(!prodOk) return;   // attendance counted above; no productivity for E-JORIP
         dagDay+=sv.dag; ror+=sv.ror;
-        if(raw>0)active++; else if(s!=='X')zeroAll++;
+        if(raw>0)active++;
         if(sv.dag>0)dagActive++;
-        if(s==='P'&&raw===0)zero++;
         if(raw>0&&raw<10)below++;
         if(raw>=10)above++;
       });
@@ -9134,7 +9136,6 @@ class Component extends DCLogic {
     if(idxs.length){
       const grp=new Map();
       this.filtered().forEach(r=>{
-        if(!this.isProdRec(r)) return;
         const key=(String(r.c||'').trim().toUpperCase())||('N:'+String(r.n||'').trim().toUpperCase()+'|'+String(r.cir||'').trim().toUpperCase());
         let g=grp.get(key);
         if(!g){ g={rec:r, st:idxs.map(()=>'X'), out:idxs.map(()=>0)}; grp.set(key,g); }
@@ -9145,8 +9146,6 @@ class Component extends DCLogic {
       });
       grp.forEach(g=>{
         const r=g.rec;
-        // Moran is an E-Jorip circle — it books no productivity, so zero output means nothing there.
-        if(/^MORAN$/i.test(String(r.cir||'').trim())) return;
         let present=0, zeroDays=0, output=0;
         g.st.forEach((s,k)=>{ if(s==='P'){ present++; if(!g.out[k]) zeroDays++; } output+=g.out[k]; });
         if(present>0 && output===0){
@@ -14379,8 +14378,8 @@ if(c.chDailyDag){
       recs.forEach(r=>{
         if(!_aPred(String(r.area||'').toUpperCase())) return;
         if(!_regOk(r)) return;
-        // Leave is an attendance metric (E-JORIP included); Zero DAG is productivity (E-JORIP excluded).
-        if(!wantLeave && !this.isProdRec(r)) return;
+        // Both Leave and Zero DAG are counted for every vertical, E-JORIP included, so the
+        // breakdown totals match the KPI card and the Zero Output list.
         idxs.forEach(i=>{
           const s=r.st[i]; const v=r.dg[i]||0;
           // Zero DAG = marked Present on the day but booked no output. Leave / absent must not count.
