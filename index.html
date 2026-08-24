@@ -6650,7 +6650,7 @@
                   </sc-for>
                 </div>
               </div>
-              <div style="overflow-x:auto;">
+              <div style="overflow:auto;max-height:min(62vh,560px);overscroll-behavior:contain;">
                 <div style="min-width:{{ crSvyMinW }};">
                   <div style="{{ crSvyHeadStyle }}">
                     <span>#</span><span>Surveyor</span><span>Emp ID</span><span>Field Coordinator</span>
@@ -7603,7 +7603,7 @@ class Component extends DCLogic {
     const crSvyDayHeads=tblIdxs.map(i=>{ const s=String(data.dates[i]); const mm=s.match(/(\d{1,2})/);
       return /^\d{4}-\d{2}-\d{2}$/.test(s)?String(+s.split('-')[2]):(mm?mm[1]:String(i+1)); });
     const crSvyGrid='display:grid;grid-template-columns:38px minmax(200px,1.4fr) 92px minmax(150px,1fr) repeat('+tblIdxs.length+',minmax(54px,.6fr)) 74px 58px 66px 56px 58px 56px 56px;gap:6px;';
-    const crSvyHeadStyle=crSvyGrid+"padding:11px 14px;background:#33475B;color:#fff;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:5px 5px 0 0;";
+    const crSvyHeadStyle=crSvyGrid+"padding:11px 14px;background:#33475B;color:#fff;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-radius:5px 5px 0 0;position:sticky;top:0;z-index:5;box-shadow:0 1px 0 #24333F;";
     const crSvyMinW=(700+tblIdxs.length*60)+'px';
     const crSvyDayNote='daily '+scopeUnit+' per surveyor · daily norm '+perHead+' · green ≥ norm · amber below · red zero · L = leave · A = absent';
     const crSurveyors=tblRoster
