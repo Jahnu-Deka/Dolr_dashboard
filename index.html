@@ -2791,7 +2791,7 @@
   }
   /* tables: glass header, see-through body, zebra kept legible */
   [data-theme="light"] table thead th{background:rgba(255,255,255,.58) !important;backdrop-filter:blur(3px) !important;-webkit-backdrop-filter:blur(3px) !important;}
-  .dash-root table[data-fclead] thead th,[data-theme] table[data-fclead] thead th,table[data-fclead] thead th{background:#1E4A73 !important;color:#FFFFFF !important;border-bottom:1px solid #16395A !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}
+  .dash-root table[data-fclead] thead th,[data-theme] table[data-fclead] thead th,table[data-fclead] thead th{background-color:#3C5C9C !important;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px) !important;color:#FFFFFF !important;text-shadow:0 1px 2px rgba(8,24,52,.45) !important;border-bottom:1px solid #2E4A80 !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}
   .dash-root table[data-fclead] tbody tr:nth-child(even) > td,[data-theme] table[data-fclead] tbody tr:nth-child(even) > td{background:#F6F9FC !important;}
   .dash-root table[data-fclead] tbody tr:nth-child(odd) > td,[data-theme] table[data-fclead] tbody tr:nth-child(odd) > td{background:#FFFFFF !important;}
   [data-theme="light"] table tbody tr{background:transparent !important;}
@@ -2820,6 +2820,8 @@
   [data-secalways] .pj-card,[data-secalways] .chart-card,[data-secalways] [data-chartcard],
   [data-secalways] .kpi-grid > div,[data-secalways] table thead th{background:#FFFFFF !important;}
   [data-secalways] table tbody tr:nth-child(even){background:#F4F8FC !important;}
+  /* FC Leaderboard keeps its royal-blue banded header inside always-on sections too */
+  [data-secalways] table[data-fclead] thead th,html body table[data-fclead] thead th{background-color:#3C5C9C !important;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px) !important;color:#FFFFFF !important;text-shadow:0 1px 2px rgba(8,24,52,.45) !important;}
   /* FC full-table modal: keep the navy header + totals band (global rules force td backgrounds transparent) */
   [data-fctbl] thead td{background:#F5F8FC !important;color:#54677A !important;}
   [data-fctbl] tbody tr:nth-child(even){background:#F8FAF9 !important;}
@@ -3504,113 +3506,167 @@
         </sc-if>
       </div>
 
-      <!-- 3 · LEADERBOARDS -->
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#5B7891;">Leaderboards</span>
-        <button sc-camel-on-click="{{ openLb }}" title="Open full screen" style="display:flex;align-items:center;gap:5px;padding:4px 11px;border:1px solid #0F2A43;border-radius:5px;background:#FFFFFF;color:#0F2A43;font-size:10.5px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:inherit;">⤢ Full screen</button>
-        <span style="font-size:10.5px;color:#98A2AC;">{{ dash.lbLabel }} · zero-output entries hidden</span>
+      <!-- 3 · CIRCLE PRODUCTIVITY DETAIL -->
+      <div style="background:#fff;border:1px solid #E3E8E6;border-radius:12px;box-shadow:0 2px 10px rgba(14,38,59,.06);margin-bottom:16px;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid #EAEFED;">
+          <div style="display:flex;align-items:center;gap:14px;min-width:0;">
+            <div style="width:70px;height:70px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:conic-gradient(#1E4A73 100%, #E7EDF3 0);">
+              <div style="width:54px;height:54px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:700;color:#0F2A43;line-height:1;">{{ dash.dprod.nCircles }}</span>
+              </div>
+            </div>
+            <div style="min-width:0;">
+              <div style="font-size:15px;font-weight:700;color:#16202B;">Circle-wise Productivity — Daily Detail</div>
+              <div style="font-size:12px;color:#5B7891;margin-top:2px;">{{ dash.dprod.progLabel }} · {{ dash.dprod.rangeLabel }} · Target = active day × {{ dash.dprod.tgtNote }}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:9.5px;font-weight:700;letter-spacing:1px;color:#98A2AC;text-transform:uppercase;margin-bottom:5px;">Week</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <sc-for list="{{ dash.dprod.weekBtns }}" as="wb" hint-placeholder-count="4">
+                  <button sc-camel-on-click="{{ wb.onClick }}" style="{{ wb.style }}">{{ wb.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="position:relative;">
+              <div style="font-size:9.5px;font-weight:700;letter-spacing:1px;color:#98A2AC;text-transform:uppercase;margin-bottom:5px;">Date</div>
+              <button sc-camel-on-click="{{ dash.dprod.cal.toggle }}" style="{{ dash.dprod.cal.btnStyle }}">
+                <svg width="13" height="13" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+                <span>{{ dash.dprod.cal.btnLabel }}</span>
+              </button>
+              <sc-if value="{{ dash.dprod.cal.open }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:100%;right:0;margin-top:7px;z-index:40;background:#FFFFFF;border:1px solid #DCE3E9;border-radius:10px;box-shadow:0 10px 28px rgba(14,38,59,.18);padding:12px;width:268px;">
+                  <div style="font-size:12px;font-weight:700;color:#0F2A43;text-align:center;margin-bottom:9px;">{{ dash.dprod.cal.monthLabel }}</div>
+                  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;justify-items:center;margin-bottom:4px;">
+                    <sc-for list="{{ dash.dprod.cal.dows }}" as="dw" hint-placeholder-count="7">
+                      <span style="font-size:9.5px;font-weight:700;color:#98A2AC;letter-spacing:.5px;">{{ dw.label }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;justify-items:center;">
+                    <sc-for list="{{ dash.dprod.cal.cells }}" as="cd" hint-placeholder-count="35">
+                      <button sc-camel-on-click="{{ cd.onClick }}" style="{{ cd.style }}">{{ cd.label }}</button>
+                    </sc-for>
+                  </div>
+                  <button sc-camel-on-click="{{ dash.dprod.cal.clear }}" style="{{ dash.dprod.cal.clearStyle }}">Show full week</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+        <div style="overflow:auto;max-height:min(62vh,560px);overscroll-behavior:contain;">
+          <div style="min-width:{{ dash.dprod.minW }};">
+            <div style="{{ dash.dprod.headStyle }}">
+              <span style="text-align:center;">Circle</span><span style="text-align:center;">Total Surveyor</span><span style="text-align:center;">Active</span>
+              <sc-for list="{{ dash.dprod.heads }}" as="dh" hint-placeholder-count="7"><span style="text-align:center;">{{ dh }}</span></sc-for>
+              <span style="text-align:right;">Achieved</span><span style="text-align:right;">Target KPI</span><span style="text-align:right;">% Achieve</span>
+            </div>
+            <sc-for list="{{ dash.dprod.rows }}" as="cr" hint-placeholder-count="8">
+              <div style="{{ cr.rowStyle }}">
+                <span style="text-align:center;font-weight:600;color:#16202B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ cr.name }}</span>
+                <span style="text-align:center;font-family:'IBM Plex Mono',monospace;color:#56655F;">{{ cr.svy }}</span>
+                <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-weight:600;color:#1E4A73;">{{ cr.act }}</span>
+                <sc-for list="{{ cr.cells }}" as="cc" hint-placeholder-count="7">
+                  <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:{{ cc.color }};background:{{ cc.bg }};border-radius:4px;padding:6px 0;">{{ cc.label }}</span>
+                </sc-for>
+                <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#1E4A73;">{{ cr.ach }}</span>
+                <span style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#56655F;">{{ cr.tgt }}</span>
+                <span style="display:flex;align-items:center;gap:8px;justify-content:flex-end;">
+                  <span style="flex:1;height:8px;background:#EAEFED;border-radius:5px;overflow:hidden;min-width:56px;"><span style="{{ cr.barStyle }}"></span></span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;min-width:46px;text-align:right;color:{{ cr.pctC }};">{{ cr.pct }}</span>
+                </span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ dash.dprod.hasRows }}" hint-placeholder-val="{{ true }}">
+            <div style="{{ dash.dprod.totalStyle }}">
+              <span style="text-align:center;font-weight:700;color:#0F2A43;">Total</span>
+              <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#0F2A43;">{{ dash.dprod.totSvy }}</span>
+              <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#1E4A73;">{{ dash.dprod.totAct }}</span>
+              <sc-for list="{{ dash.dprod.dayTotals }}" as="dt" hint-placeholder-count="7">
+                <span style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:#0F2A43;">{{ dt }}</span>
+              </sc-for>
+              <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#1E4A73;">{{ dash.dprod.totAch }}</span>
+              <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:#56655F;">{{ dash.dprod.totTgt }}</span>
+              <span style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:{{ dash.dprod.totPctC }};">{{ dash.dprod.totPct }}</span>
+            </div>
+            </sc-if>
+            <sc-if value="{{ dash.dprod.noRows }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:34px 20px;text-align:center;font-size:14px;color:#8A93A0;">{{ dash.dprod.emptyNote }}</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="padding:11px 20px;background:#F7FAF9;border-top:1px solid #EAEFED;font-size:13px;color:#7A8794;">Total Surveyor = on roster this week · Active = booked at least 1 DAG / RoR · daily figure per circle · <span style="color:#1E7A50;font-weight:600;">green</span> meets daily target · <span style="color:#8A5A12;font-weight:600;">amber</span> below target · <span style="color:#C0504D;font-weight:600;">red</span> zero output · · no roster day</div>
       </div>
-      <div class="grid-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:9px;">
-        <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
-          <div style="font-size:12px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Top Circles by Achievement %</div>
-          <div style="font-size:10.5px;color:#7A8794;margin-top:1px;">achievement vs daily KPI target</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px;">
-            <sc-for list="{{ dash.topCircles }}" as="t" hint-placeholder-count="5">
-              <div style="display:grid;grid-template-columns:88px 1fr 52px;align-items:center;gap:8px;">
-                <div style="font-size:11px;font-weight:600;color:#3A4753;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.name }}</div>
-                <div style="height:14px;background:#EEF2F6;border-radius:3px;overflow:hidden;">
-                  <div style="{{ t.barStyle }}"></div>
-                </div>
-                <div style="{{ t.valStyle }}">{{ t.value }}</div>
-              </div>
-            </sc-for>
+
+      <!-- 3b · TOP 10 SURVEYORS + OUTPUT MAP -->
+      <div style="display:grid;grid-template-columns:1.75fr 1fr;gap:12px;margin-bottom:16px;align-items:stretch;">
+        <div style="background:#fff;border:1px solid #E3E8E6;border-radius:12px;box-shadow:0 2px 10px rgba(14,38,59,.06);overflow:hidden;display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:13px 18px 10px;border-bottom:1px solid #EAEFED;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#16202B;">Top 10 Surveyors — Achievement vs Target</div>
+              <div style="font-size:11.5px;color:#5B7891;margin-top:2px;">{{ dash.dprod.progLabel }} · {{ dash.dprod.rangeLabel }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:13px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:#5B7891;"><span style="width:12px;height:12px;border-radius:3px;background:#E4EAF0;"></span>KPI target</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:#5B7891;"><span style="width:12px;height:12px;border-radius:3px;background:#1E4A73;"></span>Achieved</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:#5B7891;"><span style="width:12px;height:12px;border-radius:3px;background:#C0504D;"></span>below 40%</span>
+            </div>
           </div>
+          <div id="chDashSvyRank" class="chart-box" style="width:100%;height:452px;padding:8px 12px 12px;"></div>
         </div>
-        <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
-          <div style="font-size:12px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Top Surveyors by Output</div>
-          <div style="font-size:10.5px;color:#7A8794;margin-top:1px;">units booked in scope</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px;">
-            <sc-for list="{{ dash.topSvy }}" as="t" hint-placeholder-count="5">
-              <div style="display:grid;grid-template-columns:88px 1fr 52px;align-items:center;gap:8px;">
-                <div style="font-size:11px;font-weight:600;color:#3A4753;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.name }}</div>
-                <div style="height:14px;background:#EEF2F6;border-radius:3px;overflow:hidden;">
-                  <div style="{{ t.barStyle }}"></div>
-                </div>
-                <div style="{{ t.valStyle }}">{{ t.value }}</div>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-        <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
-          <div style="font-size:12px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Low-Performing Circles</div>
-          <div style="font-size:10.5px;color:#7A8794;margin-top:1px;">achievement vs daily KPI target</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px;">
-            <sc-for list="{{ dash.lowCircles }}" as="t" hint-placeholder-count="5">
-              <div style="display:grid;grid-template-columns:88px 1fr 52px;align-items:center;gap:8px;">
-                <div style="font-size:11px;font-weight:600;color:#3A4753;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.name }}</div>
-                <div style="height:14px;background:#EEF2F6;border-radius:3px;overflow:hidden;">
-                  <div style="{{ t.barStyle }}"></div>
-                </div>
-                <div style="{{ t.valStyle }}">{{ t.value }}</div>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-        <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
-          <div style="font-size:12px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Bottom Surveyors</div>
-          <div style="font-size:10.5px;color:#7A8794;margin-top:1px;">present on field · lowest output</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px;">
-            <sc-for list="{{ dash.botSvy }}" as="t" hint-placeholder-count="5">
-              <div style="display:grid;grid-template-columns:88px 1fr 52px;align-items:center;gap:8px;">
-                <div style="font-size:11px;font-weight:600;color:#3A4753;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.name }}</div>
-                <div style="height:14px;background:#EEF2F6;border-radius:3px;overflow:hidden;">
-                  <div style="{{ t.barStyle }}"></div>
-                </div>
-                <div style="{{ t.valStyle }}">{{ t.value }}</div>
-              </div>
-            </sc-for>
-          </div>
+        <div data-mapcard="1" style="background:#fff;border:1px solid #E3E8E6;border-radius:12px;box-shadow:0 2px 10px rgba(14,38,59,.06);padding:13px 16px 12px;display:flex;flex-direction:column;">
+          <div style="font-size:14px;font-weight:700;color:#16202B;">Assam — Output Distribution</div>
+          <div style="font-size:11.5px;color:#5B7891;margin-top:2px;">bubble size = units booked per circle</div>
+          <div id="chDashMap" class="chart-box" style="width:100%;height:452px;margin-top:6px;"></div>
         </div>
       </div>
 
-      <!-- 4 · FC TABLE · GAUGES · MAP -->
-      <div class="grid-2" style="display:grid;grid-template-columns:2.6fr 1fr;gap:9px;margin-bottom:9px;align-items:stretch;">
-        <div style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);">
-          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px;">
-            <div>
-              <div style="font-size:15px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Field Coordinator Performance</div>
-              <div style="font-size:12.5px;color:#7A8794;margin-top:2px;">{{ dash.dateLabel }} · all {{ dash.fcCount }} field coordinators by achievement</div>
-            </div>
-            <button sc-camel-on-click="{{ dash.goFc }}" style="border:1px solid #D6DEE7;background:#F7FAFD;color:#1F5480;font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:inherit;">Full section →</button>
+      <!-- 4 · FC LEADERBOARD -->
+      <div style="background:#fff;border:1px solid #E3E8E6;border-radius:12px;box-shadow:0 2px 10px rgba(14,38,59,.06);overflow:hidden;margin-bottom:16px;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px 11px;border-bottom:1px solid #EAEFED;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#16202B;letter-spacing:.2px;">FC Leaderboard</div>
+            <div style="font-size:11.5px;color:#5B7891;margin-top:2px;">ranked by KPI achievement, high to low · click a row for full profile</div>
           </div>
-          <div style="max-height:452px;overflow:auto;margin-top:8px;">
-            <sc-raw-table style="width:100%;border-collapse:collapse;">
+          <button sc-camel-on-click="{{ dash.goFc }}" style="border:1px solid #CFD5DA;background:#F7F9FA;color:#3A434B;font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:7px;cursor:pointer;font-family:inherit;">FC Center →</button>
+        </div>
+        <div style="padding:0 16px 16px;">
+          <div style="border:1px solid #E3E8E6;border-radius:10px;overflow:auto;max-height:640px;background:#fff;">
+            <sc-raw-table data-fclead="1" style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:1280px;color:#16202B;">
               <sc-raw-thead>
                 <sc-raw-tr>
-                  <sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:left;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">Field Coordinator</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:left;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">Area</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:right;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">Dep.</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:right;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">Present</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:right;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">On-field</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:right;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">Target</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:right;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">Ach.</sc-raw-th><sc-raw-th style="padding:9px 11px;font-size:11.5px;font-weight:800;letter-spacing:.5px;color:#54677A;text-transform:uppercase;text-align:right;border-bottom:1px solid #E1E9F2;background:#F5F8FC;position:sticky;top:0;z-index:1;">%</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;left:0;z-index:3;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;width:52px;">#</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;left:52px;z-index:3;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Field Coordinator</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Survey Area</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Circle(s)</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Today's Location</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Deployed</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Present</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Active</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">KPI Target</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Achieved</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:center;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">% KPI</sc-raw-th>
                 </sc-raw-tr>
               </sc-raw-thead>
               <sc-raw-tbody>
-                <sc-for list="{{ dash.fcRows }}" as="f" hint-placeholder-count="10">
-                  <sc-raw-tr>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:left;color:#16202B;font-weight:700;white-space:nowrap;">{{ f.fc }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:left;color:#5B7891;white-space:nowrap;">{{ f.area }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:right;font-family:IBM Plex Mono,monospace;font-weight:700;color:#16202B;">{{ f.total }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:right;font-family:IBM Plex Mono,monospace;font-weight:700;color:#16202B;">{{ f.present }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:right;font-family:IBM Plex Mono,monospace;font-weight:700;color:#16202B;">{{ f.onfield }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:right;font-family:IBM Plex Mono,monospace;font-weight:700;color:#16202B;">{{ f.target }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:right;font-family:IBM Plex Mono,monospace;font-weight:700;color:#16202B;">{{ f.achieved }}</sc-raw-td>
-                    <sc-raw-td style="padding:9px 11px;font-size:14.5px;border-bottom:1px solid #EEF0F2;text-align:right;"><span style="{{ f.pillStyle }}">{{ f.pct }}</span></sc-raw-td>
+                <sc-for list="{{ fcTblRows }}" as="t" hint-placeholder-count="8">
+                  <sc-raw-tr sc-camel-on-click="{{ t.onOpen }}" style="border-bottom:1px solid #EEF0F2;cursor:pointer;" style-hover="background:#EDF4FB;">
+                    <sc-raw-td data-freeze="1" style="position:sticky;left:0;z-index:2;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#5B7891;white-space:nowrap;">{{ t.sl }}</sc-raw-td>
+                    <sc-raw-td data-freeze="2" style="position:sticky;left:52px;z-index:2;padding:10px 12px;font-weight:800;color:#0F2A43;white-space:nowrap;border-right:1px solid #E7DCC8;">{{ t.fc }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;color:#3A434B;white-space:nowrap;">{{ t.area }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;color:#56655F;font-size:11.5px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ t.circles }}">{{ t.circles }}</sc-raw-td>
+                    <sc-raw-td style="padding:8px 12px;white-space:nowrap;"><span style="display:inline-block;padding:4px 11px;border-radius:99px;background:{{ t.locBg }};color:{{ t.locC }};font-size:11.5px;font-weight:700;">{{ t.locIcon }} {{ t.locLabel }}</span></sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;color:#56655F;">{{ t.total }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;color:#0F2A43;font-weight:700;">{{ t.present }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;color:#1E4A73;font-weight:700;">{{ t.onfield }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;color:#56655F;">{{ t.target }}</sc-raw-td>
+                    <sc-raw-td style="padding:10px 12px;text-align:right;font-family:'IBM Plex Mono',monospace;color:#1E4A73;font-weight:700;">{{ t.achieved }}</sc-raw-td>
+                    <sc-raw-td style="padding:8px 12px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:900;color:{{ t.pillC }};white-space:nowrap;">{{ t.pctT }}</sc-raw-td>
                   </sc-raw-tr>
                 </sc-for>
               </sc-raw-tbody>
             </sc-raw-table>
           </div>
-        </div>
-        <div data-mapcard="1" style="background:#FFFFFF;border:1px solid #E1E7EE;border-radius:8px;padding:12px 14px 10px;box-shadow:0 1px 2px rgba(15,42,67,.05);display:flex;flex-direction:column;">
-          <div style="font-size:12px;font-weight:800;color:#0F2A43;letter-spacing:.2px;">Assam — Output Distribution</div>
-          <div style="font-size:10.5px;color:#7A8794;margin-top:1px;">bubble size = units booked per circle</div>
-          <div id="chDashMap" class="chart-box" style="width:100%;height:452px;margin-top:4px;"></div>
         </div>
       </div>
 
@@ -5375,17 +5431,17 @@
             <sc-raw-table data-fclead="1" style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:1280px;color:#16202B;">
               <sc-raw-thead>
                 <sc-raw-tr>
-                  <sc-raw-th style="position:sticky;top:0;left:0;z-index:3;background:#1E4A73;color:#fff;text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;width:52px;">#</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;left:52px;z-index:3;background:#1E4A73;color:#fff;text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Field Coordinator</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Survey Area</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Circle(s)</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Today's Location</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Deployed</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Present</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Active</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">KPI Target</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Achieved</sc-raw-th>
-                  <sc-raw-th style="position:sticky;top:0;z-index:1;background:#1E4A73;color:#fff;text-align:center;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">% KPI</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;left:0;z-index:3;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;width:52px;">#</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;left:52px;z-index:3;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Field Coordinator</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Survey Area</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Circle(s)</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:left;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Today's Location</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Deployed</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Present</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Active</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">KPI Target</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:right;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">Achieved</sc-raw-th>
+                  <sc-raw-th style="position:sticky;top:0;z-index:1;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;text-shadow:0 1px 2px rgba(8,24,52,.45);text-align:center;padding:11px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;">% KPI</sc-raw-th>
                 </sc-raw-tr>
               </sc-raw-thead>
               <sc-raw-tbody>
@@ -7027,7 +7083,7 @@ class Component extends DCLogic {
     {
       if(window.echarts && window.ASSAM_GEO && !window.__assamRegistered){ window.echarts.registerMap('assam', window.ASSAM_GEO); window.__assamRegistered=true; }
       this.hideAllTips();
-      ['chMonthly','chDailyDag','chAttDay','chAttDist','chAttTrend','chAttMap','chAreaPA','chTrend','chCircleTA','chFCTA','chNakCircle','chNakFC','chNaksha','chResDonut','chNakOverview','chTeaOverview','chTeaCircle','chTeaFC','chTAgauge','chProdCircTA','chFcOps','chFcRank','chTAres','chTAtea','chTAnak','chPTrendDag','chPTrendRor','chPDist','chPDaily','chPCircle','chProdMap','chAssamMap','chTop','chVillage','chSpTrend','chFcpTrend','chFcpMonthly','chFcpArea','chFcpCircle','chCircMonthly','chCircDaily','chCircLastWeek','chResTrend','chResMap','chNakTrend','chNakMap','chTeaTrend','chTeaMap','chDashTrRes','chDashTrNak','chDashTrTea','chDashGauge','chDashMap','chDashPL'].forEach(id=>{
+      ['chMonthly','chDailyDag','chAttDay','chAttDist','chAttTrend','chAttMap','chAreaPA','chTrend','chCircleTA','chFCTA','chNakCircle','chNakFC','chNaksha','chResDonut','chNakOverview','chTeaOverview','chTeaCircle','chTeaFC','chTAgauge','chProdCircTA','chFcOps','chFcRank','chTAres','chTAtea','chTAnak','chPTrendDag','chPTrendRor','chPDist','chPDaily','chPCircle','chProdMap','chAssamMap','chTop','chVillage','chSpTrend','chFcpTrend','chFcpMonthly','chFcpArea','chFcpCircle','chCircMonthly','chCircDaily','chCircLastWeek','chResTrend','chResMap','chNakTrend','chNakMap','chTeaTrend','chTeaMap','chDashTrRes','chDashTrNak','chDashTrTea','chDashGauge','chDashMap','chDashPL','chDashSvyRank'].forEach(id=>{
         const el=document.getElementById(id);
         const inst=this._charts[id];
         // PERF: only build a chart once its container is actually on screen. Off-screen
@@ -8718,7 +8774,10 @@ class Component extends DCLogic {
     const gNak=this.groupStats(scoped.filter(PR.nak),idxs);
     const gTea=this.groupStats(scoped.filter(PR.tea),idxs);
     // Total Output = Re-Survey + Naksha (RoR) + Tea Garden
-    const tgt=tgtOf(scoped,idxs), ach=(gRes.met||0)+(gNak.met||0)+(gTea.met||0);
+    // Target and achievement must come from the SAME record set the Circle-wise Productivity
+    // table uses — Re-Survey + Naksha + Tea Garden only — or the two read differently for one day.
+    const PR3=r=>PR.res(r)||PR.nak(r)||PR.tea(r);
+    const tgt=tgtOf(scoped.filter(PR3),idxs), ach=(gRes.met||0)+(gNak.met||0)+(gTea.met||0);
     const overall=tgt>0?Math.round(ach/tgt*100):0;
     const go=id=>()=>this.goSec(id);
     const tile=(value,label,sec,col,parts,meta,pctOv)=>({value,label,onClick:go(sec),hasParts:!!parts,parts:parts||[],
@@ -8805,11 +8864,166 @@ class Component extends DCLogic {
           .sort((x,y)=>y._p-x._p)
       : fcTop;
 
+    // ── CIRCLE PRODUCTIVITY DETAIL · 7-day matrix + top-10 surveyors ──
+    // Its own programme (Re-Survey / Naksha / Tea Garden) and week filter, so a review can read
+    // one week's daily figures at a legible size without changing the rest of the dashboard.
+    const dprod=(()=>{
+      const dta=this.state.data||{dates:[]}; const dts=dta.dates||[];
+      const gL=idxs[idxs.length-1];
+      const AUx=r=>String(r.area||'').toUpperCase();
+      const isNak=r=>AUx(r).indexOf('NAKSHA')>=0;
+      const isTea=r=>AUx(r).indexOf('TEA')>=0;
+      const isRes=r=>AUx(r).indexOf('RESURVEY')>=0||AUx(r).indexOf('RE-SURVEY')>=0;
+      const PRED={ALL:r=>isRes(r)||isNak(r)||isTea(r), RES:isRes, NAKSHA:isNak, TEA:isTea};
+      const prog=PRED[this.state.dpProg]?this.state.dpProg:'ALL';
+      const base=this.mapScopedRecs(recs).filter(r=>this.isProdRec(r)).filter(PRED[prog]);
+      const perOf=r=>isNak(r)?10:20;
+      // Weeks must never mix months: the buckets come only from days that share the selected
+      // day's month. If that month can't be resolved, fall back to the last days carrying data.
+      const mkk=this.monthKey(dts[gL])||'';
+      const allI=dts.map((_,i)=>i);
+      let monthIdxs=mkk?allI.filter(i=>this.monthKey(dts[i])===mkk):[];
+      if(!monthIdxs.length) monthIdxs=allI.filter(i=>base.some(r=>r.st[i]&&r.st[i]!=='X')).slice(-31);
+      const wbk=this.weekBuckets(monthIdxs);
+      const dom=(()=>{ const s=String(dts[gL]||''); if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return +s.split('-')[2];
+        const m=s.match(/(\d{1,2})/); return m?+m[1]:1; })();
+      const wkKey=String(this.state.dpWeek||'');
+      // An explicit week pick is always honoured — never hop to another week (or month) silently.
+      let wi=/^w[1-5]$/.test(wkKey)?(+wkKey.slice(1)-1):Math.min(4,Math.max(0,Math.floor((dom-1)/7)));
+      if(!/^w[1-5]$/.test(wkKey) && !(wbk[wi]||[]).length){ for(let z=4;z>=0;z--){ if((wbk[z]||[]).length){ wi=z; break; } } }
+      const weekIdxs=wbk[wi]||[];
+      // A single day can be isolated inside the chosen week — date-wise reading of the same table.
+      const dKey=this.state.dpDay;
+      const dSel=(dKey!==''&&dKey!=null&&weekIdxs.indexOf(+dKey)>=0)?+dKey:null;
+      const dIdxs=dSel==null?weekIdxs:[dSel];
+      const WKN=['1st Week','2nd Week','3rd Week','4th Week','5th Week'];
+      const btn=(sel)=>'padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
+        +(sel?'#1E4A73':'#CFD5DA')+';background:'+(sel?'#1E4A73':'#F7F9FA')+';color:'+(sel?'#FFFFFF':'#3A434B')+';';
+      const progBtns=[['ALL','All'],['RES','Re-Survey'],['NAKSHA','Naksha'],['TEA','Tea Garden']].map(([k2,lb])=>({
+        key:k2, label:lb, style:btn(prog===k2),
+        onClick:()=>{ this.setState({dpProg:k2}); }}));
+      const weekBtns=wbk.map((b,z)=>b.length?{key:'w'+(z+1), label:WKN[z], style:btn(z===wi),
+        onClick:()=>{ this.setState({dpWeek:'w'+(z+1), dpDay:''}); }}:null).filter(Boolean);
+      const ORD=n=>{ const s=['th','st','nd','rd'], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); };
+      const MONA=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const dlab=(i)=>{ const s=String(dts[i]||'');
+        if(/^\d{4}-\d{2}-\d{2}$/.test(s)){ const p=s.split('-'); return ORD(+p[2])+' '+(MONA[+p[1]-1]||''); }
+        const m=s.match(/(\d{1,2})\s*[-\/ ]?\s*([A-Za-z]{3})/);
+        if(m) return ORD(+m[1])+' '+m[2].charAt(0).toUpperCase()+m[2].slice(1,3).toLowerCase();
+        const d2=s.match(/(\d{1,2})/); return d2?ORD(+d2[1]):String(i+1); };
+      const heads=dIdxs.map(dlab);
+      // ---- month calendar: pick any day of the month; the week filter follows the pick ----
+      const MFULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const dnum=(i)=>{ const s=String(dts[i]||'');
+        if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return +s.split('-')[2];
+        const m=s.match(/(\d{1,2})/); return m?+m[1]:0; };
+      const calYear=(()=>{ for(let i=0;i<dts.length;i++){ const s=String(dts[i]||'');
+        if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return +s.split('-')[0]; } return new Date().getFullYear(); })();
+      const calMon=Math.max(0,MFULL.indexOf(mkk));
+      const domIdx={}, domHas={};
+      monthIdxs.forEach(i=>{ const d=dnum(i); if(!d) return; domIdx[d]=i;
+        domHas[d]=base.some(r=>(r.st[i]&&r.st[i]!=='X')||(r.dg[i]||0)>0); });
+      const wkOf=(i)=>{ for(let z=0;z<wbk.length;z++){ if((wbk[z]||[]).indexOf(i)>=0) return z; } return wi; };
+      const cellBase='height:30px;width:32px;padding:0;border-radius:6px;font-family:\'IBM Plex Mono\',monospace;font-size:12px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;font-family:inherit;';
+      const calCells=[];
+      const lead=new Date(calYear,calMon,1).getDay();
+      const dim=new Date(calYear,calMon+1,0).getDate();
+      for(let b2=0;b2<lead;b2++) calCells.push({key:'b'+b2, label:'', style:cellBase+'border:0;background:transparent;cursor:default;', onClick:null});
+      for(let d3=1;d3<=dim;d3++){
+        const ix=domIdx[d3];
+        const on=ix!=null, live=on&&domHas[d3], sel=on&&dSel===ix;
+        calCells.push({key:'d'+d3, label:String(d3),
+          style:cellBase+(sel
+            ? 'border:1px solid #0F2A43;background:#1E4A73;color:#FFFFFF;cursor:pointer;'
+            : live
+              ? 'border:1px solid #CFDCE8;background:#FFFFFF;color:#1E4A73;cursor:pointer;'
+              : on
+                ? 'border:1px solid #E8ECEF;background:#F7F9FA;color:#9AA6B0;cursor:pointer;'
+                : 'border:1px solid transparent;background:transparent;color:#D2D8DE;cursor:default;'),
+          onClick:on?(()=>{ this.setState({dpDay:ix, dpWeek:'w'+(wkOf(ix)+1), dpCal:false}); }):null});
+      }
+      const cal={
+        open:!!this.state.dpCal,
+        monthLabel:(mkk||'Month')+' '+calYear,
+        dows:['S','M','T','W','T','F','S'].map((s,z)=>({key:'dw'+z, label:s})),
+        cells:calCells,
+        btnLabel:dSel!=null?dlab(dSel):'Pick a date',
+        btnStyle:'display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;border:1px solid '
+          +(dSel!=null?'#1E4A73':'#CFD5DA')+';background:'+(dSel!=null?'#1E4A73':'#F7F9FA')+';color:'+(dSel!=null?'#FFFFFF':'#3A434B')+';',
+        toggle:()=>{ this.setState({dpCal:!this.state.dpCal}); },
+        clearStyle:'width:100%;margin-top:8px;padding:6px 0;border-radius:6px;border:1px solid #CFD5DA;background:#F7F9FA;color:#3A434B;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;',
+        clear:()=>{ this.setState({dpDay:'', dpCal:false}); }};
+      const cell=(v,t,any)=>{
+        if(!any) return {label:'·', color:'#B7C2CC', bg:'transparent'};
+        if(!(v>0)) return {label:'0', color:'#C0504D', bg:'#FBEFEE'};
+        if(t>0&&v>=t) return {label:this.fmt(v), color:'#1E7A50', bg:'#EAF4EF'};
+        return {label:this.fmt(v), color:'#8A5A12', bg:'#FBF5E9'};
+      };
+      const cm={};
+      base.forEach(r=>{ const ck=this.titleCase(String(r.cir||'').trim())||'—';
+        const c=cm[ck]||(cm[ck]={name:ck, vals:dIdxs.map(()=>0), tgts:dIdxs.map(()=>0), any:dIdxs.map(()=>false), svy:{}, actv:{}});
+        let onRoster=false, wasActive=false;
+        dIdxs.forEach((i,ci)=>{ const st=r.st[i]; if(!st||st==='X') return; onRoster=true; c.any[ci]=true;
+          const sv=this.splitVal(r,i); c.vals[ci]+=sv.dag+sv.ror;
+          if((r.dg[i]||0)>0){ c.tgts[ci]+=perOf(r); wasActive=true; } });
+        if(onRoster) c.svy[String(r.c||r.n).toUpperCase()]=1;
+        if(wasActive) c.actv[String(r.c||r.n).toUpperCase()]=1;
+        cm[ck]=c; });
+      const pc=p=>p>=90?'#1E4A73':(p>=60?'#1F5480':(p>=30?'#C8862A':'#C0504D'));
+      const grid='display:grid;grid-template-columns:minmax(160px,1.3fr) 104px 76px repeat('+Math.max(1,dIdxs.length)+',minmax(74px,.8fr)) 96px 100px 150px;gap:8px;';
+      let tA=0,tT=0;
+      const dayTot=dIdxs.map(()=>0);
+      const rows=Object.keys(cm).map(ck=>{ const c=cm[ck];
+        const ach=c.vals.reduce((s,v)=>s+v,0), tgt=c.tgts.reduce((s,v)=>s+v,0);
+        const p=tgt>0?Math.round(ach/tgt*100):0, col=pc(p);
+        c.vals.forEach((v,ci)=>{ dayTot[ci]+=v; });
+        return {name:c.name, svy:Object.keys(c.svy).length, act:Object.keys(c.actv||{}).length, _a:ach, _p:p,
+          ach:this.fmt(ach), tgt:this.fmt(tgt), pct:p+'%', pctC:col,
+          barStyle:'display:block;height:100%;border-radius:5px;background:'+col+';width:'+Math.min(100,Math.max(2,p))+'%;',
+          cells:c.vals.map((v,ci)=>cell(v, c.tgts[ci], c.any[ci]))};
+      }).filter(r=>r.svy>0).sort((x,y)=>(y._p-x._p)||(y._a-x._a))
+        .map((r,i)=>Object.assign({}, r, {rowStyle:grid+'padding:11px 20px;font-size:15px;align-items:center;border-bottom:1px solid #EAEFED;background:'+(i%2?'#FBFCFB':'#fff')+';'}));
+      rows.forEach(r=>{ tA+=r._a; });
+      Object.keys(cm).forEach(ck=>{ tT+=cm[ck].tgts.reduce((s,v)=>s+v,0); });
+      const totSvy=rows.reduce((s,r)=>s+r.svy,0);
+      const totAct=rows.reduce((s,r)=>s+r.act,0);
+      const sm={};
+      base.forEach(r=>{ const key=String(r.c||r.n).toUpperCase();
+        const p=sm[key]||(sm[key]={name:this.titleCase(String(r.n||'').replace(/\s+/g,' ').trim())||'—',
+          code:r.c||'—', cir:this.titleCase(String(r.cir||'').trim())||'—', ach:0, tgt:0});
+        dIdxs.forEach(i=>{ const st=r.st[i]; if(!st||st==='X') return;
+          const sv=this.splitVal(r,i); p.ach+=sv.dag+sv.ror; if((r.dg[i]||0)>0) p.tgt+=perOf(r); });
+        sm[key]=p; });
+      const t10=Object.keys(sm).map(k2=>sm[k2]).filter(p=>p.ach>0).sort((a,b)=>b.ach-a.ach).slice(0,10);
+      // the ranking chart (same treatment as FC Center's KPI Achievement Ranking) reads this
+      this._dashSvyRank=t10.map(p=>({name:p.name, cir:p.cir, ach:Math.round(p.ach), tar:Math.round(p.tgt),
+        pct:p.tgt>0?Math.round(p.ach/p.tgt*100):0}));
+      const mx=Math.max.apply(null,t10.map(p=>Math.max(p.ach,p.tgt)).concat([1]));
+      const top10=t10.map((p,i)=>{ const pp=p.tgt>0?Math.round(p.ach/p.tgt*100):0, col=pc(pp);
+          return {rank:i+1, name:p.name, code:p.code, cir:p.cir, ach:this.fmt(p.ach), tgt:this.fmt(p.tgt), pct:pp+'%', pctC:col,
+            barStyle:'position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:'+(pp>=90?'#1E4A73':(pp>=60?'#2C6390':(pp>=30?'#C8862A':'#C0504D')))+';width:'+Math.max(1,Math.min(100,p.ach/mx*100))+'%;',
+            tgtStyle:'position:absolute;top:0;bottom:0;width:2px;background:#C0504D;left:'+Math.max(0,Math.min(99.6,p.tgt/mx*100))+'%;'}; });
+      const tp=tT>0?Math.round(tA/tT*100):0;
+      const PL={ALL:'All programmes', RES:'Re-Survey', NAKSHA:'Naksha (RoR)', TEA:'Tea Garden'};
+      const TN={ALL:'20 DAG · Naksha 10 RoR', RES:'20 DAG', NAKSHA:'10 RoR', TEA:'20 DAG'};
+      return {progBtns, weekBtns, cal, heads, rows, top10,
+        headStyle:grid+"padding:13px 20px;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;font-size:13px;font-weight:600;letter-spacing:.35px;text-shadow:0 1px 2px rgba(8,24,52,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(8,24,52,.25);position:sticky;top:0;z-index:5;",
+        totalStyle:grid+'padding:12px 20px;font-size:15px;align-items:center;background:#F2F7F5;border-top:2px solid #0F2A43;',
+        dayTotals:dayTot.map(v=>this.fmt(v)), totSvy:this.fmt(totSvy), totAct:this.fmt(totAct),
+        minW:(800+Math.max(1,dIdxs.length)*84)+'px',
+        progLabel:PL[prog], tgtNote:TN[prog],
+        rangeLabel:dSel!=null?(WKN[wi]+' · '+this.dateLabel(dts[dSel])+' · single day')
+          :(dIdxs.length?(WKN[wi]+' · '+this.dateLabel(dts[dIdxs[0]])+' – '+this.dateLabel(dts[dIdxs[dIdxs.length-1]])+' · '+dIdxs.length+' days'):(WKN[wi]+' · no days in scope')),
+        nCircles:String(rows.length), hasRows:rows.length>0, noRows:rows.length===0,
+        emptyNote:'No '+(PL[prog]||'').replace(' programmes','')+' data recorded in '+WKN[wi]+(mkk?(' of '+mkk):'')+'.',
+        totAch:this.fmt(tA), totTgt:this.fmt(tT), totPct:tp+'%', totPctC:pc(tp)};
+    })();
+
     const dl=(kpiObj&&kpiObj.dateLabel)||'';
     const mk=this.state.data&&this.state.data.dates?this.monthKey(this.state.data.dates[idxs[idxs.length-1]]):'';
     return {dash:{
       dateLabel:dl, scopeLabel:(kpiObj&&kpiObj.scopeLabel)||'', monthLabel:mk||dl,
-      kpis, pRes, pNak, pTea, topCircles, lowCircles, topSvy, botSvy, lbLabel,
+      kpis, pRes, pNak, pTea, topCircles, lowCircles, topSvy, botSvy, lbLabel, dprod,
       showRes:vSel==='ALL'||vSel==='RES', showNak:vSel==='ALL'||vSel==='NAKSHA', showTea:vSel==='ALL'||vSel==='TEA',
       trendGrid:'display:grid;grid-template-columns:repeat('+nShow+',1fr);gap:9px;margin-bottom:9px;',
       fsRes:()=>this.openFull('chDashTrRes','Re-Survey — Target vs Achievement · last 14 days'),
@@ -9600,6 +9814,31 @@ class Component extends DCLogic {
         xAxis:{type:'value',...axis,...splitL,name:'DAG',nameLocation:'end',nameGap:8,
           nameTextStyle:{color:axTxt,fontSize:10.5,fontWeight:700}},
         yAxis:{type:'category',data:rows.map(r=>r.fc),...axis,axisTick:{show:false},
+          axisLabel:{...axis.axisLabel,fontSize:12,fontWeight:600,width:150,overflow:'truncate'}},
+        series:[
+          {name:'Target',type:'bar',barWidth:18,z:1,data:rows.map(r=>r.tar),
+            itemStyle:{color:dark?'#26374A':'#E4EAF0',borderRadius:9}},
+          {name:'Achieved',type:'bar',barWidth:18,barGap:'-100%',z:2,
+            data:rows.map(r=>{const cs=barC(r.pct);
+              return {value:r.ach, itemStyle:{borderRadius:9,
+                color:new window.echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:cs[1]},{offset:1,color:cs[0]}])}};}),
+            label:{show:true,position:'right',distance:10,color:axTxt,fontFamily:'IBM Plex Mono',fontWeight:700,fontSize:12,
+              formatter:p=>rows[p.dataIndex].pct+'%  ·  '+rows[p.dataIndex].ach+'/'+rows[p.dataIndex].tar}}
+        ]
+      },true);
+    }
+
+    if(c.chDashSvyRank){
+      const rows=[...(this._dashSvyRank||[])].reverse();
+      const barC=(pct)=> pct>=80?['#5C90BC','#0F2A43']:(pct>=60?['#7BB8E8','#1E4A73']:(pct>=40?['#E0B267','#B87516']:['#E0857F','#A63B36']));
+      c.chDashSvyRank.setOption({
+        tooltip:{trigger:'axis',axisPointer:{type:'shadow'},className:'ectip',extraCssText:'box-shadow:0 8px 24px rgba(6,20,34,.35);border-radius:8px;',backgroundColor:'#0F2A43',borderColor:'#0F2A43',textStyle:{color:'#fff',fontSize:12.5},padding:[9,13],
+          formatter:p=>{const r=rows[p[0].dataIndex]; if(!r) return '';
+            return '<b>'+r.name+'</b><br/>'+r.cir+'<br/>KPI target <b>'+this.fmt(r.tar)+'</b><br/>Achieved <b>'+this.fmt(r.ach)+'</b><br/>Achievement <b>'+r.pct+'%</b>';}},
+        grid:{left:10,right:104,top:6,bottom:24,containLabel:true},
+        xAxis:{type:'value',...axis,...splitL,name:'Units',nameLocation:'end',nameGap:8,
+          nameTextStyle:{color:axTxt,fontSize:10.5,fontWeight:700}},
+        yAxis:{type:'category',data:rows.map(r=>r.name),...axis,axisTick:{show:false},
           axisLabel:{...axis.axisLabel,fontSize:12,fontWeight:600,width:150,overflow:'truncate'}},
         series:[
           {name:'Target',type:'bar',barWidth:18,z:1,data:rows.map(r=>r.tar),
@@ -13182,7 +13421,12 @@ if(c.chDailyDag){
         dash:{dateLabel:'',scopeLabel:'',monthLabel:'',kpis:[],topCircles:[],lowCircles:[],topSvy:[],botSvy:[],lbLabel:'',lbPanels:[],fcRows:[],fcCount:'0',
           showRes:true,showNak:true,showTea:true,trendGrid:'display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:9px;',fsRes:()=>{},fsNak:()=>{},fsTea:()=>{},
           pRes:{pct:'',out:'',target:'',pctStyle:''}, pNak:{pct:'',out:'',target:'',pctStyle:''}, pTea:{pct:'',out:'',target:'',pctStyle:''},
-          goAtt:()=>{},goProd:()=>{},goFc:()=>{},goProj:()=>{}},
+          goAtt:()=>{},goProd:()=>{},goFc:()=>{},goProj:()=>{},
+          dprod:{progBtns:[],weekBtns:[],cal:{open:false,cells:[],dows:[],monthLabel:'',btnLabel:'Pick a date',btnStyle:'',toggle:()=>{},clear:()=>{},clearStyle:''},heads:[],rows:[],top10:[],dayTotals:[],totSvy:'0',
+            headStyle:'display:grid;grid-template-columns:minmax(160px,1.3fr) 104px 76px repeat(7,minmax(74px,.8fr)) 96px 100px 150px;gap:8px;padding:13px 20px;background-color:#3C5C9C;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.055) 0 34px,rgba(255,255,255,0) 34px 68px),repeating-linear-gradient(45deg,rgba(10,30,70,.10) 0 46px,rgba(255,255,255,.035) 46px 92px);color:#FFFFFF;font-size:13px;font-weight:600;',
+            totalStyle:'display:none;',
+            minW:'1388px', progLabel:'All programmes', tgtNote:'20 DAG · Naksha 10 RoR',
+            rangeLabel:'waiting for data', nCircles:'0', hasRows:false, noRows:false, emptyNote:'', totSvy:'0', totAct:'0', totAch:'0', totTgt:'0', totPct:'0%', totPctC:'#5F98C9'}},
         fcMxRows:[], fcMxTotal:{}, fcSummary:{metrics:[], fcCount:'0', score:'0', scoreC:'#5F98C9', scoreDash:'0 326.7', goldCount:'0', riskCount:'0'}, fcOpsSub:'', ...this.navSbVals(), fcProfile:null, closeFcProfile:()=>{}, fcpZeroOpen:false, toggleFcpZero:()=>{}, fcpZeroCaret:'▼', fcpLeaveOpen:false, toggleFcpLeave:()=>{}, fcpLeaveCaret:'▼', downloadFcAction:()=>{}, fcMxFull:false, toggleFcMx:()=>{}, fcMxBtn:'⤢ Fullscreen', fcMxStyle:'', toggleDtv:()=>{}, dtvBtn:'⤢ Full Screen View', dtvStyle:'',
         fcScoreBadgeT:'', fcScoreBadgeC:'#67747F', fcScoreBadgeBg:'#F1F3F5', fcAttAvg:'0%', fcOnfAvg:'0%', fcKpiAvg:'0%', fcActAvg:'0%',
         onLeaveClick:()=>{}, onZeroClick:()=>{}, closeBreakdown:this.closeBreakdown, breakdown:null, breakdownTitle:'', breakdownSub:'', breakdownHead:'#0F2A43', breakdownAccent:'#0F2A43', breakdownRows:[], breakdownHasRows:false, breakdownEmpty:true,
