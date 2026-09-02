@@ -3153,7 +3153,7 @@
   @keyframes tkPulse{0%,100%{opacity:.35;transform:scale(.8);}50%{opacity:1;transform:scale(1);}}
   [data-hdrtabs]::-webkit-scrollbar{height:0;width:0;}
   @media (max-width:1120px){[data-hdrtick]{display:none !important;}}
-  @media (min-width:1121px){[data-filterbar]{padding-right:372px !important;}}
+  [data-hdrtick]{display:block !important;}
   @keyframes tkRoll{from{transform:translateY(0);}to{transform:translateY(-580px);}}
   [data-hdrtick] .tkRoll{animation:tkRoll 30s steps(10) infinite;}
   [data-hdrtick] .tkRow{animation:tkFade 3s ease-in-out infinite;}
@@ -3166,6 +3166,65 @@
   .hdr{min-height:64px !important;padding-top:0 !important;padding-bottom:0 !important;}
   .hdr-title{font-size:20px !important;line-height:1.2 !important;}
   .hdr-sub{font-size:13px !important;}
+
+  /* ── COMPACT COMMAND BAR ──────────────────────────────────────────────
+     The filter bar was tall enough to push the visualisation area down and
+     leave dead space at 75 % fit. Tighten paddings, row gaps and control
+     heights so the dashboard starts higher, with no change to behaviour. */
+  [data-filterbar]{padding:5px 16px 4px !important;gap:4px !important;}
+  [data-filterbar] > div{gap:6px !important;}
+  [data-filterbar] button,
+  [data-filterbar] [data-msdd] > button,
+  [data-filterbar] > div > div[title]{height:28px !important;}
+  [data-filterbar] button{padding-top:0 !important;padding-bottom:0 !important;border-radius:8px !important;}
+  [data-filterbar] span[style*="height: 20px"]{height:15px !important;}
+  [data-filterbar] input,[data-filterbar] select{height:28px !important;}
+  [data-filterbar] svg{width:12px !important;height:12px !important;}
+  /* ticker card on the right: shorter, narrower, so the bar can be shorter too */
+  /* ticker card lives inside the "Attendance by Vertical" card — white treatment */
+  [data-hdrtick]:hover{box-shadow:0 10px 26px rgba(15,42,67,.14) !important;transition:box-shadow .2s ease;}
+  @media (min-width:1121px){[data-filterbar]{padding-right:16px !important;}}
+
+
+  /* ── HEADER TABS: never clip Naksha / FC Center ──────────────────────
+     The nav used to wrap onto a second row that the 64 px header cut off.
+     One scrollable row instead, tighter tracking so all sections fit. */
+  [data-hdrtabs]{flex-wrap:nowrap !important;overflow-x:auto !important;overflow-y:hidden !important;
+    gap:10px !important;padding-right:4px !important;-webkit-overflow-scrolling:touch;}
+  [data-hdrtabs] button{font-size:12px !important;flex:none !important;}
+  @media (max-width:1500px){[data-hdrtabs]{gap:9px !important;} [data-hdrtabs] button{font-size:11.5px !important;}}
+  /* free the width the tabs need at 75 % fit — the Assam outline stays, just smaller */
+  /* DoLR block: text on top, Assam outline directly BELOW it, centred */
+  .hdr{min-height:80px !important;}
+  .hdr-map{display:flex !important;flex-direction:column !important;align-items:center !important;
+    justify-content:center !important;gap:3px !important;margin-left:auto !important;margin-right:auto !important;
+    flex:0 1 auto !important;min-width:0 !important;padding-left:14px !important;}
+  .hdr-map > div:first-child{text-align:center !important;}
+  .hdr-map > div:last-child{width:74px !important;height:45px !important;flex:none !important;}
+  .hdr-map svg{width:74px !important;height:45px !important;}
+  /* the tabs never give up space \u2014 the DoLR block shrinks instead, so FC Center stays visible */
+  [data-hdrtabs]{flex:0 0 auto !important;}
+  .hdr-title{font-size:17px !important;}
+  .hdr-sub{font-size:11.5px !important;}
+
+  /* ── FIT PARITY: 75 % must read like 65 % ────────────────────────────
+     CSS zoom shrinks the layout width the bar has to work with, so at 75 %
+     the Reports row wrapped onto a 4th line. Keep every row on ONE line and
+     trim the pills enough to buy back the ~13 % the higher zoom costs.
+     No overflow container here — the dropdown panels must stay visible. */
+  [data-filterbar] > div{flex-wrap:nowrap !important;min-width:0 !important;gap:5px !important;}
+  [data-filterbar] button{padding-left:9px !important;padding-right:9px !important;
+    font-size:12px !important;gap:6px !important;}
+  [data-filterbar] button > span{font-size:11.5px !important;}
+  [data-filterbar] button span[style*="border-radius: 999px"],
+  [data-filterbar] button span[style*="border-radius:999px"]{padding-left:5px !important;padding-right:5px !important;}
+  [data-filterbar] > div:last-child{white-space:nowrap !important;}
+  [data-filterbar] span[style*="letter-spacing: 1px"]{font-size:9px !important;}
+  /* the Reports row runs beside the ticker card — keep it clear of that reserve */
+  [data-filterbar] > div:nth-child(2){padding-right:0 !important;}
+  [data-filterbar] > div:nth-child(2) button{padding-left:8px !important;padding-right:8px !important;gap:5px !important;}
+  [data-filterbar] > div:nth-child(2) button,
+  [data-filterbar] > div:nth-child(2) button > span{font-size:11.5px !important;}
 </style>
 </helmet>
 <div class="dash-root" data-view="{{ view }}" data-theme="{{ theme }}" data-sbc="{{ sbcAttr }}" style="min-height:100vh;background:transparent;zoom:{{ zoom }};">
@@ -3474,23 +3533,6 @@
       </sc-for>
       <span style="font-size:11.5px;color:#6B7280;">Showing <strong style="color:#111827;">{{ kpi.deployed }}</strong> surveyors · <span style="font-family:'IBM Plex Mono',monospace;">{{ kpi.scopeLabel }}</span></span>
       <div style="flex:1;"></div>
-      <div data-hdrtick="1" style="position:absolute;right:22px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:12px;width:330px;height:58px;padding:0 16px;border-radius:11px;background:#FFFFFF;border:1px solid #E1E7EE;box-shadow:0 2px 8px rgba(15,42,67,.07);overflow:hidden;">
-        <span style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:56px;">
-          <span class="tkDot" style="width:8px;height:8px;border-radius:50%;background:#C8862A;display:block;"></span>
-          <span style="font-size:7.5px;font-weight:800;letter-spacing:.8px;color:#98A2AC;white-space:nowrap;">YESTERDAY</span>
-        </span>
-        <span style="width:1px;height:34px;background:#EEF2F6;flex:none;"></span>
-        <span style="flex:1;min-width:0;height:58px;overflow:hidden;display:block;">
-          <span class="tkRoll" style="display:block;">
-            <sc-for list="{{ dash.tickItems }}" as="tk" hint-placeholder-count="10">
-              <span class="tkRow" style="height:58px;display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;">
-                <span style="font-size:10px;font-weight:800;letter-spacing:.9px;color:#6B7C8C;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ tk.label }}</span>
-                <span style="{{ tk.valStyle }}">{{ tk.value }}</span>
-              </span>
-            </sc-for>
-          </span>
-        </span>
-      </div>
     </div>
     <sc-if value="{{ gsOpen }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed;inset:0;z-index:400;background:rgba(9,22,35,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;">
@@ -3752,11 +3794,34 @@
         </div>
 
         <div style="background:#fff;border:1px solid #E3E8E6;border-radius:12px;box-shadow:0 2px 10px rgba(14,38,59,.06);overflow:hidden;display:flex;flex-direction:column;">
-          <div style="padding:11px 14px 9px;border-bottom:1px solid #EAEFED;">
-            <div style="font-size:12.5px;font-weight:700;color:#16202B;">Attendance by Vertical</div>
-            <div style="font-size:10.5px;color:#5B7891;margin-top:2px;">present / roster man-days · attendance %</div>
+          <div style="padding:8px 13px 7px;border-bottom:1px solid #EAEFED;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+            <div style="font-size:12px;font-weight:700;color:#16202B;">Attendance by Vertical</div>
+            <div style="font-size:9.5px;color:#7A8DA0;">present / roster man-days · attendance %</div>
           </div>
-          <div style="padding:14px 14px 16px;display:flex;flex-direction:column;align-items:center;gap:14px;flex:1;justify-content:center;">
+          <div style="padding:11px 14px 12px;display:flex;flex-direction:column;align-items:center;gap:11px;flex:1;">
+            <!-- PROGRAMME PULSE — white executive ticker (sits above the vertical split) -->
+            <div data-hdrtick="1" style="width:100%;position:relative;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#FFFFFF 0%,#F7FAFD 100%);border:1px solid #E2EAF2;box-shadow:0 6px 18px rgba(15,42,67,.08);">
+              <span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#C8862A,#1E4A73);"></span>
+              <span style="position:absolute;right:-26px;top:-26px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,rgba(30,74,115,.09),transparent 70%);"></span>
+              <div style="display:flex;align-items:center;gap:7px;padding:7px 13px 5px 15px;border-bottom:1px solid #EDF2F7;">
+                <span class="tkDot" style="width:7px;height:7px;border-radius:50%;background:#C8862A;display:block;flex:none;box-shadow:0 0 0 3px rgba(200,134,42,.16);"></span>
+                <span style="font-size:9px;font-weight:800;letter-spacing:1.4px;color:#1E4A73;text-transform:uppercase;">Programme Pulse</span>
+                <span style="flex:1;"></span>
+                <span style="font-size:8.5px;font-weight:800;letter-spacing:1px;color:#9DAEBF;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;">Yesterday</span>
+              </div>
+              <div style="display:flex;align-items:center;padding:0 13px 0 15px;">
+                <span style="flex:1;min-width:0;height:58px;overflow:hidden;display:block;">
+                  <span class="tkRoll" style="display:block;">
+                    <sc-for list="{{ dash.tickItems }}" as="tk" hint-placeholder-count="10">
+                      <span class="tkRow" style="height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;">
+                        <span style="font-size:10px;font-weight:800;letter-spacing:.9px;color:#6B7C8C;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ tk.label }}</span>
+                        <span style="{{ tk.valStyle }}">{{ tk.value }}</span>
+                      </span>
+                    </sc-for>
+                  </span>
+                </span>
+              </div>
+            </div>
             <div style="{{ dash.ins.fRingStyle }}">
               <div data-ringhole="1" style="width:124px;height:124px;border-radius:50%;background:#FEFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
                 <span style="font-size:9px;font-weight:800;letter-spacing:1px;color:#0F2A43;">PRESENT MAN-DAYS</span>
@@ -6197,7 +6262,7 @@
     <!-- BREAKDOWN OVERLAY (Leave / Zero by Circle) -->
     <sc-if value="{{ breakdown }}" hint-placeholder-val="{{ false }}">
       <div data-secalways="1" sc-camel-on-click="{{ closeBreakdown }}" style="position:fixed;inset:0;z-index:100;background:rgba(8,14,20,.72);display:flex;align-items:center;justify-content:center;padding:24px;">
-        <div sc-camel-on-click="{{ stopProp }}" style="background:#fff;border-radius:14px;width:520px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.45);overflow:hidden;">
+        <div sc-camel-on-click="{{ stopProp }}" style="background:#fff;border-radius:14px;width:660px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.45);overflow:hidden;">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #E3E8E6;background:{{ breakdownHead }};color:#fff;">
             <div>
               <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.85;">{{ breakdownSub }}</div>
@@ -6219,7 +6284,7 @@
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:6px;padding:11px 13px;">
                       <sc-for list="{{ r.nameList }}" as="nm" hint-placeholder-count="3">
-                        <span style="font-size:12px;font-weight:600;color:#16202B;background:#F7F9FA;border:1px solid #E3E8E6;border-radius:20px;padding:4px 11px;">{{ nm.t }}</span>
+                        <span style="font-size:12px;font-weight:600;color:#16202B;background:#F7F9FA;border:1px solid #E3E8E6;border-radius:20px;padding:4px 11px;white-space:nowrap;">{{ nm.t }}</span>
                       </sc-for>
                     </div>
                   </div>
@@ -6646,7 +6711,8 @@ class Component extends DCLogic {
     tick();
     try{
       // 75% is the designed default; a stale saved zoom from an older build is reset once.
-      if(localStorage.getItem('dagDashZoomV3')!=='1'){
+      if(localStorage.getItem('dagDashZoomV4')!=='1'){
+        localStorage.setItem('dagDashZoomV4','1');
         localStorage.setItem('dagDashZoomV3','1');
         localStorage.setItem('dagDashZoom','0.75');
         this.setState({zoom:.75});
@@ -8466,8 +8532,9 @@ class Component extends DCLogic {
       tile(this.fmt(k.present),'Present','secDash','#FFFFFF',null,
         ['Share of deployed',pctOf(k.present,k.deployed)+'%',pctOf(k.present,k.deployed),'#7BD3A6'],null,
         ['Present with zero DAG / RoR',this.fmt(Math.max(0,(k.present||0)-(k.active||0)))]),
-      tile(this.fmt(k.leave),'On Leave','secDash','#E8C27A',null,
+      Object.assign(tile(this.fmt(k.leave),'On Leave','secDash','#E8C27A',null,
         ['Share of deployed',pctOf(k.leave,k.deployed)+'%',pctOf(k.leave,k.deployed),'#E8C27A']),
+        {onClick:()=>this.openBreakdown('leave')}),
       tile(this.fmt(ach),'Total Output','secDash','#FFFFFF',
         [part('Re-Survey',gRes.met||0,'#7BD3A6'), part('Naksha',gNak.met||0,'#8FC2EE'), part('Tea Garden',gTea.met||0,'#E8C27A')],
         null, overall),
@@ -12030,7 +12097,7 @@ if(c.chDailyDag){
     const wb={SheetNames:[], Sheets:{}};
     // Clear last sync's cached raw rows — otherwise a previous run's Naksha/Villages rows
     // would be re-parsed and the panel would never move off the old numbers.
-    this._rawAoa={}; this._nakshaRaw=null; this._villagesRaw=null; this._fcRaw=null;
+    this._rawAoa={}; this._nakshaRaw=null; this._villagesRaw=null; this._fcRaw=null; this._attFromXlsx=false;
     const seen={};
     const addCsv=(name,txt)=>{
       if(!txt || /^\s*(<|\{"?error)/i.test(txt)) return;
@@ -12147,6 +12214,20 @@ if(c.chDailyDag){
                 (this._rawAoa=this._rawAoa||{})[String(n).trim()]=aoa; }catch(e){}
             });
             diag.push('xlsx-export tabs: '+(xwb.SheetNames||[]).join(', '));
+            // Attendance months come from HERE first, keyed by their REAL tab name. The gviz
+            // route below dedupes by content signature, so a month tab copied from another
+            // month (e.g. "Attendance Sep" duplicated from "Attendance Aug") used to collide
+            // and silently drop one whole month. The XLSX export is authoritative: every tab
+            // arrives with its own name, so each month is kept.
+            (xwb.SheetNames||[]).forEach(n=>{
+              const nm=String(n).trim();
+              if(!/attend/i.test(nm)) return;
+              if(/village|instruction|naksha|project\s*overview|tea\s*garden|fc\s*performance|query/i.test(nm)) return;
+              const aoa=(this._rawAoa||{})[nm];
+              if(!aoa || aoa.length<2) return;
+              if(addAoa(nm, aoa)) diag.push('attendance-tab: "'+nm+'"');
+            });
+            this._attFromXlsx = wb.SheetNames.some(n=>/attend/i.test(n));
           }
         }
       }catch(e){ diag.push('xlsx-export → blocked ('+(e&&e.message||'cors')+')'); }
@@ -12167,17 +12248,30 @@ if(c.chDailyDag){
         if(probe && probe.table){
           const probeAoa=this.gvizToAoa(probe);
           const probeS=probeAoa?sigOf(probeAoa):null;
-          if(probeAoa){ const c=classifySheet(probeAoa)||'Attendance'; if(!seen[c]&&addAoa(c,probeAoa)) got.push(c); }
+          // Don't let the generic first-sheet probe re-add an attendance month already read
+          // from the XLSX export — that would double-count a month's records.
+          if(probeAoa){ const c=classifySheet(probeAoa)||'Attendance';
+            const skipAtt=this._attFromXlsx && /attend/i.test(c);
+            if(!skipAtt && !seen[c] && addAoa(c,probeAoa)) got.push(c); }
           const bySig={};
           await Promise.all(names.map(async n=>{
             const aoa=this.gvizToAoa(await this.gvizJsonp(id, n, 20000, nf));
             if(!aoa) return;
             const s=sigOf(aoa);
             if(probeS && s===probeS) return; // same as first sheet → tab absent
-            if(!bySig[s]) bySig[s]={aoa,n};
+            // Attendance months are keyed by TAB NAME, never by content signature: two month
+            // tabs can legitimately hold identical-looking rows (one copied from the other),
+            // and signature dedupe threw the earlier month away.
+            const k=/attend/i.test(String(n)) ? ('name:'+String(n).trim().toLowerCase()) : s;
+            if(!bySig[k]) bySig[k]={aoa,n};
           }));
           Object.values(bySig).forEach(({aoa,n})=>{
-            const canonical=classifySheet(aoa)||n;
+            const isAtt=/attend/i.test(String(n));
+            if(isAtt && this._attFromXlsx) return;               // already have every month, by real name
+            // For attendance keep the REQUESTED tab name — the content classifier reads the
+            // month off the date headers, which a copied sheet may still carry from its source
+            // month, and that mislabelling made two tabs claim the same canonical name.
+            const canonical=isAtt ? String(n).trim() : (classifySheet(aoa)||n);
             if(!seen[canonical]&&addAoa(canonical,aoa)) got.push(canonical);
           });
           // ── Dedicated per-type probes (ignore probeS dedup entirely) ──
@@ -14635,7 +14729,8 @@ if(c.chDailyDag){
           const ck=this.titleCase(String(r.cir||'—').trim())||'—';
           (byC[ck]=byC[ck]||{count:0,names:[]});
           byC[ck].count++;
-          byC[ck].names.push(this.titleCase(String(r.n||'').replace(/\s+/g,' ').trim()));
+          const _nm=this.titleCase(String(r.n||'').replace(/\s+/g,' ').trim())||'—';
+          byC[ck].names.push(_nm);
         });
       });
       Object.keys(byC).sort((a,b)=>byC[b].count-byC[a].count).forEach(ck=>{
