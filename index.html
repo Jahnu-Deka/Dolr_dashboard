@@ -319,6 +319,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // preserve ordering (React before ReactDOM before Babel before text/babel).
     const doc = new DOMParser().parseFromString(template, 'text/html');
     document.documentElement.replaceWith(doc.documentElement);
+    (function(){var o=document.querySelector('link[rel="icon"]');if(!o)return;var href=o.href;document.querySelectorAll('link[rel~="icon"]').forEach(function(l){l.remove();});var l=document.createElement('link');l.rel='icon';l.type='image/svg+xml';l.href=href;document.head.appendChild(l);setTimeout(function(){l.remove();var l2=l.cloneNode();document.head.appendChild(l2);},500);})();
 
     // Resolve page-frame markers: mint this document's own blob for each
     // framed page — from local text when this is the root, otherwise by
